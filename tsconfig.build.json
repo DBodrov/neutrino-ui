@@ -4,6 +4,7 @@
         "module": "ESNext",
         "declaration": true,
         "declarationDir": "./lib",
+        "emitDeclarationOnly": true,
         "skipLibCheck": true,
         // "strict": true,
         "allowSyntheticDefaultImports": true,
