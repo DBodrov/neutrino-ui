@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "lib": ["ESNext", "DOM", "DOM.Iterable"],
+        "module": "ESNext",
+        "declaration": true,
+        "declarationDir": "./lib",
+        "skipLibCheck": true,
+        // "strict": true,
+        "allowSyntheticDefaultImports": true,
+        "sourceMap": true,
+        // "noUnusedParameters": true,
+        // "strictNullChecks": true,
+        "moduleResolution": "node",
+        // "noImplicitAny": true,
+        "outDir": "./lib",
+        "target": "ESNext",
+        "jsx": "react",
+        "typeRoots": ["node_modules/@types"],
+        "types": ["@emotion/core"],
+        "experimentalDecorators": true,
+        "esModuleInterop": true,
+        "baseUrl": ".",
+        "paths": {
+            "neutrino-ui": ["src"],
+            "neutrino-ui/Themes": ["src/Themes"],
+            "neutrino-ui/Button": ["src/Button"]
+        }
+    },
+    "include": ["src/**/*", "site/**/*"],
+    "exclude": ["node_modules", "**/*.spec.tsx", "__tests__"]
+}
