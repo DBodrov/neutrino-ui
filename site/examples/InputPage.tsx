@@ -1,6 +1,6 @@
 import React, { useState, createRef } from 'react';
 import styled from '@emotion/styled'
-import { Input, Span, Button } from '@elements-ui/react';
+import { Input, Span, Button } from 'neutrino-ui';
 
 const Label = styled(Span)`
     display: block;
