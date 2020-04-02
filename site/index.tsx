@@ -1,7 +1,7 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {ElementsUI} from './ElementsUI';
+import {NeutrinoUI} from './NeutrinoUI';
 
 render(
-    <ElementsUI />, document.getElementById('root')
+    <NeutrinoUI />, document.getElementById('root')
 )

@@ -15,7 +15,7 @@ const componentsList = [
     { name: 'MaskInput', link: '/maskinput' },
 ];
 
-export function ElementsUI() {
+export function NeutrinoUI() {
     return (
         <BrowserRouter>
             <Global styles={globalStyles} />

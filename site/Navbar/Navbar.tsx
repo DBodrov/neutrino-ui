@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import {baseTheme} from 'neutrino-ui/Themes';
-// import {H5, baseTheme} from '@elements-ui/react';
+import { baseTheme, H5 } from 'neutrino-ui';
+// import { H5, baseTheme } from '@elements-ui/react';
 import logo from '../assets/elements-logo.png';
 
 const Nav = styled.div`
@@ -26,12 +26,8 @@ export function Navbar() {
     return (
         <Nav>
             <Logo>
-                <img
-                    css={{ width: '80px', height: '80px', display: 'flex' }}
-                    src={logo}
-                    alt="Elements-UI"
-                />
-                <h5 css={{paddingLeft: '1rem'}}>Elements-UI</h5>
+                <img css={{ width: '80px', height: '80px', display: 'flex' }} src={logo} alt="Neutrino-UI" />
+                <H5 css={{ paddingLeft: '1rem' }}>Neutrino-UI</H5>
             </Logo>
         </Nav>
     );
