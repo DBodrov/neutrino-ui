@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback } from 'react';
 import { useTheme } from 'emotion-theming';
 import { baseTheme, ITheme } from '../Themes';
 import { Span } from '../Typography';
-import { Wrapper, Prefix, StyledInput, createInputStyles, createWrapperStyles } from './styles';
+import { Wrapper, StyledInput, createInputStyles, createWrapperStyles } from './styles';
 import { IInputProps } from './types';
 
 export const Input = forwardRef((props: IInputProps, ref: React.RefObject<HTMLInputElement>) => {

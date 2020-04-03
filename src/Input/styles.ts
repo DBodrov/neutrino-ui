@@ -16,9 +16,6 @@ export const Wrapper = styled.div`
     transition: all 0.2s ease-in-out;
 `;
 
-export const Prefix = styled(Span)`
-`;
-
 export const StyledInput = styled.input`
     display: flex;
     flex-flow: row nowrap;
