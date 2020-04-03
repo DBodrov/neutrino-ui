@@ -1,6 +1,7 @@
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import { ITheme } from '@elements-ui/themes';
+import { ITheme } from '../Themes';
+import { Span } from '../Typography';
 import { IInputProps } from './types';
 
 export const Wrapper = styled.div`
@@ -15,18 +16,18 @@ export const Wrapper = styled.div`
     transition: all 0.2s ease-in-out;
 `;
 
-export const Prefix = styled.span`
-    align-self: center;
-    margin-right: 1rem;
+export const Prefix = styled(Span)`
 `;
 
 export const StyledInput = styled.input`
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
     flex-grow: 2;
-    height: 100%;
-    border-radius: 4px;
     border: 0;
     outline: 0;
-
+    line-height: 2rem;
 `;
 
 export const createInputStyles = ({ typography }: ITheme, props: IInputProps) => {
@@ -34,7 +35,7 @@ export const createInputStyles = ({ typography }: ITheme, props: IInputProps) =>
     return css({
         ...typography.span,
         opacity: disabled ? 0.4 : 1,
-        cursor:  disabled ? 'not-allowed' : 'initial',
+        cursor: disabled ? 'not-allowed' : 'initial',
     });
 };
 
@@ -48,6 +49,6 @@ export const createWrapperStyles = ({ colors }: ITheme, props: IInputProps) => {
             outline: 0,
             border: `1px ${hasError ? colors.feedbackColors.error : colors.mainColors.primary} solid`,
         },
-        ...style
+        ...style,
     });
-}
+};

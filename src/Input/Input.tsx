@@ -1,6 +1,7 @@
 import React, { forwardRef, useCallback } from 'react';
 import { useTheme } from 'emotion-theming';
 import { baseTheme, ITheme } from '../Themes';
+import { Span } from '../Typography';
 import { Wrapper, Prefix, StyledInput, createInputStyles, createWrapperStyles } from './styles';
 import { IInputProps } from './types';
 
@@ -31,7 +32,7 @@ export const Input = forwardRef((props: IInputProps, ref: React.RefObject<HTMLIn
 
     return (
         <Wrapper css={createWrapperStyles(theme, props)}>
-            {prefix && <Prefix css={{ ...theme.typography.span }}>{prefix}</Prefix>}
+            {prefix && <Span>{prefix}</Span>}
             <StyledInput
                 ref={ref}
                 type="text"

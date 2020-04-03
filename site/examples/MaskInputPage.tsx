@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { MaskInput } from '@elements-ui/react';
+import { MaskInput } from 'neutrino-ui';
 
 export function MaskInputPage() {
     const [passport, setPassport] = useState('0123 456789');
@@ -16,7 +16,6 @@ export function MaskInputPage() {
                     value={passport}
                     prefix="+7"
                     pattern="9"
-                    css={{letterSpacing: '5px'}}
                 />
             </div>
         </section>
