@@ -39,7 +39,7 @@
     "bugs": {
         "url": "https://github.com/DBodrov/neutrino-ui/issues"
     },
-    "homepage": "https://github.com/DBodrov/neutrino-ui#readme",
+    "homepage": "https://neutrino-ui.netlify.com/",
     "peerDependencies": {
         "@emotion/core": "^10.0.28",
         "@emotion/styled": "^10.0.27",
@@ -92,6 +92,5 @@
         "webpack-cli": "^3.3.11",
         "webpack-dev-server": "^3.10.3",
         "webpack-merge": "^4.2.2"
-    },
-    "dependencies": {}
+    }
 }
