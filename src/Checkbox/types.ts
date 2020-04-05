@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { ITheme } from '@elements-ui/themes';
+import { ITheme } from '../Themes';
 
 export type TCheckboxChangeEvent = React.MouseEvent<HTMLDivElement | HTMLSpanElement, MouseEvent>;
 

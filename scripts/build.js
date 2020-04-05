@@ -10,7 +10,7 @@ function buildLib() {
     console.log('Clear Lib dir');
     fse.emptyDirSync('lib');
     console.log('Create typings....')
-    execSync(`npm run compile`);
+    execSync("npm run compile");
     console.log('Typings Done.')
 
     components.forEach(folder => {

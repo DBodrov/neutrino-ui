@@ -1,5 +1,5 @@
 import { css } from '@emotion/core';
-import { ITheme } from '@elements-ui/themes';
+import { ITheme } from '../Themes';
 import { IBoxProps, IWrapperProps, ICheckboxProps } from './types';
 
 export const wrapperCss = ({ width }: IWrapperProps) =>
