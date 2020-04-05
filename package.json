@@ -82,6 +82,7 @@
         "jest": "^25.1.0",
         "jest-emotion": "^10.0.32",
         "jest-resolve": "^25.1.0",
+        "prism-react-renderer": "^1.0.2",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-router-dom": "^5.1.2",
@@ -91,5 +92,6 @@
         "webpack-cli": "^3.3.11",
         "webpack-dev-server": "^3.10.3",
         "webpack-merge": "^4.2.2"
-    }
+    },
+    "dependencies": {}
 }

@@ -1,15 +1,18 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { ButtonPage, TypographyPage, InputPage, MaskInputPage } from './examples';
+import { ButtonPage, TypographyPage, InputPage, MaskInputPage, CheckboxPage } from './examples';
 
 export function Routes() {
     return (
         <Switch>
             <Route exact path="/">
-                <span>Documentation site. Coming soon...</span>
+                <span>Choose component from left sidebar</span>
             </Route>
             <Route path="/button">
                 <ButtonPage />
+            </Route>
+            <Route path="/checkbox">
+                <CheckboxPage />
             </Route>
             <Route path="/typography">
                 <TypographyPage />
