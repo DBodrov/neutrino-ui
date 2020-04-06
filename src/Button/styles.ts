@@ -126,7 +126,7 @@ const createButtonVariants = (theme: ITheme, props: ButtonProps): VariantStyles 
 };
 
 export const getButtonVariant = (props: ButtonProps, theme: ITheme) => {
-    const currentVariant = props.variant || 'primary';
+    const currentVariant = props.variant || 'default';
     const variants = createButtonVariants(theme, props);
     const baseStyles = getBaseStyles(props);
     return [baseStyles, variants[currentVariant]];

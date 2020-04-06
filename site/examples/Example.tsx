@@ -3,6 +3,11 @@ import styled from '@emotion/styled';
 import Highlight, { defaultProps } from 'prism-react-renderer';
 import theme from 'prism-react-renderer/themes/nightOwl';
 
+export const Wrapper = styled.div`
+    padding: 1rem;
+
+`;
+
 const Pre = styled.pre`
     text-align: left;
     margin: 1em 0;
@@ -25,7 +30,7 @@ export const Example = ({ code }: { code: string }) => {
     return (
         <Highlight {...defaultProps} language="jsx" code={code} theme={theme}>
             {({ className, style, tokens, getLineProps, getTokenProps }) => (
-                <Pre className={className} style={{ ...style, maxWidth: '900px' }}>
+                <Pre className={className} style={{ ...style, maxWidth: '1200px' }}>
                     {tokens.map((line, i) => (
                         <div {...getLineProps({ line, key: i })}>
                             <LineNo>{i + 1}</LineNo>
