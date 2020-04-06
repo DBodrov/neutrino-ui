@@ -22,6 +22,7 @@ export const StyledInput = styled.input`
     justify-content: flex-start;
     align-items: center;
     flex-grow: 2;
+    height: 100%;
     border: 0;
     outline: 0;
     line-height: 2rem;
