@@ -2,7 +2,6 @@ import React from 'react';
 import { ThemeProvider } from 'emotion-theming';
 import { Button, createTheme, ITheme } from 'neutrino-ui';
 import { Example, Wrapper } from './Example';
-// import { CheckIcon } from 'src/Checkbox/icons';
 
 const theme: ITheme = {
     colors: {
@@ -85,9 +84,24 @@ const exampleCss = `
 </Button>
 `.trim();
 
+const exampleProps = `
+interface IButtonProps {
+    className?: string;
+    flat?: boolean;
+    outline?: boolean;
+    styles?: React.CSSProperties;
+    variant?: 'primary' | 'secondary' | 'default';
+    icon?: string;
+    children?: React.ReactNode;
+}
+
+export type ButtonProps = IButtonProps & JSX.IntrinsicElements['button'];
+`.trim();
+
 export function ButtonPage() {
     return (
         <Wrapper>
+            <Example code={exampleProps}/>
             <Button type="button" onClick={console.log}>
                 Default button
             </Button>
