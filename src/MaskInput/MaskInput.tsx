@@ -6,7 +6,7 @@ import { getChangeType, patterns } from './mask.utils';
 import { IMaskInputProps, ChangeType } from './types';
 
 export function MaskInput(props: IMaskInputProps) {
-    const { className, mask, prefix, name, maskPlaceholder, onChangeHandler, value, pattern = '9' } = props;
+    const { className, mask, prefix, name, maskPlaceholder, onChangeHandler, value, pattern = '9', ...other } = props;
 
     const inputRef = createRef<HTMLInputElement>();
     const regExp = patterns[pattern];
@@ -139,6 +139,7 @@ export function MaskInput(props: IMaskInputProps) {
             onKeyDown={handleKeyDown}
             autoComplete="off"
             prefix={prefix}
+            {...other}
         />
     );
 }
