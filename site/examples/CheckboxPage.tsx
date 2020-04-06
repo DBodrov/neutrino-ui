@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Checkbox } from 'neutrino-ui';
-import {Example} from './Example';
+import {Example, Wrapper} from './Example';
 
 
 const exampleSimple = `
@@ -30,7 +30,7 @@ const [check, setCheck] = useState(true);
 export function CheckboxPage() {
     const [check, setCheck] = useState(true);
     return (
-        <div>
+        <Wrapper>
             <Checkbox onChangeHandler={(v) => setCheck(v)} checked={check}>
                 Simple Checkbox
             </Checkbox>
@@ -43,6 +43,6 @@ export function CheckboxPage() {
                 Secondary Checkbox
             </Checkbox>
             <Example code={exampleSecondary}/>
-        </div>
+        </Wrapper>
     );
 }
