@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { ButtonPage, TypographyPage, InputPage, MaskInputPage, CheckboxPage } from './examples';
+import { ButtonPage, TypographyPage, InputPage, MaskInputPage, CheckboxPage, InputNumberPage } from './examples';
 
 export function Routes() {
     return (
@@ -22,6 +22,9 @@ export function Routes() {
             </Route>
             <Route path="/maskinput">
                 <MaskInputPage />
+            </Route>
+            <Route path="/inputnumber">
+                <InputNumberPage />
             </Route>
         </Switch>
     );

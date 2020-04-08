@@ -4,7 +4,7 @@ export interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement>
     // styles?: React.CSSProperties;
     // inputClassName: string;
     name: string;
-    value?: string;
+    value?: string | number;
     prefix?: string;
     onFocusHandler?: (value: string, event?: React.FocusEvent<HTMLInputElement>) => void;
     onBlurHandler?: (value: string , event?: React.FocusEvent<HTMLInputElement>) => void;

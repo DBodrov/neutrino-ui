@@ -13,6 +13,7 @@ const componentsList = [
     { name: 'Typography', link: '/typography' },
     { name: 'Input', link: '/input' },
     { name: 'MaskInput', link: '/maskinput' },
+    { name: 'InputNumber', link: '/inputnumber' },
 ];
 
 export function NeutrinoUI() {
