@@ -29,7 +29,7 @@ import { MaskInput } from 'neutrino-ui';
 <MaskInput
   mask="(999) 999 99 99"
   name="phone"
-  onChangeHandler={handleChangePassport}
+  onChangeHandler={(v: string) => setPhone(v)}
   maskPlaceholder="_"
   value={phone}
   prefix="+7"
@@ -39,10 +39,11 @@ import { MaskInput } from 'neutrino-ui';
 
 const exampleProps = `
 interface IMaskInputProps extends IInputProps {
+  value?: string;
   mask: string;
   prefix?: string;
   maskPlaceholder?: string;
-  pattern?: '9' | 'a' | '*';
+  pattern?: '9';
 }
 `.trim();
 
@@ -50,7 +51,6 @@ export function MaskInputPage() {
     const [passport, setPassport] = useState('0123 456789');
     const [phone, setPhone] = useState('(123) 456 78 90');
     const handleChangePassport = (value: string) => setPassport(value);
-    const handleChangePhone = (value: string) => setPhone(value);
 
     return (
         <Wrapper>
@@ -71,7 +71,7 @@ export function MaskInputPage() {
             <MaskInput
                 mask="(999) 999 99 99"
                 name="phone"
-                onChangeHandler={handleChangePassport}
+                onChangeHandler={(v: string) => setPhone(v)}
                 maskPlaceholder="_"
                 value={phone}
                 prefix="+7"
