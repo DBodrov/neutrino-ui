@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import { css } from '@emotion/core'
-// import classNames from 'classnames/bind';
 import { isEmptyString } from '../utils/string.utils';
 import { toDecimalString } from '../utils/numeric.utils';
 import { Input } from '../Input';
 import { IInputNumberProps } from './types';
-// import closeIco from 'ui-kit/assets/icons/forms/close.svg';
-// import css from './InputNumber.module.scss';
-
-// const cx = classNames.bind(css);
 
 const toString = (value: string | number) => {
     if (typeof value === 'number') {
@@ -18,8 +13,8 @@ const toString = (value: string | number) => {
 };
 
 const disableSpinBtn = css({
-    '&::-webkit-inner-spin-button, &::-webkit-outer-spin-button': { '-webkit-appearance': 'none', margin: 0 },
-    '-moz-appearance': 'textfield',
+    '&::-webkit-inner-spin-button, &::-webkit-outer-spin-button': { appearance: 'none', margin: 0 },
+    appearance: 'textfield',
 });
 
 export function InputNumber(props: IInputNumberProps) {
@@ -33,7 +28,6 @@ export function InputNumber(props: IInputNumberProps) {
         value = '',
         parser = 'parseFloat',
         zeroWhenEmpty = false,
-        onClearHandler,
         onFocusHandler,
         onChangeHandler,
         onBlurHandler,

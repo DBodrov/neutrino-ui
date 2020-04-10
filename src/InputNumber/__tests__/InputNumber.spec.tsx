@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { InputNumber } from './InputNumber';
-import { IInputNumberProps } from './types';
+import { InputNumber } from '../InputNumber';
+import { IInputNumberProps } from '../types';
 
 afterEach(() => {
     cleanup();

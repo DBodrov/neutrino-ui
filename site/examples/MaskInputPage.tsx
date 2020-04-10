@@ -23,6 +23,20 @@ import { MaskInput } from 'neutrino-ui';
 />
 `.trim();
 
+const examplePrefix = `
+import { MaskInput } from 'neutrino-ui';
+
+<MaskInput
+  mask="(999) 999 99 99"
+  name="phone"
+  onChangeHandler={handleChangePassport}
+  maskPlaceholder="_"
+  value={phone}
+  prefix="+7"
+  pattern="9"
+/>
+`.trim();
+
 const exampleProps = `
 interface IMaskInputProps extends IInputProps {
   mask: string;
@@ -41,7 +55,7 @@ export function MaskInputPage() {
     return (
         <Wrapper>
             <Label>Props</Label>
-            <Example code={exampleProps}/>
+            <Example code={exampleProps} />
             <Label>Simple MaskInput</Label>
             <MaskInput
                 mask="9999 999999"
@@ -52,32 +66,18 @@ export function MaskInputPage() {
                 pattern="9"
                 style={commonStyle}
             />
-            <Example code={exampleSimple}/>
-
-            <div css={{ margin: '0 auto', width: '300px', marginBottom: '10px' }}>
-                <Label>With Prefix MaskInput</Label>
-                <MaskInput
-                    mask="9999 999999"
-                    name="passport"
-                    onChangeHandler={handleChangePassport}
-                    maskPlaceholder="_"
-                    value={passport}
-                    prefix="+7"
-                    pattern="9"
-                />
-            </div>
-            <div css={{ margin: '0 auto', width: '300px', marginBottom: '10px' }}>
-                <Label>Phone number MaskInput</Label>
-                <MaskInput
-                    mask="(999) 999 99 99"
-                    name="phone"
-                    onChangeHandler={handleChangePassport}
-                    maskPlaceholder="_"
-                    value={phone}
-                    prefix="+7"
-                    pattern="9"
-                />
-            </div>
+            <Example code={exampleSimple} />
+            <Label>Phone number MaskInput</Label>
+            <MaskInput
+                mask="(999) 999 99 99"
+                name="phone"
+                onChangeHandler={handleChangePassport}
+                maskPlaceholder="_"
+                value={phone}
+                prefix="+7"
+                pattern="9"
+            />
+            <Example code={examplePrefix} />
         </Wrapper>
     );
 }

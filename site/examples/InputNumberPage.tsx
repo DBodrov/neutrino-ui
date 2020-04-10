@@ -25,66 +25,27 @@ const outerInputStyle: React.CSSProperties = {
 
 const commonStyle = { width: '300px' };
 
-const exampleText = `
-import { Input } from 'neutrino-ui';
-const [value, setValue] = useState('');
+const exampleDefault = `
+import { InputNumber } from 'neutrino-ui';
+const [value, setValue] = useState(undefined);
 
-<Input
-  name="text"
-  onChangeHandler={(value, event) => setValue(value)}
+<InputNumber
+  name="number"
+  onChangeHandler={(v) => setValue(v)}
   value={value}
-  style={{width: '300px'}}/>
+/>
 `.trim();
 
-const exampleWithTheme = `
-import { ThemeProvider } from 'emotion-theming';
-import { Input, createTheme } from 'neutrino-ui';
+const exampleWithFormatOptions = `
+import { InputNumber } from 'neutrino-ui';
+const [value, setValue] = useState(0.23);
 
-const myTheme = createTheme({
-  colors: {
-    mainColors: {primary: 'green'}
-  }
-});
-
-<ThemeProvider theme={myTheme}>
-  <Input
-    name="text"
-    onChangeHandler={(value, event) => setValue(value)}
-    value={value}
-    css={{ color: 'red' }} /** apply to inner input control */
-    style={outerInputStyle} /** apply to outer wrapper */
-    autoComplete="off"
-  />
-</ThemeProvider>
-`.trim();
-
-const exampleHasError = `
-<Input
-  name="text"
-  onChangeHandler={(v, e) => setValue(v)}
-  value={value}
-  hasError />
-`.trim();
-
-const exampleFocus = `
-import React, { useState, createRef } from 'react';
-import { ThemeProvider } from 'emotion-theming';
-import { Input, Button } from 'neutrino-ui';
-
-function Form() {
-  const [value, setValue] = useState('');
-  const inputRef = createRef<HTMLInputElement>();
-  const setFocus = () => inputRef?.current?.focus();
-
-  return (
-    <Button onClick={setFocus} variant="primary">Set focus</Button>
-    <Input
-      name="text"
-      ref={inputRef}
-      onChangeHandler={(v, e) => setValue(v)}
-      value={value} />
-  )
-}
+<InputNumber
+  name="number"
+  onChangeHandler={(v: number) => setFractNumber(v)}
+  value={fractNumber}
+  formatOptions={{ maximumFractionDigits: 2 }}
+/>
 `.trim();
 
 const exampleProps = `
@@ -97,25 +58,12 @@ interface IInputNumberProps extends IInputProps {
     onFocusHandler?: (value: string | number, event?: React.FocusEvent<HTMLInputElement>) => void;
     onBlurHandler?: (value: string | number , event?: React.FocusEvent<HTMLInputElement>) => void;
     onChangeHandler: (value: string | number, event?: React.ChangeEvent<HTMLInputElement>) => void;
-    onClearHandler?: (name: string) => void;
 }
 `.trim();
 
-const examplePrefix = `
-<Input
-  prefix="Hi! : "
-  name="text"
-  onChangeHandler={(v, e) => setValue(v)}
-  value={value} />
-`.trim();
-
-const disableSpinBtn = css({
-    '&::-webkit-inner-spin-button, &::-webkit-outer-spin-button': { '-webkit-appearance': 'none', margin: 0 },
-    '-moz-appearance': 'textfield',
-});
-
 export function InputNumberPage() {
     const [value, setValue] = useState(undefined);
+    const [fractNumber, setFractNumber] = useState<number>(0.23);
 
     return (
         <Wrapper>
@@ -127,54 +75,26 @@ export function InputNumberPage() {
                 onChangeHandler={(v) => setValue(v)}
                 value={value}
                 style={commonStyle}
-                // formatOptions={{style: 'currency', currency: 'RUB', currencyDisplay: 'symbol'}}
             />
-            <Example code={exampleText} />
-            {/* <div css={{ marginTop: '1rem' }}>
-                <ThemeProvider theme={myTheme}>
-                    <Label>Change look with CSS and Style props</Label>
-                    <Input
-                        name="text"
-                        onChangeHandler={(v, e) => setValue(v)}
-                        value={value}
-                        css={{ color: 'red' }}
-                        style={outerInputStyle}
-                        autoComplete="off"
-                    />
-                </ThemeProvider>
-                <Example code={exampleWithTheme} />
-            </div>
-            <div css={{ marginTop: '1rem' }}>
-                <Label>hasError = true (After form validation)</Label>
-                <Input
-                    name="text"
-                    onChangeHandler={(v, e) => setValue(v)}
-                    value={value}
-                    hasError
-                    style={commonStyle}
-                />
-                <Example code={exampleHasError} />
-            </div>
-            <div
-                css={{
-                    marginTop: '1rem',
-                }}>
-                <Label>Set focus</Label>
-                <Button onClick={setFocus} variant="primary" css={{ marginBottom: '10px' }}>
-                    Set focus
-                </Button>
+            <Example code={exampleDefault} />
+            <Label>
+                with maximumFractionDigits (
+                <a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat">
+                    MDN NumberFormat
+                </a>
+                )
+            </Label>
 
-                <Input
-                    name="text"
-                    ref={inputRef}
-                    onChangeHandler={(v, e) => setValue(v)}
-                    value={value}
-                    style={commonStyle}
-                />
-                <Example code={exampleFocus} />
-                <Input prefix="Hi! : " name="text" onChangeHandler={(v, e) => setValue(v)} value={value} style={commonStyle} />
-                <Example code={examplePrefix}/>
-            </div> */}
+            <InputNumber
+                name="number"
+                onChangeHandler={(v: number) => setFractNumber(v)}
+                value={fractNumber}
+                formatOptions={{ maximumFractionDigits: 2 }}
+                style={commonStyle}
+            />
+            <Example code={exampleWithFormatOptions} />
+
+            <Span>the rest of the behavior is similar Input component</Span>
         </Wrapper>
     );
 }
