@@ -1,10 +1,10 @@
-import React, { ReactText, useCallback } from 'react';
+import React, { ReactText, ReactNode, useCallback } from 'react';
 import { css } from '@emotion/core';
 import { useTheme } from 'emotion-theming';
 import { useElementsTheme, baseTheme, TypographyElements, ITheme } from '../Themes';
 
 type TypographyProps = {
-    children: ReactText;
+    children: ReactText | ReactNode;
     className?: string;
     as: TypographyElements;
 };

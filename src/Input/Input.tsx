@@ -6,7 +6,7 @@ import { Wrapper, StyledInput, createInputStyles, createWrapperStyles } from './
 import { IInputProps } from './types';
 
 export const Input = forwardRef((props: IInputProps, ref: React.RefObject<HTMLInputElement>) => {
-    const { onChangeHandler, value, hasError, onFocusHandler, onBlurHandler, prefix, css, style, ...other } = props;
+    const { onChangeHandler, value, hasError, onFocusHandler, onBlurHandler, prefix, style, ...other } = props;
 
     const getTheme = useCallback(() => {
         const providedTheme = useTheme<ITheme>();
