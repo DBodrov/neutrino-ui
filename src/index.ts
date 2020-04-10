@@ -5,3 +5,4 @@ export * from './Input';
 export * from './MaskInput';
 export * from './Checkbox';
 export * from './InputNumber';
+export * from './Portal';
