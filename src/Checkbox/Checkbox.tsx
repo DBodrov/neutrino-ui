@@ -1,6 +1,5 @@
 import React, {useCallback} from 'react';
-import {useTheme} from 'emotion-theming';
-import { baseTheme, ITheme } from '../Themes';
+import { useTheme, ITheme } from '../Themes';
 import { CheckIcon, MinusIcon } from './icons';
 import { ICheckboxProps, TCheckboxChangeEvent } from './types';
 import { wrapperCss, getCheckboxVariant } from './styles';
@@ -23,11 +22,7 @@ export function Checkbox(props: ICheckboxProps) {
         variant,
         ...restProps
     } = props;
-    const getTheme = useCallback(() => {
-        const providedTheme = useTheme<ITheme>();
-        return Object.keys(providedTheme).length > 0 ? providedTheme : baseTheme;
-    }, [])
-    const theme = getTheme();
+    const theme = useTheme();
 
     const handleChange = (event: TCheckboxChangeEvent) => {
         event.preventDefault();

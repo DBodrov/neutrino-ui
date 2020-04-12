@@ -1,21 +1,26 @@
 import { CSSProperties } from 'react';
-import { css } from '@emotion/core'
+import { css } from '@emotion/core';
+import { ITheme } from '../Themes';
+import {IDropdownProps} from './types';
 
+export const createDropdownCSS = (props: IDropdownProps, theme: ITheme) => css(
+    {
+        display: 'flex',
+        position: 'fixed',
+        minWidth: '100px',
+        flexFlow: 'column nowrap',
+        backgroundColor: theme.colors.pageElementsColors.body,
+        opacity: 1,
+        padding: 0,
+        borderRadius: '4px',
+        zIndex: 1020, //TODO: Add to baseTheme
 
-export const dropdownCSS = css({
-    display: 'flex',
-    position: 'fixed',
-    minWidth: '100px',
-    flexFlow: 'column nowrap',
-    backgroundColor: '#fff',
-    opacity: 1,
-    padding: '0 4px',
-    borderRadius: '4px',
-
-    '&:focus': {
-        outline: 0,
-    }
-})
+        '&:focus': {
+            outline: 0,
+        },
+    },
+    { ...theme.shadows.lightRaised }
+);
 
 export class DropdownSpringStyles {
     private showOnTop: boolean;
@@ -59,7 +64,7 @@ export class DropdownSpringStyles {
         const baseStyle = this.createBaseStyles();
         return {
             ...baseStyle,
-            top: this.parentBound.bottom,
+            top: this.parentBound.bottom + 1,
         };
     }
 

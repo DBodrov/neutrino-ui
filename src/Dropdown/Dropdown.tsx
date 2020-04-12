@@ -1,28 +1,17 @@
-import React, { useRef, CSSProperties } from 'react';
-// import cN from 'classnames/bind';
+import React, { forwardRef } from 'react';
 import { animated, useTransition } from 'react-spring';
+import { useTheme } from '../Themes';
 import { Portal } from '../Portal';
-import { DropdownSpringStyles, dropdownCSS } from './styles';
+import { DropdownSpringStyles, createDropdownCSS } from './styles';
+import { IDropdownProps } from './types';
 
-import css from './Dropdown.module.scss';
-
-const cx = cN.bind(css);
-
-export interface IDropdownProps {
-    isOpen: boolean;
-    parentBound?: ClientRect;
-    styles?: React.CSSProperties;
-    children: React.ReactNode;
-}
-
-export function Dropdown(props: IDropdownProps) {
+export const Dropdown = forwardRef((props: IDropdownProps, ref: React.RefObject<HTMLDivElement>) => {
     const { isOpen, parentBound, children, styles = {} } = props;
-    const dropdownRef = useRef<HTMLDivElement>(null);
-    const cssClasses = cx(css.Dropdown);
+    const theme = useTheme();
 
     const onUpdate = () => {
         if (isOpen) {
-            return new DropdownSpringStyles(dropdownRef, parentBound).createSpringStyles();
+            return new DropdownSpringStyles(ref, parentBound).createSpringStyles();
         }
         return {};
     };
@@ -40,8 +29,8 @@ export function Dropdown(props: IDropdownProps) {
                 item && (
                     <animated.div
                         key={key}
-                        css={dropdownCSS}
-                        ref={dropdownRef}
+                        css={createDropdownCSS(props, theme)}
+                        ref={ref}
                         style={{ ...springProps, ...styles }}
                         tabIndex={-1}>
                         {children}
@@ -50,4 +39,4 @@ export function Dropdown(props: IDropdownProps) {
         );
 
     return <Portal>{renderDropdown()}</Portal>;
-}
+});

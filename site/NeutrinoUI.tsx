@@ -14,6 +14,7 @@ const componentsList = [
     { name: 'Input', link: '/input' },
     { name: 'MaskInput', link: '/maskinput' },
     { name: 'InputNumber', link: '/inputnumber' },
+    { name: 'Select', link: '/select' },
 ];
 
 export function NeutrinoUI() {

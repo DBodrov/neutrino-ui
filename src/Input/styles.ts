@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
     align-items: center;
     width: 100%;
     min-height: 2rem;
-    height: 2rem;
+    height: auto;
     border-radius: 4px;
     transition: all 0.2s ease-in-out;
 `;

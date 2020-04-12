@@ -6,3 +6,5 @@ export * from './MaskInput';
 export * from './Checkbox';
 export * from './InputNumber';
 export * from './Portal';
+export * from './Dropdown';
+export * from './Select';
