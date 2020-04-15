@@ -106,7 +106,7 @@ export function Select(props: ISelectProps) {
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 value={caption}
-                css={{ borderRadius: '4px', padding: '0.5rem'}}
+                css={{ borderRadius: '4px', padding: '0.5rem', width: '100%'}}
                 style={{ padding: 0 }} // for input wrapper
                 readOnly
                 hasError
@@ -114,8 +114,8 @@ export function Select(props: ISelectProps) {
             <ArrowDownIcon
                 css={{
                     position: 'absolute',
-                    top: '25%',
-                    left: '97%',
+                    top: '30%',
+                    right: '10px',
                     transform: `rotate(${isOpen ? '180deg' : '0'})`,
                     transition: 'all 0.2s ease-in-out'
                 }}
