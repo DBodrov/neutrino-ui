@@ -1,5 +1,3 @@
-import {InterpolationWithTheme} from '@emotion/core';
-
 export type TOption = Record<string | number, string>;
 export type Options = TOption[];
 
@@ -8,7 +6,6 @@ export interface ISelectProps {
     hasError?: boolean;
     options?: Options;
     disabled?: boolean;
-    // hasClear?: boolean;
     onChangeHandler: (value: ValueType) => void;
     onClearHandler?: (name: string) => void;
     onFocusHandler?: (value: ValueType) => void;

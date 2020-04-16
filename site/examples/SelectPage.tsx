@@ -16,6 +16,7 @@ const [item, setItem] = useState('');
   value={item}
   options={options}
   dropdownStyles={{ borderRadius: '10px' }}
+  styles={{maxWidth: '300px'}}
 />
 `;
 
@@ -28,7 +29,7 @@ export function SelectPage() {
                 onChangeHandler={(v: string) => setItem(v)}
                 value={item}
                 options={options}
-                hasError
+                styles={{maxWidth: '300px'}}
                 dropdownStyles={{ borderRadius: '10px' }}
             />
             <Example code={exampleDefault}/>
