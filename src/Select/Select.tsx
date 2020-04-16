@@ -59,7 +59,6 @@ export function Select(props: ISelectProps) {
     };
 
     const handleFocus = () => {
-        console.log('select focus');
         const select = selectRef.current;
         select.addEventListener('keypress', handleKeypress);
         onFocusHandler && onFocusHandler(selectedValue);

@@ -11,7 +11,7 @@ export interface ISelectProps {
     onFocusHandler?: (value: ValueType) => void;
     onBlurHandler?: (value: ValueType) => void;
     styles?: React.CSSProperties;
-    value?: ValueType;
+    value?: string | number;
     tabIndex?: number;
     dropdownStyles?: React.CSSProperties;
 }
