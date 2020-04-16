@@ -1,7 +1,6 @@
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { ITheme } from '../Themes';
-import { Span } from '../Typography';
 import { IInputProps } from './types';
 
 export const Wrapper = styled.div`
@@ -11,7 +10,7 @@ export const Wrapper = styled.div`
     align-items: center;
     width: 100%;
     min-height: 2rem;
-    height: 2rem;
+    height: auto;
     border-radius: 4px;
     transition: all 0.2s ease-in-out;
 `;
@@ -37,15 +36,22 @@ export const createInputStyles = ({ typography }: ITheme, props: IInputProps) =>
     });
 };
 
-export const createWrapperStyles = ({ colors }: ITheme, props: IInputProps) => {
+
+export const createWrapperStyles = ({ colors }: ITheme, props: IInputProps, focusState: boolean) => {
     const { disabled, hasError, style } = props;
+    const hasErrorBorder = `1px ${colors.feedbackColors.error} solid`;
+    const focusedBorder = `1px ${colors.mainColors.primary} solid`;
+    const defaultBorder = `1px ${colors.pageElementsColors.border} solid`;
+
     return css({
-        border: `1px ${hasError ? colors.feedbackColors.error : colors.pageElementsColors.border} solid`,
+        //border: `1px ${hasError ? colors.feedbackColors.error : colors.pageElementsColors.border} solid`,
+        border: hasError ? hasErrorBorder : focusState ? focusedBorder : defaultBorder,
         opacity: disabled ? 0.4 : 1,
         padding: '0 0.5rem',
         ':hover, :focus': {
             outline: 0,
-            border: `1px ${hasError ? colors.feedbackColors.error : colors.mainColors.primary} solid`,
+            border: hasError ? hasErrorBorder : focusedBorder,
+            //border: `1px ${hasError ? colors.feedbackColors.error : colors.mainColors.primary} solid`,
         },
         ...style,
     });

@@ -1,27 +1,12 @@
-import React, { useState, createRef } from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import { css, jsx } from '@emotion/core';
-import { ThemeProvider } from 'emotion-theming';
-import { InputNumber, Span, Button, createTheme } from 'neutrino-ui';
+import { InputNumber, Span } from 'neutrino-ui';
 import { Example, Wrapper } from './Example';
 
 const Label = styled(Span)`
     display: block;
     margin-bottom: 10px;
 `;
-
-const myTheme = createTheme({
-    colors: {
-        mainColors: {
-            primary: 'green',
-        },
-    },
-});
-
-const outerInputStyle: React.CSSProperties = {
-    borderRadius: '10px',
-    width: '300px',
-};
 
 const commonStyle = { width: '300px' };
 
