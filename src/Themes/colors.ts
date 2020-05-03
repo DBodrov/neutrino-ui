@@ -24,7 +24,7 @@ const pageElementsColors = {
     body: simpleColors.white,
     border: grayColors.gray2,
     disabled: grayColors.gray4,
-    overlay: grayColors.gray9,
+    overlay: 'rgba(171,180,189, 0.9)',
 };
 
 const mainColors = {

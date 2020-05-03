@@ -1,11 +1,10 @@
-import React, { Fragment, useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { animated, useTransition } from 'react-spring';
-import {Portal} from '../Portal';
-import {Overlay} from './styles';
-// import cn from 'classnames/bind';
-// import { UI } from 'services';
-// import closeIco from 'ui-kit/assets/icons/forms/close.svg';
-import css from './BasicModal.module.scss';
+import { Portal } from '../Portal';
+import {useTheme} from '../Themes';
+import { Span } from '../Typography';
+import { Overlay, modalStyles, DissmissButton } from './styles';
+import { CloseIcon } from './icons/CloseIcon';
 
 export interface IModalProps {
     className?: string;
@@ -20,37 +19,25 @@ export interface IModalProps {
     children: React.ReactNode;
 }
 
-// const cx = cn.bind(css);
-
 export function Modal(props: IModalProps) {
     const {
-        className,
         isOpen,
         clickClose,
         escClose,
         onClose,
-        styles,
         title = '',
         showClose,
         children,
         placement = 'center',
     } = props;
     const modalRef = useRef<HTMLDivElement>(null);
-    // const rootNode = UI.createModalRootNode();
     const transition = useTransition(isOpen, null, {
         from: { opacity: 0, transform: placement === 'bottom' ? 'translateY(200px)' : 'translateY(-200px)' },
         enter: { opacity: 1, transform: 'translateY(0)' },
         leave: { opacity: 0, transform: 'translateY(200px)' },
     });
 
-    // const modalClasses = cx(
-    //     css.Modal,
-    //     { [css.withTitle]: Boolean(title) },
-    //     { [css.onTop]: placement === 'top' },
-    //     { [css.onCenter]: placement === 'center' },
-    //     { [css.onBottom]: placement === 'bottom' },
-    //     className
-    // );
+    const theme = useTheme();
 
     const handleClickOutside = useCallback(
         (event: Event) => {
@@ -98,35 +85,23 @@ export function Modal(props: IModalProps) {
         transition.map(
             ({ item, props: springProps, key }) =>
                 item && (
-                    <Overlay>
+                    <Overlay key={key} css={{backgroundColor: theme.colors.pageElementsColors.overlay}}>
                         <animated.div
                             key={key}
-                            // className={modalClasses}
-                            style={{ ...springProps, ...styles }}
+                            css={modalStyles(props)}
+                            style={{ ...springProps }}
                             ref={modalRef}>
-                            {title && (
-                                <div className={css.Title}>
-                                    <span>{title}</span>
-                                </div>
-                            )}
+                            {title && <Span css={{ fontWeight: 600, textAlign: 'center' }}>{title}</Span>}
                             {showClose && (
-                                <button
-                                    className={css.Close}
-                                    type="button"
-                                    tabIndex={-1}
-                                    onClick={handleClose}>
-                                    {/* <img src={closeIco} alt="X" /> */}
-                                </button>
+                                <DissmissButton type="button" tabIndex={-1} onClick={handleClose}>
+                                    <CloseIcon />
+                                </DissmissButton>
                             )}
-                            <div className={css.ModalContent}>{children}</div>
+                            <div css={{ overflow: 'hidden' }}>{children}</div>
                         </animated.div>
                     </Overlay>
                 )
         );
 
-    return (
-        <Portal>
-            {renderModal()}
-        </Portal>
-    )
+    return <Portal>{renderModal()}</Portal>;
 }
