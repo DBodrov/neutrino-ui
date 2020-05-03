@@ -5,3 +5,4 @@ export * from './MaskInputPage';
 export * from './CheckboxPage';
 export * from './InputNumberPage';
 export * from './SelectPage';
+export * from './ModalPage';
