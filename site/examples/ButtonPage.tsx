@@ -10,6 +10,9 @@ const theme: ITheme = {
             primaryDark: '#144D14',
         },
     },
+    globals: {
+        borderRadius: '32px'
+    }
 };
 
 const myTheme = createTheme(theme);
@@ -59,6 +62,9 @@ colors: {
     primaryDark: '#144D14',
     },
   },
+  globals: {
+   borderRadius: '32px'
+  }
 };
 
 const myTheme = createTheme(theme);

@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
-import { Checkbox } from 'neutrino-ui';
-import {Example, Wrapper} from './Example';
+import { ThemeProvider } from 'emotion-theming';
+import { Checkbox, createTheme } from 'neutrino-ui';
+import { Example, Wrapper } from './Example';
 
+const theme = createTheme({
+    globals: {
+        borderRadius: '32px',
+    },
+    colors: {
+        mainColors: {
+            primary: '#084a80',
+        },
+    },
+});
 
 const exampleSimple = `
 import { Checkbox } from 'neutrino-ui';
@@ -55,11 +66,28 @@ const exampleIndeterminate = `
   indeterminate>Indeterminate</Checkbox>
 `.trim();
 
+const exampleWithTheme = `
+import React, { useState } from 'react';
+import { ThemeProvider } from 'emotion-theming';
+import { Checkbox, createTheme } from 'neutrino-ui';
+
+const theme = createTheme({
+  globals: {
+    borderRadius: '32px',
+  },
+  colors: {
+    mainColors: {
+      primary: '#084a80',
+    },
+  },
+});
+`.trim();
+
 export function CheckboxPage() {
     const [check, setCheck] = useState(true);
     return (
         <Wrapper>
-            <Example code={exampleProps.trim()}/>
+            <Example code={exampleProps.trim()} />
             <Checkbox onChangeHandler={(v) => setCheck(v)} checked={check}>
                 Simple Checkbox
             </Checkbox>
@@ -67,13 +95,21 @@ export function CheckboxPage() {
             <Checkbox onChangeHandler={(v) => setCheck(v)} checked={check} variant="default">
                 Default Checkbox
             </Checkbox>
-            <Example code={exampleDefault}/>
+            <Example code={exampleDefault} />
             <Checkbox onChangeHandler={(v) => setCheck(v)} checked={check} variant="secondary">
                 Secondary Checkbox
             </Checkbox>
-            <Example code={exampleSecondary}/>
-            <Checkbox onChangeHandler={(v) => setCheck(v)} checked={check} variant="default" indeterminate>Indeterminate</Checkbox>
-            <Example code={exampleIndeterminate}/>
+            <Example code={exampleSecondary} />
+            <Checkbox onChangeHandler={(v) => setCheck(v)} checked={check} variant="default" indeterminate>
+                Indeterminate
+            </Checkbox>
+            <Example code={exampleIndeterminate} />
+            <ThemeProvider theme={theme}>
+                <Checkbox onChangeHandler={(v) => setCheck(v)} checked={check}>
+                    Themed Checkbox
+                </Checkbox>
+            </ThemeProvider>
+            <Example code={exampleWithTheme}/>
         </Wrapper>
     );
 }

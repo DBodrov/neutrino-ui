@@ -12,7 +12,7 @@ export const createDropdownCSS = (props: IDropdownProps, theme: ITheme) => css(
         backgroundColor: theme.colors.pageElementsColors.body,
         opacity: 1,
         padding: 0,
-        borderRadius: '4px',
+        borderRadius: theme?.globals?.borderRadius ?? '4px',
         zIndex: 1020, //TODO: Add to baseTheme
 
         '&:focus': {

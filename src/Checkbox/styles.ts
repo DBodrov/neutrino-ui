@@ -34,7 +34,7 @@ export const boxCss = ({ colors, width, height, checked, indeterminate, hasError
         },
     });
 
-const createBaseStyles = ({colors}: ITheme, props: ICheckboxProps) => {
+const createBaseStyles = ({colors, globals}: ITheme, props: ICheckboxProps) => {
     const { height = '22px', width = '22px', disabled, hasError } = props;
     return css({
         cursor: disabled ? 'not-allowed' : 'pointer',
@@ -45,7 +45,7 @@ const createBaseStyles = ({colors}: ITheme, props: ICheckboxProps) => {
         maxHeight: height,
         height: height,
         width: width,
-        borderRadius: '8px',
+        borderRadius: globals?.borderRadius ?? '4px',
         border: `1px ${hasError ? colors.feedbackColors.error : colors.pageElementsColors.border} solid`,
         opacity: disabled ? 0.4 : 1,
         userSelect: 'none',
