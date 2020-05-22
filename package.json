@@ -39,7 +39,7 @@
     "bugs": {
         "url": "https://github.com/DBodrov/neutrino-ui/issues"
     },
-    "homepage": "https://neutrino-ui.netlify.com/",
+    "homepage": "https://neutrino-ui.netlify.app/",
     "peerDependencies": {
         "@emotion/core": "^10.0.28",
         "@emotion/styled": "^10.0.27",

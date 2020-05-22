@@ -24,7 +24,7 @@ export const baseStyles = css({
     userSelect: 'none',
 });
 
-export const getBaseStyles = (props: ButtonProps) =>
+export const getBaseStyles = (props: ButtonProps, theme?: ITheme) =>
     css({
         fontSize: '1rem',
         display: 'flex',
@@ -37,7 +37,7 @@ export const getBaseStyles = (props: ButtonProps) =>
         minHeight: '2rem',
         height: '3rem',
         outline: 'none',
-        borderRadius: '4px',
+        borderRadius: theme?.globals?.borderRadius ?? '4px',
         padding: '10px',
         letterSpacing: '0.14px',
         transition: 'all 0.2s ease-in-out',
@@ -128,6 +128,6 @@ const createButtonVariants = (theme: ITheme, props: ButtonProps): VariantStyles 
 export const getButtonVariant = (props: ButtonProps, theme: ITheme) => {
     const currentVariant = props.variant || 'default';
     const variants = createButtonVariants(theme, props);
-    const baseStyles = getBaseStyles(props);
+    const baseStyles = getBaseStyles(props, theme);
     return [baseStyles, variants[currentVariant]];
 };

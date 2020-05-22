@@ -1,7 +1,6 @@
-import React, { ReactText, ReactNode, useCallback } from 'react';
+import React, { ReactText, ReactNode } from 'react';
 import { css } from '@emotion/core';
-import { useTheme } from 'emotion-theming';
-import { useElementsTheme, baseTheme, TypographyElements, ITheme } from '../Themes';
+import { useTheme, TypographyElements } from '../Themes';
 
 type TypographyProps = {
     children: ReactText | ReactNode;
@@ -13,7 +12,7 @@ type ElementProps = Omit<TypographyProps, 'as'>;
 
 const Heading = (props: TypographyProps) => {
     const { as: elem, ...other } = props;
-    const theme = useElementsTheme() ?? baseTheme;
+    const theme = useTheme();
     const Element = elem;
 
     return <Element css={css(theme.typography[elem])} {...other} role="heading"/>;
@@ -21,11 +20,7 @@ const Heading = (props: TypographyProps) => {
 
 const Text = (props: TypographyProps) => {
     const { as: elem, ...other } = props;
-    const getTheme = useCallback(() => {
-        const providedTheme = useTheme<ITheme>();
-        return Object.keys(providedTheme).length > 0 ? providedTheme : baseTheme;
-    }, [])
-    const theme = getTheme();
+    const theme = useTheme();
     const Element = elem;
 
     return <Element css={css(theme.typography[elem])} {...other} />;

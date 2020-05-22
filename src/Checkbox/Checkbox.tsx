@@ -1,5 +1,5 @@
-import React, {useCallback} from 'react';
-import { useTheme, ITheme } from '../Themes';
+import React from 'react';
+import { useTheme } from '../Themes';
 import { CheckIcon, MinusIcon } from './icons';
 import { ICheckboxProps, TCheckboxChangeEvent } from './types';
 import { wrapperCss, getCheckboxVariant } from './styles';

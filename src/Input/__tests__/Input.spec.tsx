@@ -1,10 +1,8 @@
 import React from 'react';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { Input } from '../Input';
-
-afterEach(cleanup);
 
 const mockHandleChange = jest.fn();
 const mockHandleFocus = jest.fn();

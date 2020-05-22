@@ -1,6 +1,15 @@
 import React from 'react';
-import {H1, H2, H3, H4, H5, H6, P, Span} from 'neutrino-ui';
-import {Example, Wrapper} from './Example';
+import { ThemeProvider } from 'emotion-theming';
+import { H1, H2, H3, H4, H5, H6, P, Span, createTheme } from 'neutrino-ui';
+import { Example, Wrapper, Label } from './Example';
+
+const theme = createTheme({
+    typography: {
+        h2: {
+            fontFamily: 'Consolas'
+        }
+    }
+});
 
 const example = `
 import {H1, H2, H3, H4, H5, H6, P, Span} from 'neutrino-ui';
@@ -15,6 +24,23 @@ import {H1, H2, H3, H4, H5, H6, P, Span} from 'neutrino-ui';
 <Span>Span. Just span</Span>
 `.trim();
 
+const exampleFonts = `
+import {H1, H2, createTheme} from 'neutrino-ui';
+
+const theme = createTheme({
+  typography: {
+    h2: {
+      fontFamily: 'Consolas'
+    }
+  }
+});
+
+<ThemeProvider theme={theme}>
+  <H1 css={{fontFamily: 'Times New Roman'}}>H1. Heading - 1</H1>
+  <H2>H2. Heading - 2</H2>
+</ThemeProvider>
+`.trim();
+
 export function TypographyPage() {
     return (
         <Wrapper>
@@ -26,7 +52,13 @@ export function TypographyPage() {
             <H6>H6. Heading - 6</H6>
             <P>P. Paragraph</P>
             <Span>Span. Just span</Span>
-            <Example code={example}/>
+            <Example code={example} />
+            <ThemeProvider theme={theme}>
+                <H1 css={{fontFamily: 'Times New Roman'}}>H1. Heading - 1</H1>
+                <H2>H2. Heading - 2</H2>
+            </ThemeProvider>
+            <Label>Themed typography</Label>
+            <Example code={exampleFonts}/>
         </Wrapper>
-    )
+    );
 }
