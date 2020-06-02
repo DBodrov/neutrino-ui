@@ -92,20 +92,19 @@ const exampleCss = `
 
 const exampleCustomButton = `
 function CustomCheckedButton() {
-    const [isHovered, setHover] = React.useState(false);
+  const [isHovered, setHover] = React.useState(false);
 
-    return <Button
-        onClick={console.log}
-        variant="primary"
-        outline
-        flat
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}>
-            <CheckIcon
-                stroke={isHovered ? 'white' : myTheme.colors.mainColors.primary} />
-            <span css={{marginLeft: '5px'}}>Custom Button</span>
-    </Button>
-
+  return <Button
+      onClick={console.log}
+      variant="primary"
+      outline
+      flat
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}>
+        <CheckIcon
+          stroke={isHovered ? 'white' : myTheme.colors.mainColors.primary} />
+        <span css={{marginLeft: '5px'}}>Custom Button</span>
+      </Button>
 }
 
 
