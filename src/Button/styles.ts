@@ -74,7 +74,7 @@ const primaryVariant = ({ colors, shadows }: ITheme, {outline: isOutline, flat: 
         backgroundColor: isOutline ? colors.simpleColors.white : colors?.mainColors?.primary,
         border: `0px ${colors?.mainColors?.primary} solid`,
         borderWidth: isOutline ? 2 : 1,
-        color: isOutline ? colors.textColors.text : colors?.textColors?.textOnPrimary,
+        color: isOutline ? colors.mainColors.primary : colors?.textColors?.textOnPrimary,
         boxShadow: isFlat ? 'none' : shadows?.lightRaised.boxShadow,
         '&:hover': {
             backgroundColor: colors?.mainColors?.primaryDark,
@@ -98,7 +98,7 @@ const secondaryVariant = ({ colors, shadows }: ITheme, {outline: isOutline, flat
         backgroundColor: isOutline ? colors.simpleColors.white : colors?.mainColors?.secondary,
         border: `0px ${colors?.mainColors?.secondary} solid`,
         borderWidth: isOutline ? 2 : 1,
-        color: isOutline ? colors.textColors.text : colors?.textColors?.textOnSecondary,
+        color: isOutline ? colors.mainColors.secondary : colors?.textColors?.textOnSecondary,
         boxShadow: isFlat ? 'none' : shadows?.lightRaised.boxShadow,
         '&:hover': {
             backgroundColor: colors?.mainColors?.secondaryDark,

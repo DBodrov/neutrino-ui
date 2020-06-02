@@ -36,7 +36,7 @@ export const Example = ({ code }: { code: string }) => {
     return (
         <Highlight {...defaultProps} language="jsx" code={code} theme={theme}>
             {({ className, style, tokens, getLineProps, getTokenProps }) => (
-                <Pre className={className} style={{ ...style, maxWidth: '1200px' }}>
+                <Pre className={className} style={{ ...style, maxWidth: '968px' }}>
                     {tokens.map((line, i) => (
                         <div {...getLineProps({ line, key: i })}>
                             <LineNo>{i + 1}</LineNo>
