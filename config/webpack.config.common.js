@@ -10,13 +10,6 @@ module.exports = {
         alias: {
             'neutrino-ui': resolveApp('src'),
             'neutrino-ui/Themes': resolveApp('src/Themes'),
-            '@elements-ui/button': resolveApp('packages/Button/src'),
-            '@elements-ui/checkbox': resolveApp('packages/Checkbox/src'),
-            '@elements-ui/typography': resolveApp('packages/Typography/src'),
-            '@elements-ui/input': resolveApp('packages/Input/src'),
-            '@elements-ui/maskinput': resolveApp('packages/MaskInput/src'),
-            '@elements-ui/react': resolveApp('packages/react/src'),
-            '@elements-ui/utils': resolveApp('packages/utils/src'),
         },
     },
 
