@@ -1,6 +1,6 @@
 import React from 'react';
 import { ThemeProvider } from 'emotion-theming';
-import { Button, createTheme, ITheme } from 'neutrino-ui';
+import { Button, createTheme, ITheme, Checkbox } from 'neutrino-ui';
 import { Example, Wrapper } from './Example';
 
 const theme: ITheme = {
@@ -11,8 +11,8 @@ const theme: ITheme = {
         },
     },
     globals: {
-        borderRadius: '32px'
-    }
+        borderRadius: '32px',
+    },
 };
 
 const myTheme = createTheme(theme);
@@ -105,35 +105,49 @@ export type ButtonProps = IButtonProps & JSX.IntrinsicElements['button'];
 `.trim();
 
 export function ButtonPage() {
+    const [isFlat, setFlat] = React.useState(false);
     return (
         <Wrapper>
-            <Example code={exampleProps}/>
-            <Button type="button" onClick={console.log}>
+            <Example code={exampleProps} />
+            <Checkbox onChangeHandler={() => setFlat((f) => !f)} checked={isFlat}>
+                Make flat
+            </Checkbox>
+            <Button type="button" onClick={console.log} flat={isFlat}>
                 Default button
             </Button>
             <Example code={exampleDefault} />
-            <Button type="button" onClick={console.log} variant="primary">
+            <Button type="button" onClick={console.log} variant="primary" flat={isFlat}>
                 Primary button
             </Button>
             <Example code={examplePrimary} />
-            <Button type="button" onClick={console.log} variant="secondary">
+            <Button type="button" onClick={console.log} variant="secondary" flat={isFlat}>
                 Secondary button
             </Button>
             <Example code={exampleSecondary} />
-            <Button type="button" onClick={console.log} variant="primary">
+            <Button type="button" onClick={console.log} variant="primary" flat={isFlat}>
                 <CheckIcon /> Primary button
             </Button>
             <Example code={exampleWithIcon} />
             <ThemeProvider theme={myTheme}>
-                <Button type="button" onClick={console.log} variant="primary" css={{ width: '250px' }}>
+                <Button
+                    type="button"
+                    onClick={console.log}
+                    variant="primary"
+                    css={{ width: '250px' }}
+                    flat={isFlat}>
                     Themed Primary button
                 </Button>
             </ThemeProvider>
             <Example code={exampleWithTheme} />
-            <Button type="button" onClick={console.log} variant="secondary" css={{ borderRadius: '100%', minWidth: '48px', width: '48px', height: '48px' }}>
-               <CheckIcon />
+            <Button
+                type="button"
+                onClick={console.log}
+                variant="secondary"
+                css={{ borderRadius: '100%', minWidth: '48px', width: '48px', height: '48px' }}
+                flat={isFlat}>
+                <CheckIcon />
             </Button>
-            <Example code={exampleCss}/>
+            <Example code={exampleCss} />
         </Wrapper>
     );
 }
