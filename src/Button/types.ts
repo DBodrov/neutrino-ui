@@ -1,3 +1,4 @@
+import React from 'react';
 import { SerializedStyles } from '@emotion/core';
 
 interface IButtonProps {
@@ -7,7 +8,7 @@ interface IButtonProps {
     styles?: React.CSSProperties;
     variant?: 'primary' | 'secondary' | 'default';
     icon?: string;
-    children?: React.ReactNode;
+    children?: React.ReactNode | ((args: any) => React.ReactNode) | any;
 }
 
 export type ButtonProps = IButtonProps & JSX.IntrinsicElements['button'];

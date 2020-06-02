@@ -34,11 +34,10 @@ export const getBaseStyles = (props: ButtonProps, theme?: ITheme) =>
         overflow: 'hidden',
         minWidth: '100px',
         width: '150px',
-        minHeight: '2rem',
+        minHeight: '3rem',
         height: '3rem',
         outline: 'none',
         borderRadius: theme?.globals?.borderRadius ?? '4px',
-        padding: '10px',
         letterSpacing: '0.14px',
         transition: 'all 0.2s ease-in-out',
         border: 'none',
@@ -51,12 +50,12 @@ export const getBaseStyles = (props: ButtonProps, theme?: ITheme) =>
 const addActiveShadow = (color?: string, darkenColor?: string) =>
     `0px 2px 4px 0px ${color}, 0px 4px 5px 0px ${darkenColor}, 0px 1px 10px 0px ${color}`;
 
-const defaultVariant = ({ colors, shadows }: ITheme) =>
+const defaultVariant = ({ colors, shadows }: ITheme, {flat}: ButtonProps) =>
     css({
         backgroundColor: colors?.pageElementsColors?.body,
         border: `1px ${colors?.pageElementsColors?.border} solid`,
         color: colors?.textColors?.text,
-        boxShadow: shadows?.lightRaised.boxShadow,
+        boxShadow: flat ? 'none' : shadows?.lightRaised.boxShadow,
         ':hover': {
             backgroundColor: colors?.grayColors?.gray2,
         },
@@ -75,7 +74,7 @@ const primaryVariant = ({ colors, shadows }: ITheme, {outline: isOutline, flat: 
         backgroundColor: isOutline ? colors.simpleColors.white : colors?.mainColors?.primary,
         border: `0px ${colors?.mainColors?.primary} solid`,
         borderWidth: isOutline ? 2 : 1,
-        color: isOutline ? colors.textColors.text : colors?.textColors?.textOnPrimary,
+        color: isOutline ? colors.mainColors.primary : colors?.textColors?.textOnPrimary,
         boxShadow: isFlat ? 'none' : shadows?.lightRaised.boxShadow,
         '&:hover': {
             backgroundColor: colors?.mainColors?.primaryDark,
@@ -99,8 +98,8 @@ const secondaryVariant = ({ colors, shadows }: ITheme, {outline: isOutline, flat
         backgroundColor: isOutline ? colors.simpleColors.white : colors?.mainColors?.secondary,
         border: `0px ${colors?.mainColors?.secondary} solid`,
         borderWidth: isOutline ? 2 : 1,
-        color: isOutline ? colors.textColors.text : colors?.textColors?.textOnSecondary,
-        boxShadow: shadows?.lightRaised.boxShadow,
+        color: isOutline ? colors.mainColors.secondary : colors?.textColors?.textOnSecondary,
+        boxShadow: isFlat ? 'none' : shadows?.lightRaised.boxShadow,
         '&:hover': {
             backgroundColor: colors?.mainColors?.secondaryDark,
             color: isOutline && colors?.textColors?.textOnSecondary,
@@ -119,7 +118,7 @@ const secondaryVariant = ({ colors, shadows }: ITheme, {outline: isOutline, flat
 
 const createButtonVariants = (theme: ITheme, props: ButtonProps): VariantStyles => {
     return {
-        default: defaultVariant(theme),
+        default: defaultVariant(theme, props),
         primary: primaryVariant(theme, props),
         secondary: secondaryVariant(theme, props),
     };

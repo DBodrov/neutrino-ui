@@ -8,9 +8,16 @@ export function Button(props: ButtonProps) {
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => onClick?.(event);
     const theme = useTheme();
 
+    const renderChildren = () => {
+        if (typeof children === 'function') {
+            return children(theme);
+        }
+        return children;
+    }
+
     return (
         <button type={type} onClick={handleClick} css={getButtonVariant(props, theme)} {...restProps}>
-            <span>{value || children}</span>
+            {renderChildren()}
         </button>
     );
 }
