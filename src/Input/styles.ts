@@ -8,11 +8,8 @@ export const Wrapper = styled.div`
     flex-flow: row nowrap;
     justify-content: flex-start;
     align-items: center;
-    width: 100%;
-    min-height: 2rem;
     height: auto;
     border-radius: 4px;
-    transition: all 0.2s ease-in-out;
 `;
 
 export const StyledInput = styled.input`
@@ -21,33 +18,33 @@ export const StyledInput = styled.input`
     justify-content: flex-start;
     align-items: center;
     flex-grow: 2;
-    height: 100%;
-    border: 0;
+    width: 100%;
+    min-height: 2rem;
+    height: auto;
+    border-radius: 4px;
     outline: 0;
     line-height: 2rem;
+    transition: all 0.2s ease-in-out;
 `;
 
-export const createInputStyles = ({ typography }: ITheme, props: IInputProps) => {
-    const { disabled } = props;
-    return css({
-        ...typography.span,
-        opacity: disabled ? 0.4 : 1,
-        cursor: disabled ? 'not-allowed' : 'initial',
-    });
-};
-
-
-export const createWrapperStyles = ({ colors }: ITheme, props: IInputProps, focusState: boolean) => {
+export const createInputStyles = ({ typography, colors }: ITheme, props: IInputProps) => {
     const { disabled, hasError, style } = props;
     const hasErrorBorder = `1px ${colors.feedbackColors.error} solid`;
     const focusedBorder = `1px ${colors.mainColors.primary} solid`;
     const defaultBorder = `1px ${colors.pageElementsColors.border} solid`;
 
     return css({
-        //border: `1px ${hasError ? colors.feedbackColors.error : colors.pageElementsColors.border} solid`,
-        border: hasError ? hasErrorBorder : focusState ? focusedBorder : defaultBorder,
+        ...typography.span,
+        border: hasError ? hasErrorBorder : defaultBorder,
         opacity: disabled ? 0.4 : 1,
+        cursor: disabled ? 'not-allowed' : 'initial',
+        color: colors?.textColors.text,
         padding: '0 0.5rem',
+        backgroundColor: colors.pageElementsColors.formElements,
+        ':-webkit-autofill, :-webkit-autofill:hover, :-webkit-autofill:focus, :-webkit-autofill:active': {
+            boxShadow: `0 0 0 30px ${colors.pageElementsColors.formElements} inset`
+        },
+        WebkitTextFillColor: colors.textColors.text,
         ':hover, :focus': {
             outline: 0,
             border: hasError ? hasErrorBorder : focusedBorder,
