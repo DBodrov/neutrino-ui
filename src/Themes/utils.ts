@@ -44,9 +44,7 @@ export const mergeShadows = (theme:ITheme): ITheme['shadows'] => {
 
 export const mergeGlobals = (theme: ITheme): ITheme['globals'] => {
     const globals = {...baseTheme.globals};
-    console.log('globals', theme)
     for (const glob in theme.globals) {
-        console.log(glob, theme.globals[glob])
         if(glob in baseTheme.globals) {
             globals[glob] = theme.globals[glob];
         }

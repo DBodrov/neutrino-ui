@@ -14,13 +14,14 @@ const myTheme = createTheme({
         mainColors: {
             primary: 'green',
         },
+        textColors: {
+            text: 'red'
+        },
+        pageElementsColors: {
+            formElements: '#222C3C',
+        },
     },
 });
-
-const outerInputStyle: React.CSSProperties = {
-    borderRadius: '10px',
-    width: '300px',
-};
 
 const commonStyle = { width: '300px' };
 
@@ -32,7 +33,7 @@ const [value, setValue] = useState('');
   name="text"
   onChangeHandler={(value, event) => setValue(value)}
   value={value}
-  style={{width: '300px'}}/>
+  css={{width: '300px'}}/>
 `.trim();
 
 const exampleWithTheme = `
@@ -40,9 +41,17 @@ import { ThemeProvider } from 'emotion-theming';
 import { Input, createTheme } from 'neutrino-ui';
 
 const myTheme = createTheme({
-  colors: {
-    mainColors: {primary: 'green'}
-  }
+    colors: {
+        mainColors: {
+            primary: 'green',
+        },
+        textColors: {
+            text: 'red'
+        },
+        pageElementsColors: {
+            formElements: '#222C3C',
+        },
+    },
 });
 
 <ThemeProvider theme={myTheme}>
@@ -50,9 +59,6 @@ const myTheme = createTheme({
     name="text"
     onChangeHandler={(value, event) => setValue(value)}
     value={value}
-    css={{ color: 'red' }} /** apply to inner input control */
-    style={outerInputStyle} /** apply to outer wrapper */
-    autoComplete="off"
   />
 </ThemeProvider>
 `.trim();
@@ -91,19 +97,10 @@ interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     hasError?: boolean;
     name: string;
     value?: string;
-    prefix?: string;
     onFocusHandler?: (value: string, event?: React.FocusEvent<HTMLInputElement>) => void;
     onBlurHandler?: (value: string , event?: React.FocusEvent<HTMLInputElement>) => void;
     onChangeHandler: (value: string, event?: React.ChangeEvent<HTMLInputElement>) => void;
 }
-`.trim();
-
-const examplePrefix = `
-<Input
-  prefix="Hi! : "
-  name="text"
-  onChangeHandler={(v, e) => setValue(v)}
-  value={value} />
 `.trim();
 
 export function InputPage() {
@@ -114,20 +111,18 @@ export function InputPage() {
     return (
         <Wrapper>
             <Label>Props</Label>
-            <Example code={exampleProps}/>
+            <Example code={exampleProps} />
             <Label>Type: text</Label>
             <Input name="text" onChangeHandler={(v, e) => setValue(v)} value={value} style={commonStyle} />
             <Example code={exampleText} />
             <div css={{ marginTop: '1rem' }}>
                 <ThemeProvider theme={myTheme}>
-                    <Label>Change look with CSS and Style props</Label>
+                    <Label>Change look with Theme</Label>
                     <Input
                         name="text"
                         onChangeHandler={(v, e) => setValue(v)}
                         value={value}
-                        css={{ color: 'red' }}
-                        style={outerInputStyle}
-                        autoComplete="off"
+                        css={{maxWidth: 300}}
                     />
                 </ThemeProvider>
                 <Example code={exampleWithTheme} />
@@ -160,8 +155,16 @@ export function InputPage() {
                     style={commonStyle}
                 />
                 <Example code={exampleFocus} />
-                <Input prefix="Hi! : " name="text" onChangeHandler={(v, e) => setValue(v)} value={value} style={commonStyle} />
-                <Example code={examplePrefix}/>
+                <div
+                    css={{
+                        marginTop: '1rem',
+                        backgroundColor: '#222C3C',
+                        width: 400,
+                        height: 100,
+                        padding: '25px 10px',
+                    }}>
+                    <Input name="text" onChangeHandler={(v, e) => setValue(v)} value={value} />
+                </div>
             </div>
         </Wrapper>
     );
