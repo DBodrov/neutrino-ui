@@ -3,21 +3,11 @@ import styled from '@emotion/styled';
 import { ITheme } from '../Themes';
 import { IInputProps } from './types';
 
-export const Wrapper = styled.div`
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-start;
-    align-items: center;
-    height: auto;
-    border-radius: 4px;
-`;
-
 export const StyledInput = styled.input`
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
     align-items: center;
-    flex-grow: 2;
     width: 100%;
     min-height: 2rem;
     height: auto;
@@ -48,7 +38,6 @@ export const createInputStyles = ({ typography, colors }: ITheme, props: IInputP
         ':hover, :focus': {
             outline: 0,
             border: hasError ? hasErrorBorder : focusedBorder,
-            //border: `1px ${hasError ? colors.feedbackColors.error : colors.mainColors.primary} solid`,
         },
         ...style,
     });
