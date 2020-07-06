@@ -26,6 +26,7 @@ const pageElementsColors = {
     disabled: grayColors.gray4,
     overlay: 'rgba(171,180,189, 0.9)',
     formElements: simpleColors.white,
+    formElementsActive: grayColors.gray2,
 };
 
 const mainColors = {

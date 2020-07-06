@@ -14,6 +14,7 @@ export interface ISelectProps {
     value?: string | number;
     tabIndex?: number;
     dropdownStyles?: React.CSSProperties;
+    children?: (props: any) => React.ReactNode;
 }
 
 export interface IOptionsListProps {

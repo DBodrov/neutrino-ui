@@ -34,11 +34,15 @@ export const createInputStyles = ({ typography, colors }: ITheme, props: IInputP
         ':-webkit-autofill, :-webkit-autofill:hover, :-webkit-autofill:focus, :-webkit-autofill:active': {
             boxShadow: `0 0 0 30px ${colors.pageElementsColors.formElements} inset`
         },
-        WebkitTextFillColor: colors.textColors.text,
+
+        // '-webkit-text-fill-color': colors.textColors.text,
         ':hover, :focus': {
             outline: 0,
             border: hasError ? hasErrorBorder : focusedBorder,
         },
         ...style,
-    });
+    },
+    css`
+        -webkit-text-fill-color: ${colors.textColors.text};
+    `);
 };
