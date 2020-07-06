@@ -18,6 +18,7 @@ export function Select(props: ISelectProps) {
         onFocusHandler,
         dropdownStyles,
         styles,
+        children,
         ...restProps
     } = props;
     const selectRef = useRef<HTMLInputElement>(null);
@@ -51,12 +52,12 @@ export function Select(props: ISelectProps) {
         setIsOpen(!isOpen);
     };
 
-    const handleItemClick = (optionValue: string) => {
+    const handleItemClick = useCallback((optionValue: string) => {
         valueSetter(optionValue);
         selectRef.current.focus();
         onChangeHandler(optionValue);
         setIsOpen(false);
-    };
+    }, [onChangeHandler, setIsOpen, valueSetter]);
 
     const handleFocus = () => {
         const select = selectRef.current;
@@ -70,12 +71,26 @@ export function Select(props: ISelectProps) {
         onBlurHandler && onBlurHandler(selectedValue);
     };
 
+    const renderOptions = useCallback(() => {
+        if (children) {
+            return children({ selectedValue, changeHandler: onChangeHandler });
+        } else {
+            return (
+                <OptionsList
+                    options={options}
+                    selectedValue={selectedValue}
+                    onChangeHandler={handleItemClick}
+                />
+            );
+        }
+    }, [children, handleItemClick, onChangeHandler, options, selectedValue]);
+
     return (
         <div
             css={{
                 position: 'relative',
-                width: styles.maxWidth ?? '100%',
-                height: styles.maxHeight ?? 'auto',
+                width: styles?.width ?? '100%',
+                height: styles?.height ?? 'auto',
             }}>
             <Input
                 name={name}
@@ -87,8 +102,8 @@ export function Select(props: ISelectProps) {
                 onFocusHandler={handleFocus}
                 onBlurHandler={handleBlur}
                 value={caption}
-                css={{ borderRadius: '4px', padding: '0.5rem', width: '100%' }}
-                style={{ padding: 0, ...styles }} // for input wrapper
+                css={{ borderRadius: '4px', padding: '0.5rem', width: '100%', height: 'auto' }}
+                // style={{ padding: 0, ...styles }} // for input wrapper
                 readOnly
                 hasError={hasError}
             />
@@ -103,11 +118,7 @@ export function Select(props: ISelectProps) {
             />
 
             <Dropdown isOpen={isOpen} parentBound={parentRect} ref={dropdownRef} styles={dropdownStyles}>
-                <OptionsList
-                    options={options}
-                    selectedValue={selectedValue}
-                    onChangeHandler={handleItemClick}
-                />
+                {renderOptions()}
             </Dropdown>
         </div>
     );
