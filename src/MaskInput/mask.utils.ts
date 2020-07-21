@@ -1,6 +1,6 @@
 import { IMaskOptions, ChangeType } from './types';
 
-const specSymbols = ['(', ')', ' ', '-'];
+const specSymbols = ['(', ')', ' ', '-', '.'];
 export const patterns = {
     '9': /[0-9]/,
     'a': /[a-zA-Z]/,

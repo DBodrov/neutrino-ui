@@ -75,7 +75,6 @@ export function MaskInput(props: IMaskInputProps) {
                             /** backspace 1 char */
                             cursor = previousCursorPosition(selectionEnd.current - 1);
                             const charState = clearPrev(cursor);
-                            console.log(charState);
                             maskedValue = Object.values(charState)
                                 .map((charCfg) => charCfg.value)
                                 .join('');

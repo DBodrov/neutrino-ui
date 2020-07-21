@@ -6,3 +6,4 @@ export * from './CheckboxPage';
 export * from './InputNumberPage';
 export * from './SelectPage';
 export * from './ModalPage';
+// export * from './DatePickerPage';
