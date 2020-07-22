@@ -52,12 +52,15 @@ export function Select(props: ISelectProps) {
         setIsOpen(!isOpen);
     };
 
-    const handleItemClick = useCallback((optionValue: string) => {
-        valueSetter(optionValue);
-        selectRef.current.focus();
-        onChangeHandler(optionValue);
-        setIsOpen(false);
-    }, [onChangeHandler, setIsOpen, valueSetter]);
+    const handleItemClick = useCallback(
+        (optionValue: string) => {
+            valueSetter(optionValue);
+            selectRef.current.focus();
+            onChangeHandler(optionValue);
+            setIsOpen(false);
+        },
+        [onChangeHandler, setIsOpen, valueSetter]
+    );
 
     const handleFocus = () => {
         const select = selectRef.current;
@@ -89,8 +92,7 @@ export function Select(props: ISelectProps) {
         <div
             css={{
                 position: 'relative',
-                width: styles?.width ?? '100%',
-                height: styles?.height ?? 'auto',
+                maxWidth: 'auto'
             }}>
             <Input
                 name={name}
@@ -102,7 +104,7 @@ export function Select(props: ISelectProps) {
                 onFocusHandler={handleFocus}
                 onBlurHandler={handleBlur}
                 value={caption}
-                css={{ borderRadius: '4px', padding: '0.5rem', width: '100%', height: 'auto' }}
+                css={{ borderRadius: '4px', padding: '0.5rem', width: '100%', height: 'auto', ...styles }}
                 // style={{ padding: 0, ...styles }} // for input wrapper
                 readOnly
                 hasError={hasError}

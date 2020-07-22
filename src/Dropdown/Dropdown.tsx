@@ -5,7 +5,7 @@ import { Portal } from '../Portal';
 import { DropdownSpringStyles, createDropdownCSS } from './styles';
 import { IDropdownProps } from './types';
 
-export const Dropdown = forwardRef((props: IDropdownProps, ref: React.RefObject<HTMLDivElement>) => {
+const Dropdown = forwardRef((props: IDropdownProps, ref: React.RefObject<HTMLDivElement>) => {
     const { isOpen, parentBound, children, styles = {} } = props;
     const theme = useTheme();
 
@@ -40,3 +40,6 @@ export const Dropdown = forwardRef((props: IDropdownProps, ref: React.RefObject<
 
     return <Portal>{renderDropdown()}</Portal>;
 });
+
+Dropdown.displayName = 'Dropdown';
+export {Dropdown};
