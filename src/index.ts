@@ -7,6 +7,4 @@ export * from './Checkbox';
 export * from './InputNumber';
 export * from './Portal';
 export * from './Dropdown';
-export * from './Select';
 export * from './Modal';
-// export * from './DayPicker';
