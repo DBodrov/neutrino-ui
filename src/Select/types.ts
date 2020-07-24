@@ -1,47 +1,24 @@
-export type TOption = Record<string | number, string>;
-export type Options = TOption[];
-
-export interface ISelectProps {
-    name: string;
-    hasError?: boolean;
-    options?: Options;
-    disabled?: boolean;
-    onChangeHandler: (value: ValueType) => void;
-    onClearHandler?: (name: string) => void;
-    onFocusHandler?: (value: ValueType) => void;
-    onBlurHandler?: (value: ValueType) => void;
-    styles?: React.CSSProperties;
-    value?: string | number;
-    tabIndex?: number;
-    dropdownStyles?: React.CSSProperties;
-    children?: (props: any) => React.ReactNode;
+export enum SelectChangeTypes {
+  idle = 'IDLE',
+  selectClick = 'SELECT_CLICK',
+  clickOutside = 'CLICK_OUTSIDE',
+  scroll = 'SCROLL',
+  changeDisplayValue = 'CHANGE_DISPLAY_VALUE'
 }
 
-export interface IOptionsListProps {
-    options: Options;
-    selectedValue?: string | number;
-    onChangeHandler: (value: ValueType) => void;
+export interface ISelectState {
+  type?: SelectChangeTypes;
+  isOpen?: boolean;
+};
+
+export interface ISelectProps extends React.HTMLProps<HTMLDivElement> {
+  stateReducer?: (state: ISelectState, changes: ISelectState) => ISelectState;
+  isEdit?: boolean;
+  children?: React.ReactNode;
 }
 
-export interface IOptionProps {
-    value: string | number;
-    caption: string;
-    isActive?: boolean;
-    isDisabled?: boolean;
-    onClick: (itemId: string | number) => void;
-}
-
-export interface ISelectDropdownProps {
-    isOpen: boolean;
-    offset?: ClientRect;
-    activeOption?: ValueType;
-    onClick: (value: string) => void;
-    children?: never;
-}
-
-export type ValueType = string | number | null;
-
-export interface IConvertSchema {
-    key: string;
-    value: string;
+export interface ISelectContext {
+  dropdownRef: React.MutableRefObject<HTMLDivElement>,
+  selectRect: DOMRect;
+  isOpen: boolean;
 }

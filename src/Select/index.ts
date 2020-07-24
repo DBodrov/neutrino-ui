@@ -1,3 +1,3 @@
-export * from './Select';
+export * from './Select'
+export * from './SelectOptions';
 export * from './types';
-export * from './hooks';

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { ThemeProvider } from 'emotion-theming';
-import { css, jsx } from '@emotion/core';
 import { Wrapper, Example, Label } from './Example';
-import { Select, createTheme, Span, SelectOptions, State } from 'neutrino-ui';
+import { Select, createTheme, Span, SelectOptions, ISelectState, SelectChangeTypes } from 'neutrino-ui';
 
 const theme = createTheme({
   colors: {
@@ -92,20 +91,14 @@ const theme = createTheme({
 </ThemeProvider>
 `.trim();
 
-const selectReducer = (state: State, changes: State) => {
+const selectReducer = (state: ISelectState, changes: ISelectState) => {
   console.log('===reducer===', state, changes);
   switch (changes.type) {
-    case 'SELECT_CLICK':
+    case SelectChangeTypes.selectClick:
       return {
         ...state,
         ...changes,
         isOpen: !state.isOpen,
-      };
-    case 'CLICK_ITEM':
-      return {
-        ...state,
-        ...changes,
-        displayValue: changes.displayValue,
       };
     case 'CLICK_OUTSIDE':
     case 'SCROLL':
@@ -123,27 +116,34 @@ const selectReducer = (state: State, changes: State) => {
 };
 
 const filterOptions = [
+  { id: -1, name: 'Все' },
   { id: 1, name: 'Площадка 1' },
   { id: 2, name: 'Площадка 2' },
-  { id: -1, name: 'Все' },
 ];
 
 export function SelectPage() {
-  const [item, setItem] = useState('');
+  const [selectState, setState] = useState(-1);
+
   const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
     console.log(e.currentTarget.value);
     const currentId = Number(e.currentTarget.value);
-    const currentValue = filterOptions.find((option) => option.id === currentId).name;
-    setItem(currentValue);
+    // const currentValue = filterOptions.find((option) => option.id === currentId).name;
+    setState(currentId);
   };
+
+  const getDisplayValue = React.useCallback(() => filterOptions.find((item) => item.id === selectState), [selectState]);
+
   return (
     <Wrapper>
-      <Label>Props</Label>
+      <Label>Depricated. Update coming soon...</Label>
       <Example code={exampleProps} />
       <Label>Base Select</Label>
       <ThemeProvider theme={theme}>
-        <Select caption={item} width="300px" height="32px" stateReducer={selectReducer}>
-          <Span><span css={{color: '#ccc'}}>Площадка: </span>{item}</Span>
+        <Select width="300px" height="32px">
+          <Span>
+            <span css={{ color: '#ccc' }}>Площадка: </span>
+            {getDisplayValue().name}
+          </Span>
           <SelectOptions>
             <ul
               css={{
@@ -164,6 +164,7 @@ export function SelectPage() {
                       margin: 0,
                       color: theme.colors.textColors.text,
                       fontSize: 14,
+                      backgroundColor: option.id === selectState ? theme.colors.pageElementsColors.formElementsActive : 'transparent'
                     }}
                     onClick={handleItemClick}
                   >

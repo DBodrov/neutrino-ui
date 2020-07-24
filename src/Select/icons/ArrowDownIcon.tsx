@@ -1,11 +1,12 @@
 import React from 'react';
 
-export function ArrowDownIcon(props: React.SVGProps<any>) {
+export function ArrowDownIcon(props: React.SVGProps<SVGSVGElement>) {
+  const {fill = 'currentColor', ...restProps} = props;
 
     return (
-        <svg width="16px" height="16px" viewBox="0 0 16 9" version="1.1" xmlns="http://www.w3.org/2000/svg" {...props}>
+        <svg width="16px" height="16px" viewBox="0 0 16 9" version="1.1" xmlns="http://www.w3.org/2000/svg" {...restProps}>
             <g id="App-Sources" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                <g id="Artboard" transform="translate(-537.000000, -164.000000)" fill="#9E9F9E">
+                <g id="Artboard" transform="translate(-537.000000, -164.000000)" fill={fill}>
                     <g id="::-Search-Item-Copy" transform="translate(88.000000, 88.000000)">
                         <g id="::-item-title">
                             <path

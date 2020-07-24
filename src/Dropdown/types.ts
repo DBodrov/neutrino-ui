@@ -1,6 +1,6 @@
 export interface IDropdownProps {
     isOpen: boolean;
-    parentBound?: ClientRect | undefined;
+    parentBound?: DOMRect | undefined;
     styles?: React.CSSProperties;
     children: React.ReactNode;
 }
