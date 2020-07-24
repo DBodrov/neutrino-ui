@@ -18,7 +18,6 @@ export const createDropdownCSS = (props: IDropdownProps, theme: ITheme) => css(
             outline: 0,
         },
     },
-    { ...theme.shadows.lightRaised }
 );
 
 export class DropdownSpringStyles {
@@ -40,9 +39,9 @@ export class DropdownSpringStyles {
         return {
             opacity: 1,
             transform: 'translateY(0)',
-            left: this.parentBound.left,
-            minWidth: this.parentBound.width,
-            width: this.parentBound.width,
+            left: this.parentBound?.left,
+            minWidth: this.parentBound?.width,
+            width: this.parentBound?.width,
         };
     }
 

@@ -16,6 +16,7 @@
         "access": "public"
     },
     "scripts": {
+        "typecheck": "tsc -p tsconfig.build.json --noEmit",
         "build": "node scripts/build.js",
         "compile": "tsc -p tsconfig.build.json",
         "dev": "webpack-dev-server --inline --color --hot",
