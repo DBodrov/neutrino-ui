@@ -42,13 +42,7 @@ const SelectContext = createContext<ISelectContext | undefined>(undefined);
 export function Select(props: ISelectProps) {
   const {
     stateReducer = selectReducer,
-    value,
-    caption,
-    prefix,
-    prefixCss,
     isEdit,
-    inputCss,
-    displayValueCss,
     children,
     ...restProps
   } = props;
