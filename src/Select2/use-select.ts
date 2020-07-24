@@ -1,11 +1,11 @@
 import { useEffect, useCallback, useState } from 'react';
-import { State } from './types';
+import { ISelectState, SelectChangeTypes } from './types';
 
 export function useSelectEvents(
   selectRef: React.MutableRefObject<HTMLElement>,
   dropdownRef: React.MutableRefObject<HTMLElement>,
-  dispatch: React.Dispatch<State>,
-  state: State,
+  dispatch: React.Dispatch<ISelectState>,
+  state: ISelectState,
 ) {
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
@@ -15,7 +15,7 @@ export function useSelectEvents(
         if (select?.contains(event.target) || dropdown?.contains(event.target)) {
           return;
         }
-        dispatch({ type: 'CLICK_OUTSIDE' });
+        dispatch({ type: SelectChangeTypes.clickOutside });
       }
     },
     [dispatch, dropdownRef, selectRef, state.isOpen],
@@ -24,21 +24,18 @@ export function useSelectEvents(
   useEffect(() => {
     const handleScroll = () => {
       if (state.isOpen) {
-        window.requestAnimationFrame(() => dispatch({ type: 'SCROLL' }));
+        window.requestAnimationFrame(() => dispatch({ type: SelectChangeTypes.scroll }));
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('touchstart', handleClickOutside);
-    // window.addEventListener('resize', () => dispatch({type: 'WINDOW_RESIZE'}));
     window.addEventListener('scroll', handleScroll, true);
-    // document.addEventListener('keydown', () => );
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
-      window.removeEventListener('scroll', handleScroll);
-      // window.removeEventListener('resize', calcParentRect);
-      // document.removeEventListener('keydown', handleEscPress);
+      window.removeEventListener('scroll', handleScroll, true);
     };
   }, [dispatch, handleClickOutside, state.isOpen]);
 }

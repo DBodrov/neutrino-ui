@@ -1,54 +1,44 @@
 import React, {
-  useState,
   useEffect,
   useReducer,
   useRef,
-  useCallback,
   createContext,
   useContext,
   useMemo,
 } from 'react';
-import styled from '@emotion/styled';
-import { css, jsx, SerializedStyles } from '@emotion/core';
-import { useTheme, ITheme, baseTheme } from '../Themes';
-import { Span } from '../Typography';
-import { Dropdown } from '../Dropdown';
+import { useTheme } from '../Themes';
 import { ArrowDownIcon } from './icons/ArrowDownIcon';
-import { useSelectEvents, useClientRect } from './use-select';
-import { ISelectProps, State } from './types';
-import { SelectWrapper, StyledInput } from './styles';
+import { useSelectEvents } from './use-select';
+import { ISelectProps, ISelectState, SelectChangeTypes } from './types';
+import { SelectWrapper } from './styles';
 
-const initState = ({ caption }: ISelectProps): State => ({
-  type: 'IDLE',
+const initState = ({ caption }: ISelectProps): ISelectState => ({
+  type: SelectChangeTypes.idle,
   currentValue: null,
   displayValue: caption ?? '',
   isOpen: false,
 });
 
-const selectReducer = (state: State, changes: State) => {
+const selectReducer = (state: ISelectState, changes: ISelectState) => {
   console.log('==changes==', changes);
   switch (changes.type) {
-    case 'IDLE':
+    case SelectChangeTypes.idle:
     default:
       return {
         ...changes,
       };
-    case 'SELECT_CLICK':
+    case SelectChangeTypes.selectClick:
       return {
         ...state,
         isOpen: !state.isOpen,
       };
-    case 'CLICK_OUTSIDE':
-      return {
-        ...state,
-        isOpen: state.isOpen,
-      };
-    case 'SCROLL':
+    case SelectChangeTypes.clickOutside:
+    case SelectChangeTypes.scroll:
       return {
         ...state,
         isOpen: false,
       };
-    case 'CLICK_ITEM':
+    case SelectChangeTypes.changeDisplayValue:
       return {
         ...state,
         ...changes,
@@ -80,73 +70,18 @@ export function Select(props: ISelectProps) {
   const selectRect = selectRef?.current?.getBoundingClientRect();
   // console.log(ref, rect)
 
-  const [{ currentValue, displayValue, isOpen }, dispatch] = useReducer(stateReducer, initState(props));
+  const [{ isOpen }, dispatch] = useReducer(stateReducer, initState(props));
   useSelectEvents(selectRef, ddRef, dispatch, { isOpen });
 
   const handleClick = () => {
-    dispatch({ type: 'SELECT_CLICK' });
+    dispatch({ type: SelectChangeTypes.selectClick });
   };
-
-  const handleItemClick = useCallback((item: string) => {
-    dispatch({ type: 'CLICK_ITEM', displayValue: item });
-  }, []);
 
   useEffect(() => {
-    dispatch({ type: 'CLICK_ITEM', displayValue: caption });
+    dispatch({ type: SelectChangeTypes.changeDisplayValue, displayValue: caption });
   }, [caption]);
 
-  const renderEditableInput = () => {
-    if (prefix) {
-      return (
-        <>
-          <Span css={[prefixCss]}>{prefix}</Span>
-          <StyledInput type="text" css={[inputCss]} />
-        </>
-      );
-    }
-    return <StyledInput type="text" css={[inputCss]} />;
-  };
-
-  const renderReadonlyInput = () => {
-    if (prefix) {
-      return (
-        <>
-          <Span css={[prefixCss]}>{prefix}</Span>
-          <Span
-            css={[
-              css`
-                width: 100%;
-              `,
-              displayValueCss,
-            ]}
-          >
-            {displayValue}
-          </Span>
-        </>
-      );
-    }
-    return (
-      <Span
-        css={[
-          css`
-            width: 100%;
-          `,
-          displayValueCss,
-        ]}
-      >
-        {displayValue}
-      </Span>
-    );
-  };
-
-  const renderInput = () => {
-    if (isEdit) {
-      return renderEditableInput();
-    }
-    return renderReadonlyInput();
-  };
-
-  const ctxValue = useMemo(() => ({ddRef, isOpen, selectRect}), [isOpen, selectRect]);
+  const ctxValue = useMemo(() => ({ ddRef, isOpen, selectRect }), [isOpen, selectRect]);
 
   return (
     <SelectWrapper
@@ -173,7 +108,7 @@ export function Select(props: ISelectProps) {
 export const useSelect = () => {
   const context = useContext(SelectContext);
   if (!context) {
-    throw new Error('Component must be inside Select ')
+    throw new Error('Component must be inside Select ');
   }
   return context;
-}
+};
