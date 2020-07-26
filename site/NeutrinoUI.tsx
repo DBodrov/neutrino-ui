@@ -16,6 +16,7 @@ const componentsList = [
     { name: 'InputNumber', link: '/inputnumber' },
     { name: 'Select', link: '/select' },
     { name: 'Modal', link: '/modal' },
+    { name: 'Switch', link: '/switch' },
     // { name: 'DatePicker', link: '/datepicker' },
 ];
 

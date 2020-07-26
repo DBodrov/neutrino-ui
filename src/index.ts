@@ -9,3 +9,4 @@ export * from './Portal';
 export * from './Dropdown';
 export * from './Modal';
 export * from './Select';
+export * from './Switch';
