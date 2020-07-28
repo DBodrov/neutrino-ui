@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import styled from '@emotion/styled';
+import { css, jsx } from '@emotion/core';
 import { ThemeProvider } from 'emotion-theming';
 import { Wrapper, Example, Label } from './Example';
 import { Select, createTheme, Span, SelectOptions, ISelectState, SelectChangeTypes } from 'neutrino-ui';
@@ -121,6 +123,17 @@ const filterOptions = [
   { id: 2, name: 'Площадка 2' },
 ];
 
+const SelectInput = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  width: 300px;
+  height: 36px;
+  border: 1px #2c3748 solid;
+  border-radius: 4px;
+`;
+
 export function SelectPage() {
   const [selectState, setState] = useState(-1);
 
@@ -131,7 +144,9 @@ export function SelectPage() {
     setState(currentId);
   };
 
-  const getDisplayValue = React.useCallback(() => filterOptions.find((item) => item.id === selectState), [selectState]);
+  const getDisplayValue = React.useCallback(() => filterOptions.find((item) => item.id === selectState), [
+    selectState,
+  ]);
 
   return (
     <Wrapper>
@@ -139,11 +154,13 @@ export function SelectPage() {
       <Example code={exampleProps} />
       <Label>Base Select</Label>
       <ThemeProvider theme={theme}>
-        <Select width="300px" height="32px">
-          <Span>
-            <span css={{ color: '#ccc' }}>Площадка: </span>
-            {getDisplayValue().name}
-          </Span>
+        <Select width="300px" height="36px">
+          <SelectInput>
+            <Span>
+              <span css={{ color: '#ccc' }}>Площадка: </span>
+              {getDisplayValue().name}
+            </Span>
+          </SelectInput>
           <SelectOptions>
             <ul
               css={{
@@ -164,7 +181,10 @@ export function SelectPage() {
                       margin: 0,
                       color: theme.colors.textColors.text,
                       fontSize: 14,
-                      backgroundColor: option.id === selectState ? theme.colors.pageElementsColors.formElementsActive : 'transparent'
+                      backgroundColor:
+                        option.id === selectState
+                          ? theme.colors.pageElementsColors.formElementsActive
+                          : 'transparent',
                     }}
                     onClick={handleItemClick}
                   >

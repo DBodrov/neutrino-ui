@@ -14,6 +14,7 @@ export interface ISelectState {
 export interface ISelectProps extends React.HTMLProps<HTMLDivElement> {
   stateReducer?: (state: ISelectState, changes: ISelectState) => ISelectState;
   isEdit?: boolean;
+  hasError?: boolean;
   children?: React.ReactNode;
 }
 
