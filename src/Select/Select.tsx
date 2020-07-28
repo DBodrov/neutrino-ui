@@ -40,12 +40,7 @@ const selectReducer = (state: ISelectState, changes: ISelectState) => {
 const SelectContext = createContext<ISelectContext | undefined>(undefined);
 
 export function Select(props: ISelectProps) {
-  const {
-    stateReducer = selectReducer,
-    isEdit,
-    children,
-    ...restProps
-  } = props;
+  const { stateReducer = selectReducer, isEdit, disabled, children, hasError, ...restProps } = props;
 
   const theme = useTheme();
 
@@ -67,11 +62,8 @@ export function Select(props: ISelectProps) {
 
   return (
     <SelectWrapper
-      onClick={handleClick}
+      onClick={disabled ? undefined : handleClick}
       ref={selectRef}
-      css={{
-        borderColor: `${isOpen ? theme.colors.mainColors.primary : theme.colors.pageElementsColors.border}`,
-      }}
       {...restProps}
     >
       <SelectContext.Provider value={ctxValue}>{children}</SelectContext.Provider>

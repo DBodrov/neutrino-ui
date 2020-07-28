@@ -9,6 +9,7 @@ import {
     InputNumberPage,
     SelectPage,
     ModalPage,
+    SwitchPage
 } from './examples';
 
 export function Routes() {
@@ -40,6 +41,9 @@ export function Routes() {
             </Route>
             <Route path="/modal">
                 <ModalPage />
+            </Route>
+            <Route path="/switch">
+                <SwitchPage />
             </Route>
         </Switch>
     );
