@@ -1,107 +1,102 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React from 'react';
 import { animated, useTransition } from 'react-spring';
 import { Portal } from '../Portal';
-import {useTheme} from '../Themes';
-import { Span } from '../Typography';
-import { Overlay, modalStyles, DissmissButton } from './styles';
-import { CloseIcon } from './icons/CloseIcon';
+import { ModalChangeTypes, IModalState, IModalProps } from './types';
+import { Overlay } from './styles';
 
-export interface IModalProps {
-    className?: string;
-    isOpen: boolean;
-    clickClose?: boolean;
-    escClose?: boolean;
-    styles?: React.CSSProperties;
-    placement?: 'top' | 'center' | 'bottom';
-    title?: string;
-    showClose?: boolean;
-    onClose: () => void;
-    children: React.ReactNode;
-}
+const modalReducer = (state: IModalState, changes: IModalState): IModalState => {
+  switch (changes.type) {
+    case ModalChangeTypes.idle:
+    default:
+      return changes;
+
+    case ModalChangeTypes.clickOutside:
+      return {
+        ...state,
+        showModal: false,
+      };
+    case ModalChangeTypes.keyDownEsc:
+      return {
+        ...state,
+        showModal: false,
+      };
+    case ModalChangeTypes.showModal:
+      return {
+        ...state,
+        showModal: changes.showModal,
+      };
+  }
+};
+
+const initState: IModalState = {
+  showModal: false,
+  type: ModalChangeTypes.idle,
+};
 
 export function Modal(props: IModalProps) {
-    const {
-        isOpen,
-        clickClose,
-        escClose,
-        onClose,
-        title = '',
-        showClose,
-        children,
-        placement = 'center',
-    } = props;
-    const modalRef = useRef<HTMLDivElement>(null);
-    const transition = useTransition(isOpen, null, {
-        from: { opacity: 0, transform: placement === 'bottom' ? 'translateY(200px)' : 'translateY(-200px)' },
-        enter: { opacity: 1, transform: 'translateY(0)' },
-        leave: { opacity: 0, transform: 'translateY(200px)' },
-    });
+  const {
+    children,
+    stateReducer = modalReducer,
+    isOpen,
+    placement,
+    className,
+    overlayCss,
+    onOverlayClick,
+  } = props;
+  const modalRef = React.useRef<HTMLDivElement>(null);
+  const [{ showModal }, dispatch] = React.useReducer(stateReducer, initState);
 
-    const theme = useTheme();
+  const transition = useTransition(showModal, null, {
+    from: { opacity: 0, transform: placement === 'bottom' ? 'translateY(200px)' : 'translateY(-200px)' },
+    enter: { opacity: 1, transform: 'translateY(0)' },
+    leave: { opacity: 0, transform: 'translateY(200px)' },
+  });
 
-    const handleClickOutside = useCallback(
-        (event: Event) => {
-            if (event.target instanceof HTMLElement && !modalRef.current.contains(event.target)) {
-                onClose();
-            }
-        },
-        [onClose]
-    );
+  const handleOverlayClick = React.useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (modalRef.current.firstElementChild.contains(event.target as HTMLElement)) {
+        return;
+      }
+      dispatch({ type: ModalChangeTypes.clickOutside });
+      if (Boolean(onOverlayClick)) {
+        onOverlayClick();
+      }
+    },
+    [onOverlayClick],
+  );
 
-    const handleEscKeyPress = useCallback(
-        (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
-                onClose();
-            }
-        },
-        [onClose]
-    );
+  React.useEffect(() => {
+    dispatch({ type: ModalChangeTypes.showModal, showModal: isOpen });
+  }, [isOpen]);
 
-    const handleClose = useCallback(
-        (event: React.MouseEvent<HTMLButtonElement>) => {
-            event.preventDefault();
-            onClose();
-        },
-        [onClose]
-    );
+  React.useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        dispatch({ type: ModalChangeTypes.keyDownEsc });
+      }
+    };
+    document.addEventListener('keydown', handleKeyPress);
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, []);
 
-    useEffect(() => {
-        if (clickClose && isOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
-            document.addEventListener('touchstart', handleClickOutside);
-        }
-        if (escClose && isOpen) {
-            document.addEventListener('keydown', handleEscKeyPress);
-        }
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-            document.removeEventListener('touchstart', handleClickOutside);
-            document.removeEventListener('keydown', handleEscKeyPress);
-        };
-    }, [clickClose, escClose, handleClickOutside, handleEscKeyPress, isOpen]);
-
-    const renderModal = () =>
-        transition.map(
-            ({ item, props: springProps, key }) =>
-                item && (
-                    <Overlay key={key} css={{backgroundColor: theme.colors.pageElementsColors.overlay}}>
-                        <animated.div
-                            key={key}
-                            css={modalStyles(props)}
-                            style={{ ...springProps }}
-                            ref={modalRef}>
-                            {title && <Span css={{ fontWeight: 600, textAlign: 'center' }}>{title}</Span>}
-                            {showClose && (
-                                <DissmissButton type="button" tabIndex={-1} onClick={handleClose}>
-                                    <CloseIcon />
-                                </DissmissButton>
-                            )}
-                            <div css={{ overflow: 'hidden' }}>{children}</div>
-                        </animated.div>
-                    </Overlay>
-                )
-        );
-
-    return <Portal>{renderModal()}</Portal>;
+  return (
+    <Portal>
+      {transition.map(({ item, props: springProps, key }) => {
+        return item ? (
+          <Overlay css={[overlayCss]} key={key} onClick={handleOverlayClick}>
+            <animated.div
+              css={{ display: 'flex', width: '100%', height: '100%' }}
+              className={className}
+              style={springProps}
+              ref={modalRef}
+            >
+              {children}
+            </animated.div>
+          </Overlay>
+        ) : null;
+      })}
+    </Portal>
+  );
 }

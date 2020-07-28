@@ -1,163 +1,119 @@
 import React, { useState } from 'react';
-import { ThemeProvider } from 'emotion-theming';
-import { Button, createTheme, Modal } from 'neutrino-ui';
+import { css } from '@emotion/core';
+import { Button, H5, Modal, IModalState, ModalChangeTypes } from 'neutrino-ui';
 import { Example, Wrapper } from './Example';
 
 const exampleProps = `
+export enum ModalChangeTypes {
+  idle = 'IDLE',
+  clickOutside = 'CLICK_OUTSIDE',
+  keyDownEsc = 'KEYDOWN_ESC',
+  showModal = 'SHOW_MODAL',
+}
+
+export interface IModalState {
+  type?: ModalChangeTypes;
+  showModal?: boolean;
+}
+
 export interface IModalProps {
-    isOpen: boolean;
-    clickClose?: boolean;
-    escClose?: boolean;
-    styles?: React.CSSProperties;
-    placement?: 'top' | 'center' | 'bottom';
-    title?: string;
-    showClose?: boolean;
-    onClose: () => void;
-    children: React.ReactNode;
+  stateReducer?: (state: IModalState, changes: IModalState) => IModalState;
+  children?: React.ReactNode;
+  isOpen: boolean;
+  placement?: 'top' | 'center' | 'bottom';
+  className?: string;
+  overlayCss?: SerializedStyles;
+  onClose?: () => void;
+  onOverlayClick?: () => void;
 }
 `.trim();
 
 const exampleCenter = `
 import React, { useState } from 'react';
+import { css } from '@emotion/core';
 import { Button, Modal } from 'neutrino-ui';
+
+const modalReducer = (state: IModalState, changes: IModalState): IModalState => {
+  console.log(state, changes)
+  switch (changes.type) {
+    case ModalChangeTypes.clickOutside:
+    case ModalChangeTypes.keyDownEsc:
+      return {
+        ...state,
+        showModal: true
+      }
+    default:
+      return changes;
+  }
+}
 
 export function Page() {
   const [isOpen, setModalState] = useState(false);
   return (
-      <Button css={{width: '200px'}} onClick={() => setModalState(true)}>Open modal center</Button>
-          <Modal escClose clickClose showClose isOpen={isOpen} onClose={() => setModalState(false)} styles={{width: '60%'}}>
-              <div css={{width: '100%', height: '100%', backgroundColor: '#fff', opacity: 1}}>
-                  Modal content!
-              </div>
-          </Modal>
-  )
-}
-`.trim();
-
-const exampleThemedOverlay = `
-import React, { useState } from 'react';
-import { ThemeProvider } from 'emotion-theming';
-import { Button, Modal, createTheme } from 'neutrino-ui';
-
-const theme = createTheme({
-    colors: {
-        pageElementsColors: {
-            overlay: '#008080',
-        },
-    },
-});
-
-export function Page() {
-  const [isOpenThemed, setModalThemedState] = useState(false);
-  return (
-    <ThemeProvider theme={theme}>
-      <Button css={{ width: '200px', marginTop: 10 }} onClick={() => setModalThemedState(true)}>
-        Open with themed overlay
+    <Button css={{ width: '200px' }} onClick={() => setModalState((s) => !s)}>
+        Open modal
       </Button>
       <Modal
-        escClose
-        clickClose
-        showClose
-        isOpen={isOpenThemed}
-        onClose={() => setModalThemedState(false)}
-        styles={{ width: '60%' }}>
-        <div css={{ width: '100%', height: '100%', backgroundColor: '#fff', opacity: 1 }}>
-            Modal content!
+        stateReducer={modalReducer}
+        isOpen={isOpen}
+        placement="bottom"
+        overlayCss={css({ backgroundColor: 'rgba(49,61,79, 0.5)' })}
+        onOverlayClick={() => setModalState(false)}
+      >
+        <div css={{ width: '500px', height: '300px', borderRadius: 24, backgroundColor: '#fff', margin: 'auto auto 0' }}>
+          Modal content!
+          <button onClick={() => setModalState(false)}>close</button>
         </div>
       </Modal>
-  </ThemeProvider>
   )
 }
 `.trim();
 
-const theme = createTheme({
-    colors: {
-        pageElementsColors: {
-            overlay: '#008080',
-        },
-    },
-});
+const modalReducer = (state: IModalState, changes: IModalState): IModalState => {
+  console.log(state, changes);
+  switch (changes.type) {
+    case ModalChangeTypes.clickOutside:
+    case ModalChangeTypes.keyDownEsc:
+      return {
+        ...state,
+        showModal: true,
+      };
+    default:
+      return changes;
+  }
+};
 
 export function ModalPage() {
-    const [isOpen, setModalState] = useState(false);
-    const [isOpenBottom, setModalBottomState] = useState(false);
-    const [isOpenTop, setModalTopState] = useState(false);
-    const [isOpenThemed, setModalThemedState] = useState(false);
+  const [isOpen, setModalState] = useState(false);
 
-    return (
-        <Wrapper>
-            <Example code={exampleProps} />
-            <Button css={{ width: '200px' }} onClick={() => setModalState(true)}>
-                Open modal center
-            </Button>
-            <Modal
-                escClose
-                clickClose
-                showClose
-                isOpen={isOpen}
-                onClose={() => setModalState(false)}
-                styles={{ width: '60%' }}>
-                <div css={{ width: '100%', height: '100%', backgroundColor: '#fff', opacity: 1 }}>
-                    Modal content!
-                </div>
-            </Modal>
-            <Example code={exampleCenter} />
-            <Button
-                variant="primary"
-                css={{ marginTop: '10px', width: '200px' }}
-                onClick={() => setModalBottomState(true)}>
-                Open modal bottom
-            </Button>
-            <Modal
-                escClose
-                clickClose
-                showClose
-                isOpen={isOpenBottom}
-                placement="bottom"
-                onClose={() => setModalBottomState(false)}
-                styles={{ width: '60%' }}>
-                <div css={{ width: '100%', height: '100%', backgroundColor: '#fff', opacity: 1 }}>
-                    Modal content on bottom!
-                </div>
-            </Modal>
-            <Example code="<Modal placement='bottom'>....</Modal>" />
-            <Button
-                variant="secondary"
-                outline
-                css={{ marginTop: '10px', width: '200px' }}
-                onClick={() => setModalTopState(true)}>
-                Open modal top
-            </Button>
-            <Modal
-                escClose
-                clickClose
-                showClose
-                isOpen={isOpenTop}
-                placement="top"
-                onClose={() => setModalTopState(false)}
-                styles={{ width: '60%' }}>
-                <div css={{ width: '100%', height: '100%', backgroundColor: '#fff', opacity: 1 }}>
-                    Modal content on top!
-                </div>
-            </Modal>
-            <Example code="<Modal placement='top'>....</Modal>" />
-            <ThemeProvider theme={theme}>
-                <Button css={{ width: '200px', marginTop: 10 }} onClick={() => setModalThemedState(true)}>
-                    Open with themed overlay
-                </Button>
-                <Modal
-                    escClose
-                    clickClose
-                    showClose
-                    isOpen={isOpenThemed}
-                    onClose={() => setModalThemedState(false)}
-                    styles={{ width: '60%' }}>
-                    <div css={{ width: '100%', height: '100%', backgroundColor: '#fff', opacity: 1 }}>
-                        Modal content!
-                    </div>
-                </Modal>
-            </ThemeProvider>
-            <Example code={exampleThemedOverlay}/>
-        </Wrapper>
-    );
+  return (
+    <Wrapper>
+      <H5>Modal</H5>
+      <Example code={exampleProps} />
+      <Button css={{ width: '200px' }} onClick={() => setModalState((s) => !s)}>
+        Open modal
+      </Button>
+      <Modal
+        stateReducer={modalReducer}
+        isOpen={isOpen}
+        placement="bottom"
+        overlayCss={css({ backgroundColor: 'rgba(49,61,79, 0.5)' })}
+        onOverlayClick={() => setModalState(false)}
+      >
+        <div
+          css={{
+            width: '500px',
+            height: '300px',
+            borderRadius: 24,
+            backgroundColor: '#fff',
+            margin: 'auto auto 0',
+          }}
+        >
+          Modal content!
+          <button onClick={() => setModalState(false)}>close</button>
+        </div>
+      </Modal>
+      <Example code={exampleCenter} />
+    </Wrapper>
+  );
 }
