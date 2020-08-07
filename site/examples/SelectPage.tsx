@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
-import styled from '@emotion/styled';
-import { css, jsx } from '@emotion/core';
-import { ThemeProvider } from 'emotion-theming';
-import { Wrapper, Example, Label } from './Example';
-import { Select, createTheme, Span, SelectOptions, ISelectState, SelectChangeTypes } from 'neutrino-ui';
+import React, {useState} from 'react';
+import {ThemeProvider} from 'emotion-theming';
+import {Wrapper, Example, Label} from './Example';
+import {Select, createTheme, Span, SelectOptions, ISelectState, SelectChangeTypes} from 'neutrino-ui';
 
 const theme = createTheme({
   colors: {
     pageElementsColors: {
-      formElements: '#000D4D',
+      formElements: '#325b72',
       formElementsActive: '#293676',
 
       border: '#0FC0FC',
@@ -26,72 +24,7 @@ const theme = createTheme({
 });
 
 const exampleDefault = `
-import { Select, Options } from 'neutrino-ui';
-
-const options: Options = [{ 1: 'Option 1' }, { 2: 'Option 2' }, { 3: 'Option 3' }];
-const [item, setItem] = useState('');
-
-<Select
-  name="select"
-  onChangeHandler={(v: string) => setItem(v)}
-  value={item}
-  options={options}
-  dropdownStyles={{ borderRadius: '10px' }}
-  styles={{maxWidth: '300px'}}
-/>
-`.trim();
-
-const exampleProps = `
-export type TOption = Record<string | number, string>;
-export type Options = TOption[];
-export type ValueType = string | number | null;
-
-export interface ISelectProps {
-    name: string;
-    hasError?: boolean;
-    options?: Options;
-    disabled?: boolean;
-    onChangeHandler: (value: ValueType) => void;
-    onClearHandler?: (name: string) => void;
-    onFocusHandler?: (value: ValueType) => void;
-    onBlurHandler?: (value: ValueType) => void;
-    styles?: React.CSSProperties;
-    value?: string | number;
-    tabIndex?: number;
-    dropdownStyles?: React.CSSProperties;
-}
-`.trim();
-
-const exampleThemed = `
-import { Select, Options, createTheme } from 'neutrino-ui';
-
-const options: Options = [{ 1: 'Option 1' }, { 2: 'Option 2' }, { 3: 'Option 3' }];
-const [item, setItem] = useState('');
-
-const theme = createTheme({
-  colors: {
-    pageElementsColors: {
-      formElements: '#000D4D',
-      formElementsActive: '#293676',
-      border: '#0FC0FC',
-    },
-    textColors: {
-      text: '#fff',
-    },
-  },
-});
-
-<ThemeProvider theme={theme}>
-  <Select
-    name="theme-select"
-    onChangeHandler={(v: string) => setItem(v)}
-    value={item}
-    options={options}
-    dropdownStyles={{ boxShadow: 'none' }}
-    styles={{width: 275}}
-  />
-</ThemeProvider>
-`.trim();
+import { Select, createTheme, Span, SelectOptions, ISelectState, SelectChangeTypes } from 'neutrino-ui';
 
 const selectReducer = (state: ISelectState, changes: ISelectState) => {
   console.log('===reducer===', state, changes);
@@ -102,12 +35,12 @@ const selectReducer = (state: ISelectState, changes: ISelectState) => {
         ...changes,
         isOpen: !state.isOpen,
       };
-    case 'CLICK_OUTSIDE':
-    case 'SCROLL':
+    case SelectChangeTypes.clickOutside:
+    case SelectChangeTypes.scroll:
       return {
         ...state,
         ...changes,
-        isOpen: false,
+        isOpen: true,
       };
     default:
       return {
@@ -123,24 +56,12 @@ const filterOptions = [
   { id: 2, name: 'Площадка 2' },
 ];
 
-const SelectInput = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  width: 300px;
-  height: 36px;
-  border: 1px #2c3748 solid;
-  border-radius: 4px;
-`;
 
-export function SelectPage() {
+function MyApp() {
   const [selectState, setState] = useState(-1);
 
   const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
-    console.log(e.currentTarget.value);
     const currentId = Number(e.currentTarget.value);
-    // const currentValue = filterOptions.find((option) => option.id === currentId).name;
     setState(currentId);
   };
 
@@ -149,18 +70,18 @@ export function SelectPage() {
   ]);
 
   return (
-    <Wrapper>
-      <Label>Depricated. Update coming soon...</Label>
-      <Example code={exampleProps} />
-      <Label>Base Select</Label>
-      <ThemeProvider theme={theme}>
-        <Select width="300px" height="36px">
-          <SelectInput>
-            <Span>
-              <span css={{ color: '#ccc' }}>Площадка: </span>
-              {getDisplayValue().name}
-            </Span>
-          </SelectInput>
+    <ThemeProvider theme={theme}>
+        <Select
+          width="300px"
+          height="36px"
+          stateReducer={selectReducer} // Inversion of control
+          css={{ backgroundColor: '#008000', padding: '0 8px', cursor: 'pointer' }}
+        >
+          <Span>
+            <span css={{ color: '#ccc' }}>Площадка: </span>
+            {getDisplayValue().name}
+          </Span>
+
           <SelectOptions>
             <ul
               css={{
@@ -196,38 +117,129 @@ export function SelectPage() {
           </SelectOptions>
         </Select>
       </ThemeProvider>
-      {/* <Select
-                name="select"
-                onChangeHandler={(v: string) => setItem(v)}
-                value={item}
-                options={options}
-                styles={{ width: '300px' }}
-                dropdownStyles={{ borderRadius: '10px' }}
-            /> */}
+  )
+}
+`.trim();
+
+const exampleProps = `
+export enum SelectChangeTypes {
+  idle = 'IDLE',
+  selectClick = 'SELECT_CLICK',
+  clickOutside = 'CLICK_OUTSIDE',
+  scroll = 'SCROLL',
+  changeDisplayValue = 'CHANGE_DISPLAY_VALUE'
+}
+
+export interface ISelectState {
+  type?: SelectChangeTypes;
+  isOpen?: boolean;
+};
+
+export interface ISelectProps extends React.HTMLProps<HTMLDivElement> {
+  stateReducer?: (state: ISelectState, changes: ISelectState) => ISelectState;
+  isEdit?: boolean;
+  hasError?: boolean;
+  children?: React.ReactNode;
+}
+`.trim();
+
+const selectReducer = (state: ISelectState, changes: ISelectState) => {
+  console.log('===reducer===', state, changes);
+  switch (changes.type) {
+    case SelectChangeTypes.selectClick:
+      return {
+        ...state,
+        ...changes,
+        isOpen: !state.isOpen,
+      };
+    case SelectChangeTypes.clickOutside:
+    case SelectChangeTypes.scroll:
+      return {
+        ...state,
+        ...changes,
+        isOpen: true,
+      };
+    default:
+      return {
+        ...state,
+        ...changes,
+      };
+  }
+};
+
+const filterOptions = [
+  {id: -1, name: 'Все'},
+  {id: 1, name: 'Площадка 1'},
+  {id: 2, name: 'Площадка 2'},
+];
+
+export function SelectPage() {
+  const [selectState, setState] = useState(-1);
+
+  const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
+    console.log(e.currentTarget.value);
+    const currentId = Number(e.currentTarget.value);
+    // const currentValue = filterOptions.find((option) => option.id === currentId).name;
+    setState(currentId);
+  };
+
+  const getDisplayValue = React.useCallback(() => filterOptions.find(item => item.id === selectState), [
+    selectState,
+  ]);
+
+  return (
+    <Wrapper>
+      <Example code={exampleProps} />
+      <Label>Base Select</Label>
+      <ThemeProvider theme={theme}>
+        <Select
+          width="300px"
+          height="36px"
+          stateReducer={selectReducer}
+          css={{backgroundColor: '#325b72', padding: '0 8px', cursor: 'pointer'}}
+        >
+          <Span>
+            <span css={{color: '#ccc'}}>Площадка: </span>
+            {getDisplayValue().name}
+          </Span>
+
+          <SelectOptions>
+            <ul
+              css={{
+                backgroundColor: theme.colors.pageElementsColors.formElements,
+                margin: 0,
+                padding: 0,
+                listStyle: 'none',
+              }}
+            >
+              {filterOptions.map(option => {
+                return (
+                  <li
+                    key={option.id}
+                    value={option.id}
+                    css={{
+                      padding: '8px 16px',
+                      borderBottom: '1px #ccc solid',
+                      margin: 0,
+                      color: theme.colors.textColors.text,
+                      fontSize: 14,
+                      cursor: 'pointer',
+                      backgroundColor:
+                        option.id === selectState
+                          ? theme.colors.pageElementsColors.formElementsActive
+                          : 'transparent',
+                    }}
+                    onClick={handleItemClick}
+                  >
+                    {option.name}
+                  </li>
+                );
+              })}
+            </ul>
+          </SelectOptions>
+        </Select>
+      </ThemeProvider>
       <Example code={exampleDefault} />
-      {/* <Label>Theming</Label>
-            <div
-                css={{
-                    display: 'flex',
-                    flexFlow: 'column nowrap',
-                    width: '100%',
-                    height: 200,
-                    backgroundColor: theme.colors.pageElementsColors.formElements,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                <ThemeProvider theme={theme}>
-                    <Select
-                        name="theme-select"
-                        onChangeHandler={(v: string) => setItem(v)}
-                        value={item}
-                        options={options}
-                        dropdownStyles={{ boxShadow: 'none' }}
-                        styles={{ width: 275 }}
-                    />
-                </ThemeProvider>
-            </div>
-            <Example code={exampleThemed} /> */}
     </Wrapper>
   );
 }

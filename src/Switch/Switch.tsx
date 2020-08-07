@@ -31,7 +31,7 @@ const SwitchButton = styled.div`
 
 export function Switch({ on, disabled, onToggle, buttonCss, trackCss }: ISwitchProps) {
   const theme = useTheme();
-  const { colors, globals } = theme;
+  const { colors } = theme;
   const trackStyles = css`
     border: 1px
       ${on
@@ -50,7 +50,7 @@ export function Switch({ on, disabled, onToggle, buttonCss, trackCss }: ISwitchP
     margin-left: ${on ? 'auto' : 0};
   `;
   return (
-    <SwitchTrack css={[trackStyles, trackCss]} onClick={onToggle}>
+    <SwitchTrack css={[trackStyles, trackCss]} onClick={disabled ? undefined : onToggle}>
       <SwitchButton css={[buttonStyles, buttonCss]}></SwitchButton>
     </SwitchTrack>
   );
