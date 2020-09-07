@@ -33,15 +33,31 @@ const baseStyles = css`
 type Props = {date: TCalendarDate};
 
 function Day({date}: Props) {
-  const {handleChangeDay, delimiter, format} = useDayPicker();
+  const {
+    handleChangeDay,
+    delimiter,
+    format,
+    day: currentDay,
+    month: currentMonth,
+    year: currentYear,
+  } = useDayPicker();
   const theme = useTheme();
-  const {day, month, year} = date;
-  const hoverStyles = css`
+  const {day, month, year, isCurrentMonth} = date;
+
+  const isCurrentDay = React.useCallback(() => {
+    return day === currentDay && month === currentMonth && year === currentYear;
+  }, [currentDay, currentMonth, currentYear, day, month, year]);
+
+  const dayStyles = css`
+    opacity: ${isCurrentMonth ? 1 : 0.5};
+    background-color: ${isCurrentDay() ? theme.colors.mainColors.primaryDark : 'transparent'};
+    color: ${isCurrentDay() ? theme.colors.textColors.textOnPrimary : theme.colors.textColors.text};
     &:hover {
       background-color: ${theme.colors.mainColors.primary};
       color: ${theme.colors.textColors.textOnPrimary};
     }
   `;
+
   const handleSelectDay = React.useCallback(() => {
     const outputDate = [];
     format.split(delimiter).forEach(ch => {
@@ -59,7 +75,7 @@ function Day({date}: Props) {
   return (
     <Span
       onClick={handleSelectDay}
-      css={[baseStyles, css({color: date.type === 'weekend' && '#D40000'}), hoverStyles]}
+      css={[baseStyles, css({color: date.type === 'weekend' && '#D40000'}), dayStyles]}
     >
       {date.day}
     </Span>
