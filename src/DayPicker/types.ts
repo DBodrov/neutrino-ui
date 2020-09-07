@@ -8,22 +8,25 @@ export type TCalendarDate = {
   key: string;
   type: TDayType;
   date: Date;
+  isCurrentMonth: boolean;
 } & TDay;
 
 export type TDayType = 'workday' | 'weekend';
 
-/**depricated */
+export type TDayCalendar = TCalendarDate[];
+
+/**@depricated */
 export type DatePickerValue = string;
-/**depricated */
+/**@depricated */
 export interface IYear {
   [id: number]: number;
 }
-/**depricated */
+/**@depricated */
 export interface IMonth {
   monthNumber: string;
   monthName: string;
 }
-/**depricated */
+/**@depricated */
 export interface IDatePickerProps {
   name: string;
   view: TCalendarView;
@@ -46,31 +49,31 @@ export interface IDatePickerProps {
   minDate?: string;
   calendarDefaultDate?: string;
 }
-/**depricated */
+/**@depricated */
 export interface IPickerValue {
   day: string;
   month: string;
   year: string;
 }
-/**depricated */
+/**@depricated */
 export interface IPickerDropdownProps {
   isOpen: boolean;
   offset?: ClientRect;
   // onClick: (value: string) => void;
   children?: never;
 }
-/**depricated */
+/**@depricated */
 export type TCalendarView = 'days' | 'months' | 'years';
-/**depricated */
+/**@depricated */
 export type ChangeDirection = 'prev' | 'next';
-/**depricated */
+/**@depricated */
 export type PanelType = 'month' | 'year' | 'decade';
-/**depricated */
+/**@depricated */
 export interface IDayCalendarOptions {
   minDate?: string;
   maxDate?: string;
 }
-/**depricated */
+/**@depricated */
 export interface IDatePickerContext extends Partial<IDatePickerProps> {
   value?: string;
   internalValue?: string;
@@ -91,7 +94,7 @@ export interface IDatePickerContext extends Partial<IDatePickerProps> {
   setInternalValue: (date: string) => void;
 }
 
-/**depricated */
+/**@depricated */
 export interface IDateObject {
   key: string;
   type: TDayType;
@@ -102,7 +105,7 @@ export interface IDateObject {
   calendarDate: Date;
   disabledDate: boolean;
 }
-/**depricated */
+/**@depricated */
 export interface IDateParams {
   day: number;
   month: number;

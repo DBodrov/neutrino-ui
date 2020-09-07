@@ -4,24 +4,13 @@ import {Example, Wrapper} from './Example';
 import {DayPicker, Select, SelectOptions, Span, Calendar} from 'neutrino-ui';
 
 export function DatePickerPage() {
-  const [date, setDate] = useState('20.07.2020');
-  const dayPickerCfg = {format: 'DD/MM/YYYY'};
+  const [date, setDate] = useState('');
+  const dayPickerCfg = {format: 'YYYY/MM/DD'};
   return (
     <Wrapper>
       <span>DatePicker</span>
-      {/* <DayPicker
-        css={{borderColor: '#080'}}
-        onChange={(d: string) => setDate(d)}
-        value={date}
-        name="date"
-        config={dayPickerCfg}
-        inputCss={css`
-          width: 300px;
-          height: 32px;
-          letter-spacing: 0.2rem;
-        `}
-      /> */}
-      <DayPicker value={date}>
+
+      <DayPicker value={date} onChangeHandler={(date: string) => setDate(date)} config={dayPickerCfg}>
         <Select
           width="250px"
           height="48px"

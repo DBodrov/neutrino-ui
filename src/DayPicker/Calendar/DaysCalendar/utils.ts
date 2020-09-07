@@ -1,5 +1,6 @@
 import {THIS_DAY, THIS_MONTH, THIS_YEAR, getMonthName} from '../utils/date';
 import {getDayType, getNextMonth, getPreviousMonth} from '../utils/calendar';
+import {TDayCalendar} from '../../types';
 
 export const WEEK_DAYS = [
   {title: 'Пн', number: 1},
@@ -39,7 +40,7 @@ const getCurrentMonthDays = (month: number, year: number) => {
   return [...emptyCalendar].map((n, i) => i + 1);
 };
 
-const createDay = (day: number, month: number, year: number) => {
+const createDay = (day: number, month: number, year: number, isCurrentMonth: boolean) => {
   const dayType = getDayType({month, year, day});
   // const disabledDate = getDisabledState(day, month, year, minDate, maxDate);
 
@@ -50,17 +51,18 @@ const createDay = (day: number, month: number, year: number) => {
     month,
     year,
     date: new Date(year, month - 1, day),
+    isCurrentMonth,
     // disabledDate,
   };
 
   return calendarDay;
 };
 
-export function createDayCalendar(month = THIS_MONTH, year = THIS_YEAR) {
+export function createDayCalendar(month = THIS_MONTH, year = THIS_YEAR): TDayCalendar {
   const currentMonthDays = getCurrentMonthDays(month, year);
   const firstDay = getFirstDay(month, year);
 
-  const currentMonthDates = currentMonthDays.map(day => createDay(day, month, year));
+  const currentMonthDates = currentMonthDays.map(day => createDay(day, month, year, true));
   const countDaysCurrentMonth = currentMonthDates.length;
   const countDaysPrevMonth = firstDay - 1;
   const countDaysNextMonth = CALENDAR_WEEKS * 7 - (countDaysPrevMonth + countDaysCurrentMonth);
@@ -73,14 +75,14 @@ export function createDayCalendar(month = THIS_MONTH, year = THIS_YEAR) {
     .fill(undefined)
     .map((n, index) => {
       const day = index + 1 + (prevMonthDays - countDaysPrevMonth);
-      return createDay(day, prevMonth, prevMonthYear);
+      return createDay(day, prevMonth, prevMonthYear, false);
     });
 
   const nextMonthDates = Array(countDaysNextMonth)
     .fill(undefined)
     .map((n, index) => {
       const day = index + 1;
-      return createDay(day, nextMonth, nextMonthYear);
+      return createDay(day, nextMonth, nextMonthYear, false);
     });
 
   return [...prevMonthDates, ...currentMonthDates, ...nextMonthDates];

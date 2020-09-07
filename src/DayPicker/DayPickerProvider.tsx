@@ -16,12 +16,14 @@ interface IDayPickerContext {
   day: number;
   month: number;
   year: number;
+  handleChangeDay: (date: string) => void;
+  //dispatch: React.Dispatch<TDay>;
 }
 
 const DayPickerContext = createContext<IDayPickerContext | undefined>(undefined);
 
 export function DayPickerProvider(props: any) {
-  const {config = {}, value, inputCss, name, className, ...restProps} = props;
+  const {config = {}, value, inputCss, name, className, onChangeHandler, ...restProps} = props;
   const [{day, month, year}, dispatch] = React.useReducer(
     (state: TDay, change: TDay): TDay => ({...state, ...change}),
     {
@@ -42,6 +44,13 @@ export function DayPickerProvider(props: any) {
     }
   }, [format, value]);
 
+  const handleChangeDay = React.useCallback(
+    (date: string) => {
+      onChangeHandler(date);
+    },
+    [onChangeHandler],
+  );
+
   const handleChangeInput = React.useCallback(
     (value?: string, event?: React.ChangeEvent<HTMLInputElement>) => {
       //console.log(value);
@@ -51,8 +60,32 @@ export function DayPickerProvider(props: any) {
   );
 
   const ctxValue = useMemo<IDayPickerContext>(
-    () => ({mask, inputCss, name, format, handleChangeInput, className, delimiter, day, month, year}),
-    [mask, inputCss, name, format, handleChangeInput, className, delimiter, day, month, year],
+    () => ({
+      mask,
+      inputCss,
+      name,
+      format,
+      handleChangeInput,
+      className,
+      delimiter,
+      day,
+      month,
+      year,
+      handleChangeDay,
+    }),
+    [
+      mask,
+      inputCss,
+      name,
+      format,
+      handleChangeInput,
+      className,
+      delimiter,
+      day,
+      month,
+      year,
+      handleChangeDay,
+    ],
   );
 
   return <DayPickerContext.Provider value={ctxValue} {...restProps} />;
