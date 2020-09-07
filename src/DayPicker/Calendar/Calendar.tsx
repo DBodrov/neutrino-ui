@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import {Navigator} from './Navigator';
 import {DaysOfWeek} from './DaysOfWeek';
 import {DaysCalendar} from './DaysCalendar';
 import {useTheme} from '../../Themes';
@@ -9,7 +10,6 @@ const CalendarBlock = styled.div`
   flex-flow: column nowrap;
   width: 100%;
   min-height: 250px;
-  padding: 16px;
 `;
 
 export function Calendar(props: any) {
@@ -22,6 +22,7 @@ export function Calendar(props: any) {
       }}
       {...props}
     >
+      <Navigator />
       <DaysOfWeek />
       <DaysCalendar />
     </CalendarBlock>

@@ -1,4 +1,4 @@
-import { IMonth } from '../types';
+import { IMonth } from '../../types';
 import { createDecadeTitle } from './calendar';
 
 export const THIS_YEAR = new Date().getFullYear();

@@ -17,6 +17,7 @@ interface IDayPickerContext {
   month: number;
   year: number;
   handleChangeDay: (date: string) => void;
+  locale: string | string[];
   //dispatch: React.Dispatch<TDay>;
 }
 
@@ -32,7 +33,7 @@ export function DayPickerProvider(props: any) {
       year: undefined,
     },
   );
-  const {format = 'DD.MM.YYYY'} = config;
+  const {format = 'DD.MM.YYYY', locale = 'ru'} = config;
   const mask = createMask(format);
 
   const {delimiter} = parseFormat(format);
@@ -72,6 +73,7 @@ export function DayPickerProvider(props: any) {
       month,
       year,
       handleChangeDay,
+      locale,
     }),
     [
       mask,
@@ -85,6 +87,7 @@ export function DayPickerProvider(props: any) {
       month,
       year,
       handleChangeDay,
+      locale,
     ],
   );
 

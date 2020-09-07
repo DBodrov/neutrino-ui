@@ -1,7 +1,7 @@
 import {TDay, TDayType} from '../../types';
 import {THIS_MONTH, THIS_YEAR, THIS_DECADE} from './date';
 
-export const getMonthDays = (month = THIS_MONTH, year = THIS_YEAR) => {
+export const getDaysInMonth = (month = THIS_MONTH, year = THIS_YEAR) => {
   const months30 = [4, 6, 9, 11]; // апрель, июнь, сентябрь, ноябрь - по 30 дней
   const isLeapYear = year % 4 === 0; // делится на 4 без остатка - високосный год
 
@@ -26,7 +26,7 @@ export const isSameMonth = (date: TDay, baseDate: TDay): boolean => {
   return currentMonth === baseMonth && currentYear === baseYear;
 };
 
-export const getMonthFirstDay = (month = THIS_MONTH, year = THIS_YEAR) => {
+export const getFirstDayOfMonth = (month = THIS_MONTH, year = THIS_YEAR) => {
   const firstDay = new Date(year, month - 1, 1).getDay();
   return firstDay === 0 ? 7 : firstDay;
 };
@@ -45,10 +45,10 @@ export const getNextMonth = (month = THIS_MONTH, year = THIS_YEAR) => {
 };
 
 export const getCurrentMonthDays = (month: number, year: number) => {
-  const monthDays = getMonthDays(month, year);
-  const emptyDays = new Array(monthDays).fill(undefined);
+  const monthDays = getDaysInMonth(month, year);
+  const emptyCalendar = new Array(monthDays).fill(undefined);
 
-  return [...emptyDays].map((n, i) => i + 1);
+  return [...emptyCalendar].map((n, i) => i + 1);
 };
 
 export const getDayType = (displayDate: TDay): TDayType => {
@@ -60,9 +60,9 @@ export const getDayType = (displayDate: TDay): TDayType => {
   return 'workday';
 };
 
-export const getDayTooltip = (date: Date) => {
+export const getDayTooltip = (date: Date, locale: string | string[]) => {
   const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
-  return date.toLocaleDateString('ru', options);
+  return date.toLocaleDateString(locale, options);
 };
 
 export const getFirstYearInDecade = (year = THIS_YEAR) => {

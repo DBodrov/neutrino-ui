@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import {WEEK_DAYS} from './DaysCalendar/utils';
+import {WEEK_DAYS} from './utils/date';
 import {Span} from '../../Typography';
 
 export const Week = styled.div`
@@ -10,6 +10,7 @@ export const Week = styled.div`
   height: 16px;
   align-content: center;
   justify-items: center;
+  padding: 4px 16px;
 `;
 
 const isWeekend = (dayNumber: number) => dayNumber === 0 || dayNumber === 6;
