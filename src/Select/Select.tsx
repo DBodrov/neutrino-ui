@@ -10,14 +10,14 @@ const initState = {
   isOpen: false,
 };
 
-const selectReducer = (state: ISelectState, changes: ISelectState) => {
+export const selectReducer = (state: ISelectState, changes: ISelectState) => {
   switch (changes.type) {
     case SelectChangeTypes.idle:
     default:
       return {
         ...changes,
       };
-    case SelectChangeTypes.selectClick:
+    case SelectChangeTypes.toggle:
       return {
         ...state,
         isOpen: !state.isOpen,
@@ -34,6 +34,16 @@ const selectReducer = (state: ISelectState, changes: ISelectState) => {
         ...changes,
         isOpen: false,
       };
+    case SelectChangeTypes.close:
+      return {
+        ...state,
+        isOpen: false
+      };
+    case SelectChangeTypes.open:
+      return {
+        ...state,
+        isOpen: true,
+      }
   }
 };
 
@@ -51,18 +61,21 @@ export function Select(props: ISelectProps) {
   const [{ isOpen }, dispatch] = useReducer(stateReducer, initState);
   useSelectEvents(selectRef, dropdownRef, dispatch, { isOpen });
 
-  const handleClick = () => {
-    dispatch({ type: SelectChangeTypes.selectClick });
+  const handleToggleSelect = () => {
+    dispatch({ type: SelectChangeTypes.toggle });
   };
 
-  const ctxValue = useMemo<ISelectContext>(() => ({ dropdownRef: dropdownRef, isOpen, selectRect }), [
+  const handleOpenSelect = () => dispatch({type: SelectChangeTypes.open});
+
+  const handleCloseSelect = () => dispatch({type: SelectChangeTypes.close});
+
+  const ctxValue = useMemo<ISelectContext>(() => ({ dropdownRef, isOpen, selectRect, handleCloseSelect, handleOpenSelect, handleToggleSelect }), [
     isOpen,
     selectRect,
   ]);
 
   return (
     <SelectWrapper
-      onClick={disabled ? undefined : handleClick}
       ref={selectRef}
       {...restProps}
     >

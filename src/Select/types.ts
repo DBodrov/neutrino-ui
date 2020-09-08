@@ -1,9 +1,11 @@
 export enum SelectChangeTypes {
   idle = 'IDLE',
-  selectClick = 'SELECT_CLICK',
+  toggle = 'TOGGLE',
   clickOutside = 'CLICK_OUTSIDE',
   scroll = 'SCROLL',
-  changeDisplayValue = 'CHANGE_DISPLAY_VALUE'
+  changeDisplayValue = 'CHANGE_DISPLAY_VALUE',
+  close = 'CLOSE',
+  open = 'OPEN',
 }
 
 export interface ISelectState {
@@ -22,4 +24,7 @@ export interface ISelectContext {
   dropdownRef: React.MutableRefObject<HTMLDivElement>,
   selectRect: DOMRect;
   isOpen: boolean;
+  handleCloseSelect: () => void;
+  handleToggleSelect: () => void;
+  handleOpenSelect: () => void;
 }

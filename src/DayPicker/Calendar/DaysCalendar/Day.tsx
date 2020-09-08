@@ -2,6 +2,7 @@ import React from 'react';
 import {css} from '@emotion/core';
 import {Span} from '../../../Typography';
 import {useTheme} from '../../../Themes';
+import {useSelect} from '../../../Select';
 import {useDayPicker} from '../../DayPickerProvider';
 import {zeroPad} from '../utils/common';
 import {TCalendarDate} from '../../types';
@@ -30,6 +31,7 @@ export function Day({date, title = ''}: TDayProps) {
   } = useDayPicker();
   const theme = useTheme();
   const {day, month, year, isCurrentMonth} = date;
+  const {handleCloseSelect} = useSelect();
 
   const isCurrentDay = React.useCallback(() => {
     return day === currentDay && month === currentMonth && year === currentYear;
@@ -58,10 +60,11 @@ export function Day({date, title = ''}: TDayProps) {
     });
     const newDate = outputDate.join(delimiter);
     handleChangeDay(newDate);
-  }, [day, delimiter, format, handleChangeDay, month, year]);
+    handleCloseSelect();
+  }, [day, delimiter, format, handleChangeDay, handleCloseSelect, month, year]);
   return (
     <Span
-      onClick={handleSelectDay}
+      onClickCapture={handleSelectDay}
       title={title}
       css={[baseStyles, css({color: date.type === 'weekend' && '#D40000'}), dayStyles]}
     >

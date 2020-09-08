@@ -144,9 +144,9 @@ export interface ISelectProps extends React.HTMLProps<HTMLDivElement> {
 `.trim();
 
 const selectReducer = (state: ISelectState, changes: ISelectState) => {
-  console.log('===reducer===', state, changes);
+  console.info('===reducer===', state, changes);
   switch (changes.type) {
-    case SelectChangeTypes.selectClick:
+    case SelectChangeTypes.toggle:
       return {
         ...state,
         ...changes,
@@ -177,7 +177,7 @@ export function SelectPage() {
   const [selectState, setState] = useState(-1);
 
   const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
-    console.log(e.currentTarget.value);
+    console.info(e.currentTarget.value);
     const currentId = Number(e.currentTarget.value);
     // const currentValue = filterOptions.find((option) => option.id === currentId).name;
     setState(currentId);
