@@ -1,3 +1,5 @@
+import { SerializedStyles } from '@emotion/core'
+
 export enum SelectChangeTypes {
   idle = 'IDLE',
   toggle = 'TOGGLE',
@@ -18,6 +20,7 @@ export interface ISelectProps extends React.HTMLProps<HTMLDivElement> {
   isEdit?: boolean;
   hasError?: boolean;
   children?: React.ReactNode;
+  activeStyles?: SerializedStyles;
 }
 
 export interface ISelectContext {

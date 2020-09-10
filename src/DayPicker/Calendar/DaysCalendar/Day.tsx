@@ -4,7 +4,7 @@ import {Span} from '../../../Typography';
 import {useTheme} from '../../../Themes';
 import {useSelect} from '../../../Select';
 import {useDayPicker} from '../../DayPickerProvider';
-import {zeroPad} from '../utils/common';
+import {zeroPad} from '../../utils/common';
 import {TCalendarDate} from '../../types';
 
 const baseStyles = css`

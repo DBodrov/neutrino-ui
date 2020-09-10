@@ -1,36 +1,33 @@
 import React, {createContext, useContext, useMemo} from 'react';
-import {SerializedStyles} from '@emotion/core';
-import {createMask, parseFormat, parseDate} from './utils';
+import {createMask, parseFormat, parseDate} from './utils/format';
+import {THIS_DAY, THIS_MONTH, THIS_YEAR} from './utils/date';
 import {TDay} from './types';
 
 export type TFormatConfig = {inputs: Map<string, {length: number}>; delimiter: string};
 
 interface IDayPickerContext {
   mask: string;
-  inputCss?: SerializedStyles;
   name: string;
   format: string;
   delimiter: string;
-  handleChangeInput: (value?: string, event?: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   day: number;
   month: number;
   year: number;
   handleChangeDay: (date: string) => void;
   locale: string | string[];
-  //dispatch: React.Dispatch<TDay>;
 }
 
 const DayPickerContext = createContext<IDayPickerContext | undefined>(undefined);
 
 export function DayPickerProvider(props: any) {
-  const {config = {}, value, inputCss, name, className, onChangeHandler, ...restProps} = props;
+  const {config = {}, value, name, className, onChangeHandler, ...restProps} = props;
   const [{day, month, year}, dispatch] = React.useReducer(
     (state: TDay, change: TDay): TDay => ({...state, ...change}),
     {
-      day: undefined,
-      month: undefined,
-      year: undefined,
+      day: THIS_DAY,
+      month: THIS_MONTH,
+      year: THIS_YEAR,
     },
   );
   const {format = 'DD.MM.YYYY', locale = 'ru'} = config;
@@ -52,21 +49,11 @@ export function DayPickerProvider(props: any) {
     [onChangeHandler],
   );
 
-  const handleChangeInput = React.useCallback(
-    (value?: string, event?: React.ChangeEvent<HTMLInputElement>) => {
-      //console.log(value);
-      //const a = digits.split('');
-    },
-    [],
-  );
-
   const ctxValue = useMemo<IDayPickerContext>(
     () => ({
       mask,
-      inputCss,
       name,
       format,
-      handleChangeInput,
       className,
       delimiter,
       day,
@@ -75,20 +62,7 @@ export function DayPickerProvider(props: any) {
       handleChangeDay,
       locale,
     }),
-    [
-      mask,
-      inputCss,
-      name,
-      format,
-      handleChangeInput,
-      className,
-      delimiter,
-      day,
-      month,
-      year,
-      handleChangeDay,
-      locale,
-    ],
+    [mask, name, format, className, delimiter, day, month, year, handleChangeDay, locale],
   );
 
   return <DayPickerContext.Provider value={ctxValue} {...restProps} />;

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import {useDayPicker} from '../../DayPickerProvider';
-import {getDayTooltip} from '../utils/calendar';
+import {getDayTooltip} from '../../utils/calendar';
 import {Day} from './Day';
 import {createDayCalendar} from './utils';
 

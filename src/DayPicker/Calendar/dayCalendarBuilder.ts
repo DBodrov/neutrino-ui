@@ -6,8 +6,8 @@ import {
   getNextMonth,
   getPreviousMonth,
   getDisabledState,
-} from './utils/calendar';
-import {THIS_MONTH, THIS_YEAR, CALENDAR_WEEKS} from './utils/date';
+} from '../utils/calendar';
+import {THIS_MONTH, THIS_YEAR, CALENDAR_WEEKS} from '../utils/date';
 import {ChangeDirection, IDateObject, IDateParams, IDayCalendarOptions} from '../../types';
 
 const createDateParams = (month = THIS_MONTH, year = THIS_YEAR, day = 1): IDateParams => ({

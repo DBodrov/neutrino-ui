@@ -1,9 +1,10 @@
-import React, { useReducer, useRef, createContext, useContext, useMemo } from 'react';
-import { useTheme } from '../Themes';
-import { ArrowDownIcon } from './icons/ArrowDownIcon';
-import { useSelectEvents } from './use-select';
-import { ISelectProps, ISelectState, SelectChangeTypes, ISelectContext } from './types';
-import { SelectWrapper } from './styles';
+import React, {useReducer, useRef, createContext, useContext, useMemo} from 'react';
+import {css} from '@emotion/core';
+import {useTheme} from '../Themes';
+import {ArrowDownIcon} from './icons/ArrowDownIcon';
+import {useSelectEvents} from './use-select';
+import {ISelectProps, ISelectState, SelectChangeTypes, ISelectContext} from './types';
+import {SelectWrapper} from './styles';
 
 const initState = {
   type: SelectChangeTypes.idle,
@@ -37,20 +38,28 @@ export const selectReducer = (state: ISelectState, changes: ISelectState) => {
     case SelectChangeTypes.close:
       return {
         ...state,
-        isOpen: false
+        isOpen: false,
       };
     case SelectChangeTypes.open:
       return {
         ...state,
         isOpen: true,
-      }
+      };
   }
 };
 
 const SelectContext = createContext<ISelectContext | undefined>(undefined);
 
 export function Select(props: ISelectProps) {
-  const { stateReducer = selectReducer, isEdit, disabled, children, hasError, ...restProps } = props;
+  const {
+    stateReducer = selectReducer,
+    isEdit,
+    disabled,
+    children,
+    hasError,
+    activeStyles,
+    ...restProps
+  } = props;
 
   const theme = useTheme();
 
@@ -58,27 +67,26 @@ export function Select(props: ISelectProps) {
   const selectRef = useRef<HTMLDivElement>(null);
   const selectRect = selectRef?.current?.getBoundingClientRect();
 
-  const [{ isOpen }, dispatch] = useReducer(stateReducer, initState);
-  useSelectEvents(selectRef, dropdownRef, dispatch, { isOpen });
+  const [{isOpen}, dispatch] = useReducer(stateReducer, initState);
+  useSelectEvents(selectRef, dropdownRef, dispatch, {isOpen});
+
+  const activeCSS = isOpen ? css(activeStyles) : undefined;
 
   const handleToggleSelect = () => {
-    dispatch({ type: SelectChangeTypes.toggle });
+    dispatch({type: SelectChangeTypes.toggle});
   };
 
   const handleOpenSelect = () => dispatch({type: SelectChangeTypes.open});
 
   const handleCloseSelect = () => dispatch({type: SelectChangeTypes.close});
 
-  const ctxValue = useMemo<ISelectContext>(() => ({ dropdownRef, isOpen, selectRect, handleCloseSelect, handleOpenSelect, handleToggleSelect }), [
-    isOpen,
-    selectRect,
-  ]);
+  const ctxValue = useMemo<ISelectContext>(
+    () => ({dropdownRef, isOpen, selectRect, handleCloseSelect, handleOpenSelect, handleToggleSelect}),
+    [isOpen, selectRect],
+  );
 
   return (
-    <SelectWrapper
-      ref={selectRef}
-      {...restProps}
-    >
+    <SelectWrapper ref={selectRef} {...restProps} css={activeCSS}>
       <SelectContext.Provider value={ctxValue}>{children}</SelectContext.Provider>
       <ArrowDownIcon
         fill={theme.colors.textColors.text}

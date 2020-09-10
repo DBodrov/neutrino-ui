@@ -15,17 +15,18 @@ export type TDayType = 'workday' | 'weekend';
 
 export type TDayCalendar = TCalendarDate[];
 
+export interface IMonth {
+  monthNumber: number;
+  monthName: string;
+}
+
 /**@depricated */
 export type DatePickerValue = string;
 /**@depricated */
 export interface IYear {
   [id: number]: number;
 }
-/**@depricated */
-export interface IMonth {
-  monthNumber: string;
-  monthName: string;
-}
+
 /**@depricated */
 export interface IDatePickerProps {
   name: string;

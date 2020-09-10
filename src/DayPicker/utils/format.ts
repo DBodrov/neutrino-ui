@@ -1,3 +1,6 @@
+import {THIS_DAY, THIS_MONTH, THIS_YEAR} from './date'
+import {TDay} from '../types';
+
 const validateDayFormat = (format: string) => {
   const hasDay = format.includes('DD');
   const hasMonth = format.includes('MM');
@@ -47,6 +50,17 @@ export function createMask(format: string): string {
   return mask;
 }
 
-export function parseDateByFormat(value: string, format: string) {
-  const formatCfg = parseFormat(format);
+export function parseDate(value: string, format: string): TDay {
+  const {delimiter} = parseFormat(format);
+  const parsedFormat = format.split(delimiter).map(char => {
+    if (char === 'DD') return 'day';
+    if (char === 'MM') return 'month';
+    return 'year';
+  });
+  const day: TDay = {day: THIS_DAY, month: THIS_MONTH, year: THIS_YEAR};
+  value.split(delimiter).forEach((dateChar, idx) => {
+    const charType = parsedFormat[idx];
+    day[charType] = Number(dateChar);
+  });
+  return day;
 }

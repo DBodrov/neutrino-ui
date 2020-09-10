@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {css, jsx} from '@emotion/core';
+import styled from '@emotion/styled';
 import {Example, Wrapper} from './Example';
 import {
   DayPicker,
@@ -28,32 +29,33 @@ const dayPickerReducer = (state: ISelectState = initState, changes: ISelectState
   }
 };
 
+const DateBox = styled(Span)`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+`;
+
 function DayPickerInput({date}: any) {
   const {handleToggleSelect} = useSelect()
   return (
-    <Span css={{fontSize: 14, width: '100%', height: '100%'}} onClick={handleToggleSelect}>{date}</Span>
+    <DateBox onClick={handleToggleSelect}>{date}</DateBox>
   )
 }
 
 export function DatePickerPage() {
   const [date, setDate] = useState('');
   const dayPickerCfg = {format: 'YYYY/MM/DD'};
+
   return (
     <Wrapper>
       <span>DatePicker</span>
 
       <DayPicker value={date} onChangeHandler={(date: string) => setDate(date)} config={dayPickerCfg}>
-        <Select
-          stateReducer={dayPickerReducer}
-          width="250px"
-          height="48px"
-          css={{border: '1px #dde1e5 solid', padding: '0 8px', cursor: 'pointer'}}
-        >
           <DayPickerInput date={date}/>
-          <SelectOptions>
-            <Calendar />
-          </SelectOptions>
-        </Select>
       </DayPicker>
       <Span>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda dolorem mollitia ut qui beatae

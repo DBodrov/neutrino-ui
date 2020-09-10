@@ -1,5 +1,5 @@
-import {THIS_MONTH, THIS_YEAR, CALENDAR_WEEKS} from '../utils/date';
-import {getDayType, getNextMonth, getPreviousMonth, getDaysInMonth, getCurrentMonthDays, getFirstDayOfMonth} from '../utils/calendar';
+import {THIS_MONTH, THIS_YEAR, CALENDAR_WEEKS} from '../../utils/date';
+import {getDayType, getNextMonth, getPreviousMonth, getDaysInMonth, getCurrentMonthDays, getFirstDayOfMonth} from '../../utils/calendar';
 import {TDayCalendar} from '../../types';
 
 const createDay = (day: number, month: number, year: number, isCurrentMonth: boolean) => {

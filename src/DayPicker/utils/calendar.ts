@@ -1,4 +1,4 @@
-import {TDay, TDayType} from '../../types';
+import {TDay, TDayType} from '../types';
 import {THIS_MONTH, THIS_YEAR, THIS_DECADE} from './date';
 
 export const getDaysInMonth = (month = THIS_MONTH, year = THIS_YEAR) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import {WEEK_DAYS} from './utils/date';
+import {WEEK_DAYS} from '../utils/date';
 import {Span} from '../../Typography';
 
 export const Week = styled.div`
