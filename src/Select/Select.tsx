@@ -12,6 +12,7 @@ const initState = {
 };
 
 export const selectReducer = (state: ISelectState, changes: ISelectState) => {
+  console.log(changes)
   switch (changes.type) {
     case SelectChangeTypes.idle:
     default:
@@ -70,11 +71,7 @@ export function Select(props: ISelectProps) {
   const [{isOpen}, dispatch] = useReducer(stateReducer, initState);
   useSelectEvents(selectRef, dropdownRef, dispatch, {isOpen});
 
-  const activeCSS = isOpen ? css(activeStyles) : undefined;
-
-  const handleToggleSelect = () => {
-    dispatch({type: SelectChangeTypes.toggle});
-  };
+  const handleToggleSelect = () => dispatch({type: SelectChangeTypes.toggle});
 
   const handleOpenSelect = () => dispatch({type: SelectChangeTypes.open});
 
@@ -85,19 +82,7 @@ export function Select(props: ISelectProps) {
     [isOpen, selectRect],
   );
 
-  return (
-    <SelectWrapper ref={selectRef} {...restProps} css={activeCSS}>
-      <SelectContext.Provider value={ctxValue}>{children}</SelectContext.Provider>
-      <ArrowDownIcon
-        fill={theme.colors.textColors.text}
-        css={{
-          marginLeft: 'auto',
-          transform: `rotate(${isOpen ? '180deg' : '0'})`,
-          transition: 'all 0.3s ease-in-out',
-        }}
-      />
-    </SelectWrapper>
-  );
+  return <SelectContext.Provider value={ctxValue}>{children}</SelectContext.Provider>;
 }
 
 export const useSelect = () => {

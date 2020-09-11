@@ -1,9 +1,9 @@
 import React from 'react';
-import {useSelect} from '../Select'
+import {useCombobox} from '../Combobox'
 
-export function ArrowDownIcon(props: React.SVGProps<SVGSVGElement>) {
+export function ArrowIcon(props: React.SVGProps<SVGSVGElement>) {
   const {fill = 'currentColor', ...restProps} = props;
-  const {isOpen} = useSelect();
+  const {isOpen} = useCombobox();
 
 
   return (

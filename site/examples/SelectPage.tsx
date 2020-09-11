@@ -1,7 +1,21 @@
 import React, {useState} from 'react';
+import styled from '@emotion/styled';
 import {ThemeProvider} from 'emotion-theming';
 import {Wrapper, Example, Label} from './Example';
-import {Select, createTheme, Span, SelectOptions, ISelectState, SelectChangeTypes} from 'neutrino-ui';
+import {
+  Select,
+  createTheme,
+  Span,
+  SelectOptions,
+  ISelectState,
+  SelectChangeTypes,
+  useSelect,
+  ArrowDownIcon,
+  Combobox,
+  ArrowIcon,
+  useCombobox,
+  Dropdown,
+} from 'neutrino-ui';
 
 const theme = createTheme({
   colors: {
@@ -173,6 +187,70 @@ const filterOptions = [
   {id: 2, name: 'Площадка 2'},
 ];
 
+const TextBox = styled(Span)`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 48px;
+  padding: 4px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const SelectBox = React.forwardRef({children}: any) {
+  const {handleToggle, isOpen} = useCombobox();
+  return (
+    <TextBox onClick={() => handleToggle()} css={{border: `1px ${isOpen ? '#000' : '#c7c7c7'} solid`}}>
+      {children}
+      <ArrowIcon />
+    </TextBox>
+  );
+}
+
+function OptionsList({selectState, setItem}: any) {
+  const {isOpen} = useCombobox();
+  return (
+    <Dropdown isOpen={isOpen} >
+      <ul
+        css={{
+          margin: 0,
+          padding: 0,
+          listStyle: 'none',
+          border: '1px #c7c7c7 solid',
+          boxSizing: 'border-box',
+          backgroundColor: '#fff',
+          width: '100%',
+        }}
+      >
+        {filterOptions.map(option => {
+              return (
+                <li
+                  key={option.id}
+                  value={option.id}
+                  css={{
+                    padding: '8px 16px',
+                    borderBottom: '1px #ccc solid',
+                    margin: 0,
+                    color: '#000',
+                    fontSize: 14,
+                    cursor: 'pointer',
+                    backgroundColor:
+                      option.id === selectState ? theme.colors.grayColors.gray6 : 'transparent',
+                  }}
+                  onClick={setItem}
+                >
+                  {option.name}
+                </li>
+              );
+            })}
+      </ul>
+    </Dropdown>
+  );
+}
+
 export function SelectPage() {
   const [selectState, setState] = useState(-1);
 
@@ -191,55 +269,51 @@ export function SelectPage() {
     <Wrapper>
       <Example code={exampleProps} />
       <Label>Base Select</Label>
-      <ThemeProvider theme={theme}>
-        <Select
-          width="300px"
-          height="36px"
-          stateReducer={selectReducer}
-          css={{backgroundColor: '#325b72', padding: '0 8px', cursor: 'pointer'}}
-        >
-          <Span>
+      <Combobox>
+        <div css={{position: 'relative', width: 300}}>
+          <SelectBox>
             <span css={{color: '#ccc'}}>Площадка: </span>
             {getDisplayValue().name}
-          </Span>
-
-          <SelectOptions>
-            <ul
-              css={{
-                backgroundColor: theme.colors.pageElementsColors.formElements,
-                margin: 0,
-                padding: 0,
-                listStyle: 'none',
-              }}
-            >
-              {filterOptions.map(option => {
-                return (
-                  <li
-                    key={option.id}
-                    value={option.id}
-                    css={{
-                      padding: '8px 16px',
-                      borderBottom: '1px #ccc solid',
-                      margin: 0,
-                      color: theme.colors.textColors.text,
-                      fontSize: 14,
-                      cursor: 'pointer',
-                      backgroundColor:
-                        option.id === selectState
-                          ? theme.colors.pageElementsColors.formElementsActive
-                          : 'transparent',
-                    }}
-                    onClick={handleItemClick}
-                  >
-                    {option.name}
-                  </li>
-                );
-              })}
-            </ul>
-          </SelectOptions>
-        </Select>
-      </ThemeProvider>
+          </SelectBox>
+          <OptionsList selectState={selectState} setItem={handleItemClick} />
+        </div>
+      </Combobox>
       <Example code={exampleDefault} />
     </Wrapper>
   );
 }
+
+// <SelectOptions>
+//   <ul
+//     css={{
+//       backgroundColor: theme.colors.pageElementsColors.formElements,
+//       margin: 0,
+//       padding: 0,
+//       listStyle: 'none',
+//     }}
+//   >
+//     {filterOptions.map(option => {
+//       return (
+//         <li
+//           key={option.id}
+//           value={option.id}
+//           css={{
+//             padding: '8px 16px',
+//             borderBottom: '1px #ccc solid',
+//             margin: 0,
+//             color: theme.colors.textColors.text,
+//             fontSize: 14,
+//             cursor: 'pointer',
+//             backgroundColor:
+//               option.id === selectState
+//                 ? theme.colors.pageElementsColors.formElementsActive
+//                 : 'transparent',
+//           }}
+//           onClick={handleItemClick}
+//         >
+//           {option.name}
+//         </li>
+//       );
+//     })}
+//   </ul>
+// </SelectOptions>
