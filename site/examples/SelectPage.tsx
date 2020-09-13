@@ -187,7 +187,7 @@ const filterOptions = [
   {id: 2, name: 'Площадка 2'},
 ];
 
-const TextBox = styled(Span)`
+const TextBox = styled.div`
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
@@ -200,20 +200,23 @@ const TextBox = styled(Span)`
   }
 `;
 
-const SelectBox = React.forwardRef({children}: any) {
+const SelectBox = React.forwardRef(({children}: any, ref: React.Ref<HTMLDivElement>) => {
   const {handleToggle, isOpen} = useCombobox();
   return (
-    <TextBox onClick={() => handleToggle()} css={{border: `1px ${isOpen ? '#000' : '#c7c7c7'} solid`}}>
+    <TextBox onClick={handleToggle} css={{border: `1px ${isOpen ? '#000' : '#c7c7c7'} solid`}} ref={ref}>
       {children}
       <ArrowIcon />
     </TextBox>
   );
-}
+});
 
-function OptionsList({selectState, setItem}: any) {
+function OptionsList({selectState, onSelect, selectRect}: any) {
+  const optionsRef = React.useRef<HTMLDivElement>(null);
+  console.log(selectRect);
+
   const {isOpen} = useCombobox();
   return (
-    <Dropdown isOpen={isOpen} >
+    <Dropdown isOpen={isOpen} ref={optionsRef} parentBound={isOpen ? selectRect : undefined}>
       <ul
         css={{
           margin: 0,
@@ -226,26 +229,25 @@ function OptionsList({selectState, setItem}: any) {
         }}
       >
         {filterOptions.map(option => {
-              return (
-                <li
-                  key={option.id}
-                  value={option.id}
-                  css={{
-                    padding: '8px 16px',
-                    borderBottom: '1px #ccc solid',
-                    margin: 0,
-                    color: '#000',
-                    fontSize: 14,
-                    cursor: 'pointer',
-                    backgroundColor:
-                      option.id === selectState ? theme.colors.grayColors.gray6 : 'transparent',
-                  }}
-                  onClick={setItem}
-                >
-                  {option.name}
-                </li>
-              );
-            })}
+          return (
+            <li
+              key={option.id}
+              value={option.id}
+              css={{
+                padding: '8px 16px',
+                borderBottom: '1px #ccc solid',
+                margin: 0,
+                color: '#000',
+                fontSize: 14,
+                cursor: 'pointer',
+                backgroundColor: option.id === selectState ? theme.colors.grayColors.gray6 : 'transparent',
+              }}
+              onClick={onSelect}
+            >
+              {option.name}
+            </li>
+          );
+        })}
       </ul>
     </Dropdown>
   );
@@ -253,7 +255,9 @@ function OptionsList({selectState, setItem}: any) {
 
 export function SelectPage() {
   const [selectState, setState] = useState(-1);
-
+  const comboRef = React.useRef<HTMLDivElement>(null);
+  const selectRef = React.useRef<HTMLDivElement>(null);
+  console.log(selectRef);
   const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
     console.info(e.currentTarget.value);
     const currentId = Number(e.currentTarget.value);
@@ -265,17 +269,25 @@ export function SelectPage() {
     selectState,
   ]);
 
+  React.useEffect(() => {
+    // add EventListener on outside click
+  }, []);
+
   return (
     <Wrapper>
       <Example code={exampleProps} />
       <Label>Base Select</Label>
       <Combobox>
-        <div css={{position: 'relative', width: 300}}>
-          <SelectBox>
+        <div css={{position: 'relative', width: 300}} ref={comboRef}>
+          <SelectBox ref={selectRef}>
             <span css={{color: '#ccc'}}>Площадка: </span>
             {getDisplayValue().name}
           </SelectBox>
-          <OptionsList selectState={selectState} setItem={handleItemClick} />
+          <OptionsList
+            selectRect={selectRef?.current?.getBoundingClientRect()}
+            selectState={selectState}
+            onSelect={handleItemClick}
+          />
         </div>
       </Combobox>
       <Example code={exampleDefault} />
