@@ -1,16 +1,11 @@
 import React, {useState} from 'react';
 import styled from '@emotion/styled';
-import {ThemeProvider} from 'emotion-theming';
+// import {ThemeProvider} from 'emotion-theming';
 import {Wrapper, Example, Label} from './Example';
 import {
-  Select,
   createTheme,
-  Span,
-  SelectOptions,
   ISelectState,
   SelectChangeTypes,
-  useSelect,
-  ArrowDownIcon,
   Combobox,
   ArrowIcon,
   useCombobox,
@@ -200,23 +195,55 @@ const TextBox = styled.div`
   }
 `;
 
-const SelectBox = React.forwardRef(({children}: any, ref: React.Ref<HTMLDivElement>) => {
+function SelectBox({children}: any) {
   const {handleToggle, isOpen} = useCombobox();
   return (
-    <TextBox onClick={handleToggle} css={{border: `1px ${isOpen ? '#000' : '#c7c7c7'} solid`}} ref={ref}>
+    <TextBox onClick={handleToggle} css={{border: `1px ${isOpen ? '#000' : '#c7c7c7'} solid`}}>
       {children}
       <ArrowIcon />
     </TextBox>
   );
-});
+}
 
-function OptionsList({selectState, onSelect, selectRect}: any) {
+
+function Select() {
+  const [selectState, setState] = useState(-1);
+  const {handleClose, isOpen} = useCombobox();
+  const comboRef = React.useRef<HTMLDivElement>(null);
   const optionsRef = React.useRef<HTMLDivElement>(null);
-  console.log(selectRect);
+  const getDisplayValue = React.useCallback(() => filterOptions.find(item => item.id === selectState), [
+    selectState,
+  ]);
 
-  const {isOpen} = useCombobox();
+  const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
+    const currentId = Number(e.currentTarget.value);
+    setState(currentId);
+  };
+
+  React.useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (e.target instanceof HTMLElement  && isOpen) {
+        const rootNode = comboRef?.current;
+        const optionsList = optionsRef?.current;
+        if (rootNode?.contains(e.target) || optionsList?.contains(e.target)) {
+          return;
+        }
+        handleClose();
+      }
+    };
+
+    isOpen && document.addEventListener('click', handleClickOutside);
+
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [handleClose, isOpen]);
+
   return (
-    <Dropdown isOpen={isOpen} ref={optionsRef} parentBound={isOpen ? selectRect : undefined}>
+    <div css={{position: 'relative', width: 300}} ref={comboRef}>
+      <SelectBox>
+        <span css={{color: '#ccc'}}>Площадка: </span>
+        {getDisplayValue().name}
+      </SelectBox>
+      <Dropdown isOpen={isOpen} ref={optionsRef} parentNode={isOpen ? comboRef : undefined}>
       <ul
         css={{
           margin: 0,
@@ -242,7 +269,7 @@ function OptionsList({selectState, onSelect, selectRect}: any) {
                 cursor: 'pointer',
                 backgroundColor: option.id === selectState ? theme.colors.grayColors.gray6 : 'transparent',
               }}
-              onClick={onSelect}
+              onClick={handleItemClick}
             >
               {option.name}
             </li>
@@ -250,82 +277,19 @@ function OptionsList({selectState, onSelect, selectRect}: any) {
         })}
       </ul>
     </Dropdown>
+    </div>
   );
 }
 
 export function SelectPage() {
-  const [selectState, setState] = useState(-1);
-  const comboRef = React.useRef<HTMLDivElement>(null);
-  const selectRef = React.useRef<HTMLDivElement>(null);
-  console.log(selectRef);
-  const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
-    console.info(e.currentTarget.value);
-    const currentId = Number(e.currentTarget.value);
-    // const currentValue = filterOptions.find((option) => option.id === currentId).name;
-    setState(currentId);
-  };
-
-  const getDisplayValue = React.useCallback(() => filterOptions.find(item => item.id === selectState), [
-    selectState,
-  ]);
-
-  React.useEffect(() => {
-    // add EventListener on outside click
-  }, []);
-
   return (
     <Wrapper>
       <Example code={exampleProps} />
       <Label>Base Select</Label>
       <Combobox>
-        <div css={{position: 'relative', width: 300}} ref={comboRef}>
-          <SelectBox ref={selectRef}>
-            <span css={{color: '#ccc'}}>Площадка: </span>
-            {getDisplayValue().name}
-          </SelectBox>
-          <OptionsList
-            selectRect={selectRef?.current?.getBoundingClientRect()}
-            selectState={selectState}
-            onSelect={handleItemClick}
-          />
-        </div>
+        <Select />
       </Combobox>
       <Example code={exampleDefault} />
     </Wrapper>
   );
 }
-
-// <SelectOptions>
-//   <ul
-//     css={{
-//       backgroundColor: theme.colors.pageElementsColors.formElements,
-//       margin: 0,
-//       padding: 0,
-//       listStyle: 'none',
-//     }}
-//   >
-//     {filterOptions.map(option => {
-//       return (
-//         <li
-//           key={option.id}
-//           value={option.id}
-//           css={{
-//             padding: '8px 16px',
-//             borderBottom: '1px #ccc solid',
-//             margin: 0,
-//             color: theme.colors.textColors.text,
-//             fontSize: 14,
-//             cursor: 'pointer',
-//             backgroundColor:
-//               option.id === selectState
-//                 ? theme.colors.pageElementsColors.formElementsActive
-//                 : 'transparent',
-//           }}
-//           onClick={handleItemClick}
-//         >
-//           {option.name}
-//         </li>
-//       );
-//     })}
-//   </ul>
-// </SelectOptions>
