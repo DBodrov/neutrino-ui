@@ -23,6 +23,7 @@ const grayColors = {
 const pageElementsColors = {
     body: simpleColors.white,
     border: grayColors.gray2,
+    activeBorder: simpleColors.black,
     disabled: grayColors.gray4,
     overlay: 'rgba(171,180,189, 0.9)',
     formElements: simpleColors.white,

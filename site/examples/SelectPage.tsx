@@ -2,15 +2,7 @@ import React, {useState} from 'react';
 import styled from '@emotion/styled';
 // import {ThemeProvider} from 'emotion-theming';
 import {Wrapper, Example, Label} from './Example';
-import {
-  createTheme,
-  ISelectState,
-  SelectChangeTypes,
-  Combobox,
-  ArrowIcon,
-  useCombobox,
-  Dropdown,
-} from 'neutrino-ui';
+import {createTheme, SimpleSelect, Combobox, ArrowIcon, useCombobox, Dropdown} from 'neutrino-ui';
 
 const theme = createTheme({
   colors: {
@@ -152,34 +144,10 @@ export interface ISelectProps extends React.HTMLProps<HTMLDivElement> {
 }
 `.trim();
 
-const selectReducer = (state: ISelectState, changes: ISelectState) => {
-  console.info('===reducer===', state, changes);
-  switch (changes.type) {
-    case SelectChangeTypes.toggle:
-      return {
-        ...state,
-        ...changes,
-        isOpen: !state.isOpen,
-      };
-    case SelectChangeTypes.clickOutside:
-    case SelectChangeTypes.scroll:
-      return {
-        ...state,
-        ...changes,
-        isOpen: true,
-      };
-    default:
-      return {
-        ...state,
-        ...changes,
-      };
-  }
-};
-
 const filterOptions = [
-  {id: -1, name: 'Все'},
-  {id: 1, name: 'Площадка 1'},
-  {id: 2, name: 'Площадка 2'},
+  {id: -1, value: 'Все'},
+  {id: 1, value: 'Площадка 1'},
+  {id: 2, value: 'Площадка 2'},
 ];
 
 const TextBox = styled.div`
@@ -192,6 +160,7 @@ const TextBox = styled.div`
   padding: 4px;
   &:hover {
     cursor: pointer;
+    border: 1px #000 solid;
   }
 `;
 
@@ -204,7 +173,6 @@ function SelectBox({children}: any) {
     </TextBox>
   );
 }
-
 
 function Select() {
   const [selectState, setState] = useState(-1);
@@ -222,7 +190,7 @@ function Select() {
 
   React.useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (e.target instanceof HTMLElement  && isOpen) {
+      if (e.target instanceof HTMLElement && isOpen) {
         const rootNode = comboRef?.current;
         const optionsList = optionsRef?.current;
         if (rootNode?.contains(e.target) || optionsList?.contains(e.target)) {
@@ -241,51 +209,98 @@ function Select() {
     <div css={{position: 'relative', width: 300}} ref={comboRef}>
       <SelectBox>
         <span css={{color: '#ccc'}}>Площадка: </span>
-        {getDisplayValue().name}
+        {getDisplayValue().value}
       </SelectBox>
       <Dropdown isOpen={isOpen} ref={optionsRef} parentNode={isOpen ? comboRef : undefined}>
-      <ul
-        css={{
-          margin: 0,
-          padding: 0,
-          listStyle: 'none',
-          border: '1px #c7c7c7 solid',
-          boxSizing: 'border-box',
-          backgroundColor: '#fff',
-          width: '100%',
-        }}
-      >
-        {filterOptions.map(option => {
-          return (
-            <li
-              key={option.id}
-              value={option.id}
-              css={{
-                padding: '8px 16px',
-                borderBottom: '1px #ccc solid',
-                margin: 0,
-                color: '#000',
-                fontSize: 14,
-                cursor: 'pointer',
-                backgroundColor: option.id === selectState ? theme.colors.grayColors.gray6 : 'transparent',
-              }}
-              onClick={handleItemClick}
-            >
-              {option.name}
-            </li>
-          );
-        })}
-      </ul>
-    </Dropdown>
+        <ul
+          css={{
+            margin: 0,
+            padding: 0,
+            listStyle: 'none',
+            border: '1px #c7c7c7 solid',
+            boxSizing: 'border-box',
+            backgroundColor: '#fff',
+            width: '100%',
+          }}
+        >
+          {filterOptions.map(option => {
+            return (
+              <li
+                key={option.id}
+                value={option.id}
+                css={{
+                  padding: '8px 16px',
+                  borderBottom: '1px #ccc solid',
+                  margin: 0,
+                  color: '#000',
+                  fontSize: 14,
+                  cursor: 'pointer',
+                  backgroundColor: option.id === selectState ? theme.colors.grayColors.gray6 : 'transparent',
+                }}
+                onClick={handleItemClick}
+              >
+                {option.value}
+              </li>
+            );
+          })}
+        </ul>
+      </Dropdown>
     </div>
   );
 }
 
 export function SelectPage() {
+  const [selected, setSelected] = React.useState(-1)
+
+  const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
+    const val = e.currentTarget.value;
+    setSelected(Number(val));
+  }
+
   return (
     <Wrapper>
       <Example code={exampleProps} />
-      <Label>Base Select</Label>
+      <Label>Simple Select</Label>
+      <SimpleSelect>
+        {({isOpen, handleClose}) => {
+          return (
+            <ul
+              css={{
+                margin: 0,
+                padding: 0,
+                listStyle: 'none',
+                border: '1px #c7c7c7 solid',
+                boxSizing: 'border-box',
+                backgroundColor: '#fff',
+                width: '100%',
+              }}
+            >
+              {filterOptions.map(option => {
+                return (
+                  <li
+                    key={option.id}
+                    value={option.id}
+                    css={{
+                      padding: '8px 16px',
+                      borderBottom: '1px #ccc solid',
+                      margin: 0,
+                      color: '#000',
+                      fontSize: 14,
+                      cursor: 'pointer',
+                      backgroundColor:
+                        option.id === selected ? theme.colors.grayColors.gray6 : 'transparent',
+                    }}
+                    onClick={handleItemClick}
+                  >
+                    {option.value}
+                  </li>
+                );
+              })}
+            </ul>
+          );
+        }}
+      </SimpleSelect>
+
       <Combobox>
         <Select />
       </Combobox>
