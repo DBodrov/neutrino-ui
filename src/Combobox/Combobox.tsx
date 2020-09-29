@@ -7,7 +7,7 @@ const initState = {
 };
 
 export const comboboxReducer = (state: IComboboxState, changes: IComboboxState): IComboboxState => {
-  console.info(changes)
+  // console.info(changes)
   switch (changes.type) {
     case StateChangeTypes.idle:
     default:
@@ -40,10 +40,7 @@ export const comboboxReducer = (state: IComboboxState, changes: IComboboxState):
 const ComboboxContext = React.createContext<IComboboxContext | undefined>(undefined);
 
 export function Combobox(props: IComboboxProps) {
-  const {
-    stateReducer = comboboxReducer,
-    children
-  } = props;
+  const {stateReducer = comboboxReducer, children} = props;
 
   // const dropdownRef = useRef<HTMLDivElement>(null);
   // const selectRef = useRef<HTMLDivElement>(null);
@@ -58,10 +55,9 @@ export function Combobox(props: IComboboxProps) {
 
   const handleClose = () => dispatch({type: StateChangeTypes.close});
 
-  const ctxValue = React.useMemo<IComboboxContext>(
-    () => ({isOpen, handleClose, handleOpen, handleToggle}),
-    [isOpen],
-  );
+  const ctxValue = React.useMemo<IComboboxContext>(() => ({isOpen, handleClose, handleOpen, handleToggle}), [
+    isOpen,
+  ]);
 
   return <ComboboxContext.Provider value={ctxValue}>{children}</ComboboxContext.Provider>;
 }
