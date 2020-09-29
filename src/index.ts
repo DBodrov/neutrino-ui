@@ -10,5 +10,4 @@ export * from './Dropdown';
 export * from './Modal';
 export * from './SimpleSelect';
 export * from './Switch';
-// export * from './DayPicker';
 export * from './Combobox';
