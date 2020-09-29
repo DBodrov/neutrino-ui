@@ -5,7 +5,7 @@ const utils = require('../scripts/loadersTests');
 const {resolveApp} = require('../scripts/paths');
 const commonConfig = require('./webpack.config.common');
 
-module.exports = webpackMerge(commonConfig, {
+module.exports = webpackMerge.merge(commonConfig, {
   mode: 'development',
   devtool: 'inline-source-map',
   bail: true,

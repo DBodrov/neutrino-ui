@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import styled from '@emotion/styled';
+import {css} from '@emotion/core';
 // import {ThemeProvider} from 'emotion-theming';
 import {Wrapper, Example, Label} from './Example';
 import {createTheme, SimpleSelect, Combobox, ArrowIcon, useCombobox, Dropdown} from 'neutrino-ui';
@@ -123,24 +124,19 @@ function MyApp() {
 `.trim();
 
 const exampleProps = `
-export enum SelectChangeTypes {
-  idle = 'IDLE',
-  selectClick = 'SELECT_CLICK',
-  clickOutside = 'CLICK_OUTSIDE',
-  scroll = 'SCROLL',
-  changeDisplayValue = 'CHANGE_DISPLAY_VALUE'
-}
-
-export interface ISelectState {
-  type?: SelectChangeTypes;
-  isOpen?: boolean;
+type OptionItem = {
+  id: string | number;
+  value: string | number;
 };
 
-export interface ISelectProps extends React.HTMLProps<HTMLDivElement> {
-  stateReducer?: (state: ISelectState, changes: ISelectState) => ISelectState;
-  isEdit?: boolean;
+export interface ISimpleSelectProps extends Omit<React.HTMLProps<HTMLDivElement>, 'value' | 'onSelect'> {
   hasError?: boolean;
-  children?: React.ReactNode;
+  value?: string | number;
+  selectInputStyles?: SerializedStyles;
+  optionsListStyles?: SerializedStyles;
+  optionStyles?: SerializedStyles;
+  options?: OptionItem[];
+  onSelect: (event?: React.PointerEvent<HTMLLIElement>) => void;
 }
 `.trim();
 
@@ -148,162 +144,39 @@ const filterOptions = [
   {id: -1, value: 'Все'},
   {id: 1, value: 'Площадка 1'},
   {id: 2, value: 'Площадка 2'},
+  {id: 3, value: 'Площадка 3'},
+  {id: 4, value: 'Площадка 4'},
+  {id: 5, value: 'Площадка 5'},
+  {id: 6, value: 'Площадка 6'},
+  {id: 7, value: 'Площадка 7'},
+  {id: 8, value: 'Площадка 8'},
+  {id: 9, value: 'Площадка 9'},
+  {id: 10, value: 'Площадка 10'},
+  {id: 11, value: 'Площадка 11'},
+  {id: 12, value: 'Площадка 12'},
 ];
 
-const TextBox = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  height: 48px;
-  padding: 4px;
-  &:hover {
-    cursor: pointer;
-    border: 1px #000 solid;
-  }
-`;
-
-function SelectBox({children}: any) {
-  const {handleToggle, isOpen} = useCombobox();
-  return (
-    <TextBox onClick={handleToggle} css={{border: `1px ${isOpen ? '#000' : '#c7c7c7'} solid`}}>
-      {children}
-      <ArrowIcon />
-    </TextBox>
-  );
-}
-
-function Select() {
-  const [selectState, setState] = useState(-1);
-  const {handleClose, isOpen} = useCombobox();
-  const comboRef = React.useRef<HTMLDivElement>(null);
-  const optionsRef = React.useRef<HTMLDivElement>(null);
-  const getDisplayValue = React.useCallback(() => filterOptions.find(item => item.id === selectState), [
-    selectState,
-  ]);
-
-  const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
-    const currentId = Number(e.currentTarget.value);
-    setState(currentId);
-  };
-
-  React.useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (e.target instanceof HTMLElement && isOpen) {
-        const rootNode = comboRef?.current;
-        const optionsList = optionsRef?.current;
-        if (rootNode?.contains(e.target) || optionsList?.contains(e.target)) {
-          return;
-        }
-        handleClose();
-      }
-    };
-
-    isOpen && document.addEventListener('click', handleClickOutside);
-
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [handleClose, isOpen]);
-
-  return (
-    <div css={{position: 'relative', width: 300}} ref={comboRef}>
-      <SelectBox>
-        <span css={{color: '#ccc'}}>Площадка: </span>
-        {getDisplayValue().value}
-      </SelectBox>
-      <Dropdown isOpen={isOpen} ref={optionsRef} parentNode={isOpen ? comboRef : undefined}>
-        <ul
-          css={{
-            margin: 0,
-            padding: 0,
-            listStyle: 'none',
-            border: '1px #c7c7c7 solid',
-            boxSizing: 'border-box',
-            backgroundColor: '#fff',
-            width: '100%',
-          }}
-        >
-          {filterOptions.map(option => {
-            return (
-              <li
-                key={option.id}
-                value={option.id}
-                css={{
-                  padding: '8px 16px',
-                  borderBottom: '1px #ccc solid',
-                  margin: 0,
-                  color: '#000',
-                  fontSize: 14,
-                  cursor: 'pointer',
-                  backgroundColor: option.id === selectState ? theme.colors.grayColors.gray6 : 'transparent',
-                }}
-                onClick={handleItemClick}
-              >
-                {option.value}
-              </li>
-            );
-          })}
-        </ul>
-      </Dropdown>
-    </div>
-  );
-}
-
 export function SelectPage() {
-  const [selected, setSelected] = React.useState(-1)
+  const [selected, setSelected] = React.useState(undefined);
 
   const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
     const val = e.currentTarget.value;
     setSelected(Number(val));
-  }
+  };
 
   return (
     <Wrapper>
-      <Example code={exampleProps} />
       <Label>Simple Select</Label>
-      <SimpleSelect>
-        {({isOpen, handleClose}) => {
-          return (
-            <ul
-              css={{
-                margin: 0,
-                padding: 0,
-                listStyle: 'none',
-                border: '1px #c7c7c7 solid',
-                boxSizing: 'border-box',
-                backgroundColor: '#fff',
-                width: '100%',
-              }}
-            >
-              {filterOptions.map(option => {
-                return (
-                  <li
-                    key={option.id}
-                    value={option.id}
-                    css={{
-                      padding: '8px 16px',
-                      borderBottom: '1px #ccc solid',
-                      margin: 0,
-                      color: '#000',
-                      fontSize: 14,
-                      cursor: 'pointer',
-                      backgroundColor:
-                        option.id === selected ? theme.colors.grayColors.gray6 : 'transparent',
-                    }}
-                    onClick={handleItemClick}
-                  >
-                    {option.value}
-                  </li>
-                );
-              })}
-            </ul>
-          );
-        }}
-      </SimpleSelect>
-
-      <Combobox>
-        <Select />
-      </Combobox>
+      <Example code={exampleProps} />
+      <SimpleSelect
+        options={filterOptions}
+        css={{width: 300}}
+        value={selected}
+        onSelect={handleItemClick}
+        selectInputStyles={css({borderRadius: 8})}
+        optionsListStyles={css({borderRadius: 8, height: 300, overflow: 'auto'})}
+        optionStyles={css({color: 'green'})}
+      />
       <Example code={exampleDefault} />
     </Wrapper>
   );
