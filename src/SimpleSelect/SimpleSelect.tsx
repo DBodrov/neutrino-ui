@@ -37,7 +37,7 @@ function Select(props: ISimpleSelectProps) {
     padding: '8px 16px',
     borderBottom: '1px #ccc solid',
     margin: 0,
-    color: '#000',
+    color: theme.colors.textColors.text,
     fontSize: 14,
     cursor: 'pointer',
   });
@@ -141,6 +141,8 @@ function SelectBox({children, styles}: any) {
   const baseCss = css({
     border: `1px ${isOpen ? colors.pageElementsColors.activeBorder : colors.pageElementsColors.border} solid`,
     '&:hover': {cursor: 'pointer', borderColor: colors.pageElementsColors.activeBorder},
+    color: colors.textColors.text,
+    backgroundColor: colors.pageElementsColors.formElements,
   });
   return (
     <TextBox onClick={handleToggle} css={[baseCss, styles]}>
