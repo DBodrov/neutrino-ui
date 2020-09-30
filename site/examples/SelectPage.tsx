@@ -3,6 +3,7 @@ import {css} from '@emotion/core';
 import {ThemeProvider} from 'emotion-theming';
 import {Wrapper, Example, Label} from './Example';
 import {createTheme, SimpleSelect} from 'neutrino-ui';
+import {MultiSelect, example} from './MultiSelect';
 
 const theme = createTheme({
   colors: {
@@ -27,19 +28,19 @@ const exampleDefault = `
 import {SimpleSelect} from 'neutrino-ui';
 
 const optionsList = [
-  {id: -1, value: 'Все'},
-  {id: 1, value: 'Площадка 1'},
-  {id: 2, value: 'Площадка 2'},
-  {id: 3, value: 'Площадка 3'},
-  {id: 4, value: 'Площадка 4'},
-  {id: 5, value: 'Площадка 5'},
-  {id: 6, value: 'Площадка 6'},
-  {id: 7, value: 'Площадка 7'},
-  {id: 8, value: 'Площадка 8'},
-  {id: 9, value: 'Площадка 9'},
-  {id: 10, value: 'Площадка 10'},
-  {id: 11, value: 'Площадка 11'},
-  {id: 12, value: 'Площадка 12'},
+  {id: -1, value: 'All items'},
+  {id: 1, value: 'Item 1'},
+  {id: 2, value: 'Item 2'},
+  {id: 3, value: 'Item 3'},
+  {id: 4, value: 'Item 4'},
+  {id: 5, value: 'Item 5'},
+  {id: 6, value: 'Item 6'},
+  {id: 7, value: 'Item 7'},
+  {id: 8, value: 'Item 8'},
+  {id: 9, value: 'Item 9'},
+  {id: 10, value: 'Item 10'},
+  {id: 11, value: 'Item 11'},
+  {id: 12, value: 'Item 12'},
 ];
 
 <SimpleSelect
@@ -76,19 +77,19 @@ const theme = createTheme({
 });
 
 const optionsList = [
-  {id: -1, value: 'Все'},
-  {id: 1, value: 'Площадка 1'},
-  {id: 2, value: 'Площадка 2'},
-  {id: 3, value: 'Площадка 3'},
-  {id: 4, value: 'Площадка 4'},
-  {id: 5, value: 'Площадка 5'},
-  {id: 6, value: 'Площадка 6'},
-  {id: 7, value: 'Площадка 7'},
-  {id: 8, value: 'Площадка 8'},
-  {id: 9, value: 'Площадка 9'},
-  {id: 10, value: 'Площадка 10'},
-  {id: 11, value: 'Площадка 11'},
-  {id: 12, value: 'Площадка 12'},
+  {id: -1, value: 'All items'},
+  {id: 1, value: 'Item 1'},
+  {id: 2, value: 'Item 2'},
+  {id: 3, value: 'Item 3'},
+  {id: 4, value: 'Item 4'},
+  {id: 5, value: 'Item 5'},
+  {id: 6, value: 'Item 6'},
+  {id: 7, value: 'Item 7'},
+  {id: 8, value: 'Item 8'},
+  {id: 9, value: 'Item 9'},
+  {id: 10, value: 'Item 10'},
+  {id: 11, value: 'Item 11'},
+  {id: 12, value: 'Item 12'},
 ];
 
 <ThemeProvider theme={theme}>
@@ -121,28 +122,31 @@ export interface ISimpleSelectProps extends Omit<React.HTMLProps<HTMLDivElement>
 `.trim();
 
 const optionsList = [
-  {id: -1, value: 'Все'},
-  {id: 1, value: 'Площадка 1'},
-  {id: 2, value: 'Площадка 2'},
-  {id: 3, value: 'Площадка 3'},
-  {id: 4, value: 'Площадка 4'},
-  {id: 5, value: 'Площадка 5'},
-  {id: 6, value: 'Площадка 6'},
-  {id: 7, value: 'Площадка 7'},
-  {id: 8, value: 'Площадка 8'},
-  {id: 9, value: 'Площадка 9'},
-  {id: 10, value: 'Площадка 10'},
-  {id: 11, value: 'Площадка 11'},
-  {id: 12, value: 'Площадка 12'},
+  {id: -1, value: 'All items'},
+  {id: 1, value: 'Item 1'},
+  {id: 2, value: 'Item 2'},
+  {id: 3, value: 'Item 3'},
+  {id: 4, value: 'Item 4'},
+  {id: 5, value: 'Item 5'},
+  {id: 6, value: 'Item 6'},
+  {id: 7, value: 'Item 7'},
+  {id: 8, value: 'Item 8'},
+  {id: 9, value: 'Item 9'},
+  {id: 10, value: 'Item 10'},
+  {id: 11, value: 'Item 11'},
+  {id: 12, value: 'Item 12'},
 ];
 
 export function SelectPage() {
   const [selected, setSelected] = React.useState(undefined);
+  const [items, setItems] = React.useState<number[]>([]);
 
   const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
     const val = e.currentTarget.value;
     setSelected(Number(val));
   };
+
+  const handleMultiSelect = (value: number[]) => setItems(value);
 
   return (
     <Wrapper>
@@ -183,6 +187,9 @@ export function SelectPage() {
         </ThemeProvider>
       </div>
       <Example code={exampleThemed} />
+      <Label>MultiSelect</Label>
+      <MultiSelect options={optionsList} value={items} onSelect={handleMultiSelect} />
+      <Example code={example} />
     </Wrapper>
   );
 }
