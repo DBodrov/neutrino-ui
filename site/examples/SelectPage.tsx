@@ -1,14 +1,15 @@
-import React, {useState} from 'react';
+import React from 'react';
+import {css} from '@emotion/core';
 import {ThemeProvider} from 'emotion-theming';
 import {Wrapper, Example, Label} from './Example';
-import {Select, createTheme, Span, SelectOptions, ISelectState, SelectChangeTypes} from 'neutrino-ui';
+import {createTheme, SimpleSelect} from 'neutrino-ui';
+import {MultiSelect, example} from './MultiSelect';
 
 const theme = createTheme({
   colors: {
     pageElementsColors: {
       formElements: '#325b72',
-      formElementsActive: '#293676',
-
+      selectedItem: '#293676',
       border: '#0FC0FC',
     },
     textColors: {
@@ -24,222 +25,171 @@ const theme = createTheme({
 });
 
 const exampleDefault = `
-import { Select, createTheme, Span, SelectOptions, ISelectState, SelectChangeTypes } from 'neutrino-ui';
+import {SimpleSelect} from 'neutrino-ui';
 
-const selectReducer = (state: ISelectState, changes: ISelectState) => {
-  console.log('===reducer===', state, changes);
-  switch (changes.type) {
-    case SelectChangeTypes.selectClick:
-      return {
-        ...state,
-        ...changes,
-        isOpen: !state.isOpen,
-      };
-    case SelectChangeTypes.clickOutside:
-    case SelectChangeTypes.scroll:
-      return {
-        ...state,
-        ...changes,
-        isOpen: true,
-      };
-    default:
-      return {
-        ...state,
-        ...changes,
-      };
-  }
-};
-
-const filterOptions = [
-  { id: -1, name: 'Все' },
-  { id: 1, name: 'Площадка 1' },
-  { id: 2, name: 'Площадка 2' },
+const optionsList = [
+  {id: -1, value: 'All items'},
+  {id: 1, value: 'Item 1'},
+  {id: 2, value: 'Item 2'},
+  {id: 3, value: 'Item 3'},
+  {id: 4, value: 'Item 4'},
+  {id: 5, value: 'Item 5'},
+  {id: 6, value: 'Item 6'},
+  {id: 7, value: 'Item 7'},
+  {id: 8, value: 'Item 8'},
+  {id: 9, value: 'Item 9'},
+  {id: 10, value: 'Item 10'},
+  {id: 11, value: 'Item 11'},
+  {id: 12, value: 'Item 12'},
 ];
 
+<SimpleSelect
+    options={optionsList}
+    css={{width: 300}}
+    value={selected}
+    onSelect={handleItemClick}
+    selectInputStyles={css({borderRadius: 8})}
+    optionsListStyles={css({borderRadius: 8, height: 300, overflow: 'auto'})}
+    optionStyles={css({color: 'green'})}
+/>
+`.trim();
+const exampleThemed = `
+import {ThemeProvider} from 'emotion-theming';
+import {createTheme, SimpleSelect} from 'neutrino-ui';
 
-function MyApp() {
-  const [selectState, setState] = useState(-1);
+const theme = createTheme({
+  colors: {
+    pageElementsColors: {
+      formElements: '#325b72',
+      selectedItem: '#293676',
+      border: '#0FC0FC',
+    },
+    textColors: {
+      text: '#fff',
+    },
+  },
+  typography: {
+    span: {
+      color: '#fff',
+      fontSize: '14px',
+    },
+  },
+});
 
-  const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
-    const currentId = Number(e.currentTarget.value);
-    setState(currentId);
-  };
+const optionsList = [
+  {id: -1, value: 'All items'},
+  {id: 1, value: 'Item 1'},
+  {id: 2, value: 'Item 2'},
+  {id: 3, value: 'Item 3'},
+  {id: 4, value: 'Item 4'},
+  {id: 5, value: 'Item 5'},
+  {id: 6, value: 'Item 6'},
+  {id: 7, value: 'Item 7'},
+  {id: 8, value: 'Item 8'},
+  {id: 9, value: 'Item 9'},
+  {id: 10, value: 'Item 10'},
+  {id: 11, value: 'Item 11'},
+  {id: 12, value: 'Item 12'},
+];
 
-  const getDisplayValue = React.useCallback(() => filterOptions.find((item) => item.id === selectState), [
-    selectState,
-  ]);
-
-  return (
-    <ThemeProvider theme={theme}>
-        <Select
-          width="300px"
-          height="36px"
-          stateReducer={selectReducer} // Inversion of control
-          css={{ backgroundColor: '#008000', padding: '0 8px', cursor: 'pointer' }}
-        >
-          <Span>
-            <span css={{ color: '#ccc' }}>Площадка: </span>
-            {getDisplayValue().name}
-          </Span>
-
-          <SelectOptions>
-            <ul
-              css={{
-                backgroundColor: theme.colors.pageElementsColors.formElements,
-                margin: 0,
-                padding: 0,
-                listStyle: 'none',
-              }}
-            >
-              {filterOptions.map((option) => {
-                return (
-                  <li
-                    key={option.id}
-                    value={option.id}
-                    css={{
-                      padding: '8px 16px',
-                      borderBottom: '1px #ccc solid',
-                      margin: 0,
-                      color: theme.colors.textColors.text,
-                      fontSize: 14,
-                      backgroundColor:
-                        option.id === selectState
-                          ? theme.colors.pageElementsColors.formElementsActive
-                          : 'transparent',
-                    }}
-                    onClick={handleItemClick}
-                  >
-                    {option.name}
-                  </li>
-                );
-              })}
-            </ul>
-          </SelectOptions>
-        </Select>
-      </ThemeProvider>
-  )
-}
+<ThemeProvider theme={theme}>
+  <SimpleSelect
+    options={optionsList}
+    css={{width: 300}}
+    value={selected}
+    onSelect={handleItemClick}
+    selectInputStyles={css({borderRadius: 8})}
+    optionsListStyles={css({borderRadius: 8, height: 300, overflow: 'auto'})}
+  />
+</ThemeProvider>
 `.trim();
 
 const exampleProps = `
-export enum SelectChangeTypes {
-  idle = 'IDLE',
-  selectClick = 'SELECT_CLICK',
-  clickOutside = 'CLICK_OUTSIDE',
-  scroll = 'SCROLL',
-  changeDisplayValue = 'CHANGE_DISPLAY_VALUE'
-}
-
-export interface ISelectState {
-  type?: SelectChangeTypes;
-  isOpen?: boolean;
+type OptionItem = {
+  id: string | number;
+  value: string | number;
 };
 
-export interface ISelectProps extends React.HTMLProps<HTMLDivElement> {
-  stateReducer?: (state: ISelectState, changes: ISelectState) => ISelectState;
-  isEdit?: boolean;
+export interface ISimpleSelectProps extends Omit<React.HTMLProps<HTMLDivElement>, 'value' | 'onSelect'> {
   hasError?: boolean;
-  children?: React.ReactNode;
+  value?: string | number;
+  selectInputStyles?: SerializedStyles;
+  optionsListStyles?: SerializedStyles;
+  optionStyles?: SerializedStyles;
+  options?: OptionItem[];
+  onSelect: (event?: React.PointerEvent<HTMLLIElement>) => void;
 }
 `.trim();
 
-const selectReducer = (state: ISelectState, changes: ISelectState) => {
-  console.info('===reducer===', state, changes);
-  switch (changes.type) {
-    case SelectChangeTypes.toggle:
-      return {
-        ...state,
-        ...changes,
-        isOpen: !state.isOpen,
-      };
-    case SelectChangeTypes.clickOutside:
-    case SelectChangeTypes.scroll:
-      return {
-        ...state,
-        ...changes,
-        isOpen: true,
-      };
-    default:
-      return {
-        ...state,
-        ...changes,
-      };
-  }
-};
-
-const filterOptions = [
-  {id: -1, name: 'Все'},
-  {id: 1, name: 'Площадка 1'},
-  {id: 2, name: 'Площадка 2'},
+const optionsList = [
+  {id: -1, value: 'All items'},
+  {id: 1, value: 'Item 1'},
+  {id: 2, value: 'Item 2'},
+  {id: 3, value: 'Item 3'},
+  {id: 4, value: 'Item 4'},
+  {id: 5, value: 'Item 5'},
+  {id: 6, value: 'Item 6'},
+  {id: 7, value: 'Item 7'},
+  {id: 8, value: 'Item 8'},
+  {id: 9, value: 'Item 9'},
+  {id: 10, value: 'Item 10'},
+  {id: 11, value: 'Item 11'},
+  {id: 12, value: 'Item 12'},
 ];
 
 export function SelectPage() {
-  const [selectState, setState] = useState(-1);
+  const [selected, setSelected] = React.useState(undefined);
+  const [items, setItems] = React.useState<number[]>([]);
 
   const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
-    console.info(e.currentTarget.value);
-    const currentId = Number(e.currentTarget.value);
-    // const currentValue = filterOptions.find((option) => option.id === currentId).name;
-    setState(currentId);
+    const val = e.currentTarget.value;
+    setSelected(Number(val));
   };
 
-  const getDisplayValue = React.useCallback(() => filterOptions.find(item => item.id === selectState), [
-    selectState,
-  ]);
+  const handleMultiSelect = (value: number[]) => setItems(value);
 
   return (
     <Wrapper>
+      <Label>Simple Select</Label>
       <Example code={exampleProps} />
-      <Label>Base Select</Label>
-      <ThemeProvider theme={theme}>
-        <Select
-          width="300px"
-          height="36px"
-          stateReducer={selectReducer}
-          css={{backgroundColor: '#325b72', padding: '0 8px', cursor: 'pointer'}}
-        >
-          <Span>
-            <span css={{color: '#ccc'}}>Площадка: </span>
-            {getDisplayValue().name}
-          </Span>
-
-          <SelectOptions>
-            <ul
-              css={{
-                backgroundColor: theme.colors.pageElementsColors.formElements,
-                margin: 0,
-                padding: 0,
-                listStyle: 'none',
-              }}
-            >
-              {filterOptions.map(option => {
-                return (
-                  <li
-                    key={option.id}
-                    value={option.id}
-                    css={{
-                      padding: '8px 16px',
-                      borderBottom: '1px #ccc solid',
-                      margin: 0,
-                      color: theme.colors.textColors.text,
-                      fontSize: 14,
-                      cursor: 'pointer',
-                      backgroundColor:
-                        option.id === selectState
-                          ? theme.colors.pageElementsColors.formElementsActive
-                          : 'transparent',
-                    }}
-                    onClick={handleItemClick}
-                  >
-                    {option.name}
-                  </li>
-                );
-              })}
-            </ul>
-          </SelectOptions>
-        </Select>
-      </ThemeProvider>
+      <SimpleSelect
+        options={optionsList}
+        css={{width: 300}}
+        value={selected}
+        onSelect={handleItemClick}
+        selectInputStyles={css({borderRadius: 8})}
+        optionsListStyles={css({borderRadius: 8, height: 300, overflow: 'auto'})}
+        optionStyles={css({color: 'green'})}
+      />
       <Example code={exampleDefault} />
+      <Label>Themed Simple Select</Label>
+      <div
+        css={{
+          display: 'flex',
+          flexFlow: 'column nowrap',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          width: 400,
+          height: 300,
+          paddingTop: 30,
+          backgroundColor: '#000',
+        }}
+      >
+        <ThemeProvider theme={theme}>
+          <SimpleSelect
+            options={optionsList}
+            css={{width: 300}}
+            value={selected}
+            onSelect={handleItemClick}
+            selectInputStyles={css({borderRadius: 8})}
+            optionsListStyles={css({borderRadius: 8, height: 300, overflow: 'auto'})}
+          />
+        </ThemeProvider>
+      </div>
+      <Example code={exampleThemed} />
+      <Label>MultiSelect</Label>
+      <MultiSelect options={optionsList} value={items} onSelect={handleMultiSelect} />
+      <Example code={example} />
     </Wrapper>
   );
 }

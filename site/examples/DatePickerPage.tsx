@@ -2,17 +2,17 @@ import React, {useState} from 'react';
 import {css, jsx} from '@emotion/core';
 import styled from '@emotion/styled';
 import {Example, Wrapper} from './Example';
-import {
-  DayPicker,
-  Select,
-  SelectOptions,
-  Span,
-  Calendar,
-  ISelectState,
-  SelectChangeTypes,
-  selectReducer,
-  useSelect,
-} from 'neutrino-ui';
+// import {
+//   DayPicker,
+//   Select,
+//   SelectOptions,
+//   Span,
+//   Calendar,
+//   ISelectState,
+//   SelectChangeTypes,
+//   selectReducer,
+//   useSelect,
+// } from 'neutrino-ui';
 
 const initState: ISelectState = {type: SelectChangeTypes.idle, isOpen: false};
 const dayPickerReducer = (state: ISelectState = initState, changes: ISelectState): ISelectState => {
@@ -24,8 +24,8 @@ const dayPickerReducer = (state: ISelectState = initState, changes: ISelectState
         ...selectState,
         isOpen: false,
       };
-      default:
-        return selectState;
+    default:
+      return selectState;
   }
 };
 
@@ -40,10 +40,8 @@ const DateBox = styled(Span)`
 `;
 
 function DayPickerInput({date}: any) {
-  const {handleToggleSelect} = useSelect()
-  return (
-    <DateBox onClick={handleToggleSelect}>{date}</DateBox>
-  )
+  const {handleToggleSelect} = useSelect();
+  return <DateBox onClick={handleToggleSelect}>{date}</DateBox>;
 }
 
 export function DatePickerPage() {
@@ -55,7 +53,7 @@ export function DatePickerPage() {
       <span>DatePicker</span>
 
       <DayPicker value={date} onChangeHandler={(date: string) => setDate(date)} config={dayPickerCfg}>
-          <DayPickerInput date={date}/>
+        <DayPickerInput date={date} />
       </DayPicker>
       <Span>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda dolorem mollitia ut qui beatae
