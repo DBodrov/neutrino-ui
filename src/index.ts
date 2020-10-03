@@ -11,3 +11,4 @@ export * from './Modal';
 export * from './SimpleSelect';
 export * from './Switch';
 export * from './Combobox';
+export * from './DayPicker';

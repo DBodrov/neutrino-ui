@@ -1,43 +1,86 @@
 import React from 'react';
-import { css } from '@emotion/core';
-import {Select, SelectOptions, selectReducer, ISelectState, SelectChangeTypes} from '../Select';
+import {css} from '@emotion/core';
+import {Combobox, useCombobox} from '../Combobox';
+import {useTheme} from '../Themes';
+import {Dropdown} from '../Dropdown';
 import {DayPickerProvider} from './DayPickerProvider';
 import {Calendar} from './Calendar';
-// import {PickerInput} from './PickerInput';
+import {TDatePickerProps} from './types';
+import {TextBox} from './styles';
 
-const dayPickerReducer = (state: ISelectState, changes: ISelectState): ISelectState => {
-  const selectState = selectReducer(state, changes);
-  console.info('== select ==', changes, state, selectState);
-  switch (changes.type) {
-    case SelectChangeTypes.close:
-      return {
-        ...selectState,
-        isOpen: false,
-      };
-    default:
-      return selectState;
-  }
-};
-export function DayPicker({children, ...restProps}: any) {
+export function DayPicker(props: TDatePickerProps) {
   return (
-    <DayPickerProvider {...restProps}>
-      <Select
-        stateReducer={dayPickerReducer}
-        width="250px"
-        height="48px"
-        css={{
-          border: '1px #dde1e5 solid',
-          padding: '0 8px',
-          cursor: 'pointer',
-          '&:hover': {borderColor: 'blue'},
-        }}
-        activeStyles={css({borderColor: 'green !important'})}
-      >
-        {children}
-        <SelectOptions>
+    <Combobox>
+      <DatePicker {...props} />
+    </Combobox>
+  );
+}
+
+function PickerInput({children}: {children: React.ReactNode}) {
+  const {handleToggle, isOpen} = useCombobox();
+  const {colors} = useTheme();
+  const baseCss = css({
+    border: `1px ${isOpen ? colors.pageElementsColors.activeBorder : colors.pageElementsColors.border} solid`,
+    '&:hover': {cursor: 'pointer', borderColor: colors.pageElementsColors.activeBorder},
+    color: colors.textColors.text,
+    backgroundColor: colors.pageElementsColors.formElements,
+  });
+  return (
+    <TextBox onClick={handleToggle} css={[baseCss]}>
+      {children}
+    </TextBox>
+  );
+}
+
+function DatePicker(props: TDatePickerProps) {
+  const {value} = props;
+  const [pickerRect, setRect] = React.useState(null);
+  const {isOpen, handleClose} = useCombobox();
+  const datePickerRef = React.useRef<HTMLDivElement>(null);
+  const calendarRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const handleClickOutside = (e: PointerEvent) => {
+      if (e.target instanceof HTMLElement && isOpen) {
+        const calendar = calendarRef?.current;
+        const pickerInput = datePickerRef?.current;
+        if (calendar?.contains(e.target) || pickerInput?.contains(e.target)) {
+          return;
+        }
+        handleClose();
+      }
+    };
+
+    const handleScroll = (e: PointerEvent) =>
+      window.requestAnimationFrame(() => {
+        if (e.target instanceof HTMLElement && isOpen) {
+          const calendar = calendarRef?.current;
+          if (calendar?.contains(e.target)) {
+            return;
+          }
+          setRect(datePickerRef?.current.getBoundingClientRect());
+        }
+      });
+
+    if (isOpen) {
+      setRect(datePickerRef?.current.getBoundingClientRect());
+      document.addEventListener('click', handleClickOutside);
+      window.addEventListener('scroll', handleScroll, true);
+    }
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+      window.removeEventListener('scroll', handleScroll, true);
+    };
+  }, [handleClose, isOpen]);
+
+  return (
+    <div css={{position: 'relative', width: 300}} ref={datePickerRef}>
+      <DayPickerProvider {...props}>
+        <PickerInput>{value}</PickerInput>
+        <Dropdown isOpen={isOpen} ref={calendarRef} parentBound={isOpen ? pickerRect : undefined}>
           <Calendar />
-        </SelectOptions>
-      </Select>
-    </DayPickerProvider>
+        </Dropdown>
+      </DayPickerProvider>
+    </div>
   );
 }

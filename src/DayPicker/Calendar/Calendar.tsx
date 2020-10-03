@@ -1,16 +1,9 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import {Navigator} from './Navigator';
 import {DaysOfWeek} from './DaysOfWeek';
 import {DaysCalendar} from './DaysCalendar';
 import {useTheme} from '../../Themes';
-
-const CalendarBlock = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-  width: 100%;
-  min-height: 250px;
-`;
+import {CalendarBlock} from './styles';
 
 export function Calendar(props: any) {
   const theme = useTheme();

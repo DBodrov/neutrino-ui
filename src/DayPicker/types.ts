@@ -20,6 +20,21 @@ export interface IMonth {
   monthName: string;
 }
 
+type TDatePickerConfig = {
+  format: string;
+  locale: string;
+};
+
+export type TDatePickerProps = {
+  value?: string;
+  name: string;
+  className?: string;
+  onChangeHandler: (date: string) => void;
+  config?: TDatePickerConfig;
+  placeholder?: string;
+  children: React.ReactNode;
+};
+
 /**@depricated */
 export type DatePickerValue = string;
 /**@depricated */

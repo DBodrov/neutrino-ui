@@ -2,7 +2,7 @@ import React from 'react';
 import {css} from '@emotion/core';
 import {Span} from '../../../Typography';
 import {useTheme} from '../../../Themes';
-import {useSelect} from '../../../Select';
+import {useCombobox} from '../../../Combobox';
 import {useDayPicker} from '../../DayPickerProvider';
 import {zeroPad} from '../../utils/common';
 import {TCalendarDate} from '../../types';
@@ -18,7 +18,7 @@ const baseStyles = css`
   border-radius: 50%;
 `;
 
-type TDayProps = {date: TCalendarDate, title?: string};
+type TDayProps = {date: TCalendarDate; title?: string};
 
 export function Day({date, title = ''}: TDayProps) {
   const {
@@ -31,7 +31,7 @@ export function Day({date, title = ''}: TDayProps) {
   } = useDayPicker();
   const theme = useTheme();
   const {day, month, year, isCurrentMonth} = date;
-  const {handleCloseSelect} = useSelect();
+  const {handleClose} = useCombobox();
 
   const isCurrentDay = React.useCallback(() => {
     return day === currentDay && month === currentMonth && year === currentYear;
@@ -60,8 +60,8 @@ export function Day({date, title = ''}: TDayProps) {
     });
     const newDate = outputDate.join(delimiter);
     handleChangeDay(newDate);
-    handleCloseSelect();
-  }, [day, delimiter, format, handleChangeDay, handleCloseSelect, month, year]);
+    handleClose();
+  }, [day, delimiter, format, handleChangeDay, handleClose, month, year]);
   return (
     <Span
       onClickCapture={handleSelectDay}

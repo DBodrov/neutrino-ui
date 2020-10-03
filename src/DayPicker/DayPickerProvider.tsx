@@ -1,7 +1,7 @@
 import React, {createContext, useContext, useMemo} from 'react';
 import {createMask, parseFormat, parseDate} from './utils/format';
 import {THIS_DAY, THIS_MONTH, THIS_YEAR} from './utils/date';
-import {TDay} from './types';
+import {TDay, TDatePickerProps} from './types';
 
 export type TFormatConfig = {inputs: Map<string, {length: number}>; delimiter: string};
 
@@ -20,8 +20,8 @@ interface IDayPickerContext {
 
 const DayPickerContext = createContext<IDayPickerContext | undefined>(undefined);
 
-export function DayPickerProvider(props: any) {
-  const {config = {}, value, name, className, onChangeHandler, ...restProps} = props;
+export function DayPickerProvider(props: TDatePickerProps) {
+  const {config, value, name, className, onChangeHandler, ...restProps} = props;
   const [{day, month, year}, dispatch] = React.useReducer(
     (state: TDay, change: TDay): TDay => ({...state, ...change}),
     {
