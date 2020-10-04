@@ -1,3 +1,5 @@
+import {SerializedStyles} from '@emotion/core';
+
 export type TDay = {
   day: number;
   month: number;
@@ -32,7 +34,8 @@ export type TDatePickerProps = {
   onChangeHandler: (date: string) => void;
   config?: TDatePickerConfig;
   placeholder?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  pickerInputStyles?: SerializedStyles;
 };
 
 /**@depricated */

@@ -1,5 +1,5 @@
 import React from 'react';
-import {css} from '@emotion/core';
+import {css, SerializedStyles} from '@emotion/core';
 import {Combobox, useCombobox} from '../Combobox';
 import {useTheme} from '../Themes';
 import {Dropdown} from '../Dropdown';
@@ -7,6 +7,7 @@ import {DayPickerProvider} from './DayPickerProvider';
 import {Calendar} from './Calendar';
 import {TDatePickerProps} from './types';
 import {TextBox} from './styles';
+import {CalendarIcon} from './icons';
 
 export function DayPicker(props: TDatePickerProps) {
   return (
@@ -16,7 +17,7 @@ export function DayPicker(props: TDatePickerProps) {
   );
 }
 
-function PickerInput({children}: {children: React.ReactNode}) {
+function PickerInput({children, styles}: {children: React.ReactNode; styles?: SerializedStyles}) {
   const {handleToggle, isOpen} = useCombobox();
   const {colors} = useTheme();
   const baseCss = css({
@@ -26,14 +27,15 @@ function PickerInput({children}: {children: React.ReactNode}) {
     backgroundColor: colors.pageElementsColors.formElements,
   });
   return (
-    <TextBox onClick={handleToggle} css={[baseCss]}>
+    <TextBox onClick={handleToggle} css={[baseCss, styles]}>
       {children}
+      <CalendarIcon css={{marginLeft: 'auto'}} stroke={isOpen ? colors.mainColors.primary : undefined} />
     </TextBox>
   );
 }
 
 function DatePicker(props: TDatePickerProps) {
-  const {value} = props;
+  const {value, pickerInputStyles} = props;
   const [pickerRect, setRect] = React.useState(null);
   const {isOpen, handleClose} = useCombobox();
   const datePickerRef = React.useRef<HTMLDivElement>(null);
@@ -76,7 +78,7 @@ function DatePicker(props: TDatePickerProps) {
   return (
     <div css={{position: 'relative', width: 300}} ref={datePickerRef}>
       <DayPickerProvider {...props}>
-        <PickerInput>{value}</PickerInput>
+        <PickerInput styles={pickerInputStyles}>{value}</PickerInput>
         <Dropdown isOpen={isOpen} ref={calendarRef} parentBound={isOpen ? pickerRect : undefined}>
           <Calendar />
         </Dropdown>

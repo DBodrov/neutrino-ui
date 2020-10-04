@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import styled from '@emotion/styled';
+import {css} from '@emotion/core';
 import {Example, Wrapper} from './Example';
 import {DayPicker, Span} from 'neutrino-ui';
 
 export function DatePickerPage() {
   const [date, setDate] = useState('');
-  const dayPickerCfg = {format: 'YYYY/MM/DD', locale: 'ru'};
+  const dayPickerCfg = {format: 'DD/MM/YYYY', locale: 'ru'};
 
   return (
     <Wrapper>
@@ -16,6 +17,7 @@ export function DatePickerPage() {
         value={date}
         onChangeHandler={(date: string) => setDate(date)}
         config={dayPickerCfg}
+        pickerInputStyles={css({borderRadius: 8})}
       />
 
       <Span>
