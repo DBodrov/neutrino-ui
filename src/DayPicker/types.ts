@@ -36,6 +36,7 @@ export type TDatePickerProps = {
   placeholder?: string;
   children?: React.ReactNode;
   pickerInputStyles?: SerializedStyles;
+  isEditable?: boolean;
 };
 
 /**@depricated */

@@ -18,6 +18,7 @@ export function DatePickerPage() {
         onChangeHandler={(date: string) => setDate(date)}
         config={dayPickerCfg}
         pickerInputStyles={css({borderRadius: 8})}
+        isEditable
       />
 
       <Span>

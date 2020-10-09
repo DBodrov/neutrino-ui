@@ -25,8 +25,8 @@ export const isAllowedChar = (maskOptions: IMaskOptions, char: string, insertedP
   }
 };
 
-export const getChangeType = (key: number): ChangeType => {
-  if (key === 8) return 'backspace';
-  if (key === 46) return 'delete';
+export const getChangeType = (key: string): ChangeType => {
+  if (key === 'Backspace') return 'backspace';
+  if (key === 'Delete') return 'delete';
   return 'default';
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import {css, SerializedStyles} from '@emotion/core';
 import {Combobox, useCombobox} from '../Combobox';
+import {PickerInput} from './PickerInput';
 import {useTheme} from '../Themes';
 import {Dropdown} from '../Dropdown';
 import {DayPickerProvider} from './DayPickerProvider';
@@ -17,7 +18,7 @@ export function DayPicker(props: TDatePickerProps) {
   );
 }
 
-function PickerInput({children, styles}: {children: React.ReactNode; styles?: SerializedStyles}) {
+function ReadOnlyPickerInput({children, styles}: {children: React.ReactNode; styles?: SerializedStyles}) {
   const {handleToggle, isOpen} = useCombobox();
   const {colors} = useTheme();
   const baseCss = css({
@@ -35,7 +36,7 @@ function PickerInput({children, styles}: {children: React.ReactNode; styles?: Se
 }
 
 function DatePicker(props: TDatePickerProps) {
-  const {value, pickerInputStyles} = props;
+  const {value, pickerInputStyles, isEditable} = props;
   const [pickerRect, setRect] = React.useState(null);
   const {isOpen, handleClose} = useCombobox();
   const datePickerRef = React.useRef<HTMLDivElement>(null);
@@ -78,7 +79,12 @@ function DatePicker(props: TDatePickerProps) {
   return (
     <div css={{position: 'relative', width: 300}} ref={datePickerRef}>
       <DayPickerProvider {...props}>
-        <PickerInput styles={pickerInputStyles}>{value}</PickerInput>
+        {isEditable ? (
+          <PickerInput />
+        ) : (
+          <ReadOnlyPickerInput styles={pickerInputStyles}>{value}</ReadOnlyPickerInput>
+        )}
+
         <Dropdown isOpen={isOpen} ref={calendarRef} parentBound={isOpen ? pickerRect : undefined}>
           <Calendar />
         </Dropdown>

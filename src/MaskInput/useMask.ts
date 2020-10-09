@@ -3,7 +3,7 @@ import {isEmptyString} from '../utils';
 import {isSpecSymbol, patterns} from './mask.utils';
 import {IMaskConfig} from './types';
 
-const createMaskCharData = (mask: string, placeholderChar = '', value = ''): IMaskConfig => {
+const createMaskCharData = (mask: string, placeholderChar = ' ', value = ''): IMaskConfig => {
   const config: IMaskConfig = {};
 
   let blockNumber = 1;
@@ -43,6 +43,13 @@ const initValue = (maskCharData: IMaskConfig) =>
 
 export function useMask(mask: string, placeholderChar = '', value: string) {
   const maskCharData = createMaskCharData(mask, placeholderChar, value);
+  const emptyMask = mask
+    .split('')
+    .map(char => {
+      if (char === '9') return placeholderChar;
+      return char;
+    })
+    .join('');
   const charState = useRef<IMaskConfig>(maskCharData);
   const availablePositions = getAvailablePositions(maskCharData);
 
@@ -220,5 +227,6 @@ export function useMask(mask: string, placeholderChar = '', value: string) {
     insertStringIntoSelection,
     defaultValue: initValue(maskCharData),
     maskCharData,
+    emptyMask,
   };
 }
