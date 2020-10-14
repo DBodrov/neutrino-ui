@@ -9,7 +9,6 @@ export function MaskInput(props: IMaskInputProps) {
   const {
     className,
     mask,
-    prefix,
     name,
     maskPlaceholder,
     onChangeHandler,
@@ -30,7 +29,6 @@ export function MaskInput(props: IMaskInputProps) {
     defaultValue,
     pasteString,
     insertStringIntoSelection,
-    maskCharData,
   } = useMask(mask, maskPlaceholder, value);
 
   const [maskedState, setState] = useState({
@@ -123,13 +121,13 @@ export function MaskInput(props: IMaskInputProps) {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const {keyCode, ctrlKey, metaKey} = event;
+    const {key, ctrlKey, metaKey} = event;
     if (ctrlKey || metaKey) {
       return;
     }
     const start = (event.target as HTMLInputElement).selectionStart;
     const end = (event.target as HTMLInputElement).selectionEnd;
-    changeType.current = getChangeType(keyCode);
+    changeType.current = getChangeType(key);
     selectionStart.current = start;
     selectionEnd.current = end;
   };
@@ -150,7 +148,6 @@ export function MaskInput(props: IMaskInputProps) {
       value={maskedState.displayValue}
       onKeyDown={handleKeyDown}
       autoComplete="off"
-      prefix={prefix}
       {...other}
     />
   );

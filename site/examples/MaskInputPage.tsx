@@ -1,14 +1,23 @@
-import React, { useState, useCallback } from 'react';
+import React, {useState} from 'react';
 import styled from '@emotion/styled';
-import { MaskInput, H5, Span } from 'neutrino-ui';
-import { Example, Wrapper } from './Example';
+import {ThemeProvider} from 'emotion-theming';
+import {MaskInput, createTheme, Span} from 'neutrino-ui';
+import {Example, Wrapper} from './Example';
 
 const Label = styled(Span)`
-    display: block;
-    margin-bottom: 5px;
+  display: block;
+  margin-bottom: 5px;
 `;
 
-const commonStyle = { width: '300px' };
+const myTheme = createTheme({
+  colors: {
+    mainColors: {
+      primary: 'green',
+    },
+  },
+});
+
+const commonStyle = {width: '300px'};
 
 const exampleSimple = `
 import { MaskInput } from 'neutrino-ui';
@@ -23,16 +32,17 @@ import { MaskInput } from 'neutrino-ui';
 />
 `.trim();
 
-const examplePrefix = `
+const exampleDate = `
 import { MaskInput } from 'neutrino-ui';
 
+const [day, setDay] = useState('');
+
 <MaskInput
-  mask="(999) 999 99 99"
-  name="phone"
-  onChangeHandler={(v: string) => setPhone(v)}
+  mask="99/99/9999"
+  name="date"
+  onChangeHandler={(v: string) => setDay(v)}
   maskPlaceholder="_"
-  value={phone}
-  prefix="+7"
+  value={day}
   pattern="9"
 />
 `.trim();
@@ -48,36 +58,49 @@ interface IMaskInputProps extends IInputProps {
 `.trim();
 
 export function MaskInputPage() {
-    const [passport, setPassport] = useState('0123 456789');
-    const [phone, setPhone] = useState('(123) 456 78 90');
-    const handleChangePassport = (value: string) => setPassport(value);
+  const [passport, setPassport] = useState('');
 
-    return (
-        <Wrapper>
-            <Label>Props</Label>
-            <Example code={exampleProps} />
-            <Label>Simple MaskInput</Label>
-            <MaskInput
-                mask="9999 999999"
-                name="passport"
-                onChangeHandler={handleChangePassport}
-                maskPlaceholder="_"
-                value={passport}
-                pattern="9"
-                style={commonStyle}
-            />
-            <Example code={exampleSimple} />
-            <Label>Phone number MaskInput</Label>
-            <MaskInput
-                mask="(999) 999 99 99"
-                name="phone"
-                onChangeHandler={(v: string) => setPhone(v)}
-                maskPlaceholder="_"
-                value={phone}
-                prefix="+7"
-                pattern="9"
-            />
-            <Example code={examplePrefix} />
-        </Wrapper>
-    );
+  const [day, setDay] = useState('');
+  const [bDay, setBDay] = useState('14/07/1983');
+  const handleChangePassport = (value: string) => setPassport(value);
+
+  return (
+    <Wrapper>
+      <Label>Props</Label>
+      <Example code={exampleProps} />
+      <Label>Simple MaskInput</Label>
+      <MaskInput
+        mask="9999 999999"
+        name="passport"
+        onChangeHandler={handleChangePassport}
+        maskPlaceholder="_"
+        value={passport}
+        pattern="9"
+        style={commonStyle}
+      />
+      <Example code={exampleSimple} />
+      <Label>Date MaskInput</Label>
+      <MaskInput
+        mask="99/99/9999"
+        name="date"
+        onChangeHandler={(v: string) => setDay(v)}
+        maskPlaceholder="_"
+        value={day}
+        pattern="9"
+        css={{width: 300}}
+      />
+      <ThemeProvider theme={myTheme}>
+        <MaskInput
+          mask="99/99/9999"
+          name="date"
+          onChangeHandler={(v: string) => setBDay(v)}
+          maskPlaceholder="_"
+          value={bDay}
+          pattern="9"
+          css={{width: 300, height: 48, borderRadius: 8, marginTop: 15}}
+        />
+      </ThemeProvider>
+      <Example code={exampleDate} />
+    </Wrapper>
+  );
 }
