@@ -59,8 +59,12 @@ export function parseDate(value: string, format: string): TDay {
   });
   const day: TDay = {day: THIS_DAY, month: THIS_MONTH, year: THIS_YEAR};
   value.split(delimiter).forEach((dateChar, idx) => {
+    console.log(dateChar)
     const charType = parsedFormat[idx];
-    day[charType] = Number(dateChar);
+    const defaultValue = day[charType];
+    const _val = Number(dateChar);
+
+    day[charType] = isFinite(_val) ? _val : defaultValue;
   });
   return day;
 }

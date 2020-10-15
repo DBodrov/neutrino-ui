@@ -6,7 +6,6 @@ import {DayPicker, Span} from 'neutrino-ui';
 
 export function DatePickerPage() {
   const [date, setDate] = useState('');
-  const dayPickerCfg = {format: 'DD/MM/YYYY', locale: 'ru'};
 
   return (
     <Wrapper>
@@ -15,9 +14,11 @@ export function DatePickerPage() {
       <DayPicker
         name="someDate"
         value={date}
+        css={{width: 250, height: 48}}
         onChangeHandler={(date: string) => setDate(date)}
-        config={dayPickerCfg}
-        pickerInputStyles={css({borderRadius: 8})}
+        format="DD/MM/YYYY"
+        locale="ru"
+        pickerInputStyles={css({borderRadius: 8, height: 48})}
         isEditable
       />
 

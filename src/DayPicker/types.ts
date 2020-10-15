@@ -23,8 +23,6 @@ export interface IMonth {
 }
 
 type TDatePickerConfig = {
-  format: string;
-  locale: string;
 };
 
 export type TDatePickerProps = {
@@ -32,7 +30,8 @@ export type TDatePickerProps = {
   name: string;
   className?: string;
   onChangeHandler: (date: string) => void;
-  config?: TDatePickerConfig;
+  format?: string;
+  locale?: string;
   placeholder?: string;
   children?: React.ReactNode;
   pickerInputStyles?: SerializedStyles;

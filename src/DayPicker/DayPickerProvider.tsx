@@ -21,7 +21,7 @@ interface IDayPickerContext {
 const DayPickerContext = createContext<IDayPickerContext | undefined>(undefined);
 
 export function DayPickerProvider(props: TDatePickerProps) {
-  const {config, value, name, className, onChangeHandler, ...restProps} = props;
+  const {format = 'DD.MM.YYYY', locale = 'ru', value, name, className, onChangeHandler, ...restProps} = props;
   const [{day, month, year}, dispatch] = React.useReducer(
     (state: TDay, change: TDay): TDay => ({...state, ...change}),
     {
@@ -30,7 +30,6 @@ export function DayPickerProvider(props: TDatePickerProps) {
       year: THIS_YEAR,
     },
   );
-  const {format = 'DD.MM.YYYY', locale = 'ru'} = config;
   const mask = createMask(format);
 
   const {delimiter} = parseFormat(format);

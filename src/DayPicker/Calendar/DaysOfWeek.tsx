@@ -10,7 +10,7 @@ export const Week = styled.div`
   height: 16px;
   align-content: center;
   justify-items: center;
-  padding: 4px 16px;
+  padding: 4px 8px;
 `;
 
 const isWeekend = (dayNumber: number) => dayNumber === 0 || dayNumber === 6;

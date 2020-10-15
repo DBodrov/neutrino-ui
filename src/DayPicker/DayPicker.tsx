@@ -36,7 +36,7 @@ function ReadOnlyPickerInput({children, styles}: {children: React.ReactNode; sty
 }
 
 function DatePicker(props: TDatePickerProps) {
-  const {value, pickerInputStyles, isEditable} = props;
+  const {value, pickerInputStyles, isEditable, className} = props;
   const [pickerRect, setRect] = React.useState(null);
   const {isOpen, handleClose} = useCombobox();
   const datePickerRef = React.useRef<HTMLDivElement>(null);
@@ -77,10 +77,10 @@ function DatePicker(props: TDatePickerProps) {
   }, [handleClose, isOpen]);
 
   return (
-    <div css={{position: 'relative', width: 300}} ref={datePickerRef}>
+    <div css={{position: 'relative'}} className={className} ref={datePickerRef}>
       <DayPickerProvider {...props}>
         {isEditable ? (
-          <PickerInput />
+          <PickerInput css={pickerInputStyles}/>
         ) : (
           <ReadOnlyPickerInput styles={pickerInputStyles}>{value}</ReadOnlyPickerInput>
         )}
