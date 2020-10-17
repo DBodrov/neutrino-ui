@@ -2,9 +2,9 @@ import React from 'react';
 import {Aside} from './styles';
 import { ComponentsList } from '../components';
 
-export function Sidebar() {
+export function Sidebar({isOpen}: any) {
     return (
-        <Aside>
+        <Aside isOpen={isOpen}>
             <ComponentsList />
         </Aside>
     )
