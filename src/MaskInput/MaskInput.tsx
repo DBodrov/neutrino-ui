@@ -2,22 +2,14 @@ import React, {createRef, useLayoutEffect, useState, useRef} from 'react';
 import {Input} from '../Input';
 import {isEmptyString} from '../utils';
 import {useMask} from './useMask';
-import {getChangeType, patterns} from './mask.utils';
+import {patterns, getInputType} from './mask.utils';
 import {IMaskInputProps, ChangeType} from './types';
 
 export function MaskInput(props: IMaskInputProps) {
-  const {
-    className,
-    mask,
-    name,
-    maskPlaceholder,
-    onChangeHandler,
-    value,
-    pattern = '9',
-    ...other
-  } = props;
+  const {className, mask, name, maskPlaceholder, onChangeHandler, value, pattern = '9', ...other} = props;
 
   const inputRef = createRef<HTMLInputElement>();
+  const pressedKey = React.useRef<any>();
   const regExp = patterns[pattern];
   const {
     insertString,
@@ -43,11 +35,16 @@ export function MaskInput(props: IMaskInputProps) {
     let maskedValue: string;
     let cursor: number;
 
+    console.log('change', value);
+    console.log('change type', changeType.current);
+
     if (changeType.current === 'textPasted') {
       const charsSelected = selectionEnd.current - selectionStart.current;
       const charCount = value.length + charsSelected - maskedState.displayValue.length;
       const pastedString = value.substring(selectionStart.current, selectionStart.current + charCount);
       const charState = pasteString(selectionStart.current, pastedString, charsSelected);
+      console.log(charState);
+
       cursor = selectionStart.current + charCount;
       maskedValue = Object.values(charState)
         .map(charCfg => charCfg.value)
@@ -72,6 +69,7 @@ export function MaskInput(props: IMaskInputProps) {
         /** user remove char or multiple chars */
         if (changeType.current === 'backspace' || changeType.current === 'delete') {
           const charCount = selectionEnd.current - selectionStart.current;
+          console.log(selectionEnd.current, selectionStart.current);
           if (charCount) {
             /** remove multiple chars */
             cursor = selectionStart.current;
@@ -114,20 +112,27 @@ export function MaskInput(props: IMaskInputProps) {
     onChangeHandler(maskedValue);
   };
 
-  const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
-    changeType.current = 'textPasted';
-    selectionStart.current = inputRef.current.selectionStart;
-    selectionEnd.current = inputRef.current.selectionEnd;
-  };
+  // const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+  //   console.log('text Pasted')
+  //   changeType.current = 'textPasted';
+  //   selectionStart.current = inputRef.current.selectionStart;
+  //   selectionEnd.current = inputRef.current.selectionEnd;
+  // };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const {key, ctrlKey, metaKey} = event;
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    const {ctrlKey, metaKey} = event;
     if (ctrlKey || metaKey) {
       return;
     }
     const start = (event.target as HTMLInputElement).selectionStart;
     const end = (event.target as HTMLInputElement).selectionEnd;
-    changeType.current = getChangeType(key);
+    selectionStart.current = start;
+    selectionEnd.current = end;
+  };
+
+  const handleSelect = (event: React.SyntheticEvent<HTMLInputElement, Event>) => {
+    const start = (event.target as HTMLInputElement).selectionStart;
+    const end = (event.target as HTMLInputElement).selectionEnd;
     selectionStart.current = start;
     selectionEnd.current = end;
   };
@@ -138,17 +143,42 @@ export function MaskInput(props: IMaskInputProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [maskedState]);
 
+  React.useEffect(() => {
+    const handleInput = (e: InputEvent) => {
+      //console.log(e.inputType);
+      changeType.current = getInputType(e.inputType);
+      pressedKey.current = e.inputType;
+      // console.log(pressedKey.current);
+      const el = e.target as HTMLInputElement;
+      const inputValue = el.value;
+      console.log('input', inputValue);
+      // if (e.inputType === 'insertText') {
+
+      // }
+    };
+
+    const inputEl = inputRef.current;
+    inputEl.addEventListener('input', handleInput);
+    return () => inputEl.removeEventListener('input', handleInput);
+  }, [inputRef]);
+
   return (
-    <Input
-      className={className}
-      name={name}
-      onChangeHandler={handleChange}
-      onPaste={handlePaste}
-      ref={inputRef}
-      value={maskedState.displayValue}
-      onKeyDown={handleKeyDown}
-      autoComplete="off"
-      {...other}
-    />
+    <>
+      <Input
+        className={className}
+        name={name}
+        onChangeHandler={handleChange}
+        onSelect={handleSelect}
+        //onInput={}
+        //onPaste={handlePaste}
+        ref={inputRef}
+        //value={maskedState.displayValue}
+        value={value}
+        onKeyDown={handleKeyDown}
+        autoComplete="off"
+        {...other}
+      />
+      <span>{pressedKey.current}</span>
+    </>
   );
 }

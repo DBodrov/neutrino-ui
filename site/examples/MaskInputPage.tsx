@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from '@emotion/styled';
 import {ThemeProvider} from 'emotion-theming';
-import {MaskInput, createTheme, Span} from 'neutrino-ui';
+import {MaskInput, createTheme, Span, InputMask} from 'neutrino-ui';
 import {Example, Wrapper} from './Example';
 
 const Label = styled(Span)`
@@ -68,6 +68,8 @@ export function MaskInputPage() {
     <Wrapper>
       <Label>Props</Label>
       <Example code={exampleProps} />
+      <Label>InputMask</Label>
+      <InputMask mask="99/99/9999" maskPlaceholder="_" onChangeHandler={(v: string) => setDay(v)} value={day} />
       <Label>Simple MaskInput</Label>
       <MaskInput
         mask="9999 999999"
@@ -75,6 +77,7 @@ export function MaskInputPage() {
         onChangeHandler={handleChangePassport}
         maskPlaceholder="_"
         value={passport}
+        type="tel"
         pattern="9"
         style={commonStyle}
       />
@@ -85,6 +88,7 @@ export function MaskInputPage() {
         name="date"
         onChangeHandler={(v: string) => setDay(v)}
         maskPlaceholder="_"
+        type="tel"
         value={day}
         pattern="9"
         css={{width: 300}}
@@ -93,9 +97,10 @@ export function MaskInputPage() {
         <MaskInput
           mask="99/99/9999"
           name="date"
+          type="tel"
           onChangeHandler={(v: string) => setBDay(v)}
           maskPlaceholder="_"
-          value={bDay}
+          value={bDay === '__/__/____' ? '' : bDay}
           pattern="9"
           css={{width: 300, height: 48, borderRadius: 8, marginTop: 15}}
         />
