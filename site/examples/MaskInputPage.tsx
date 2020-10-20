@@ -71,14 +71,12 @@ export function MaskInputPage() {
       <Label>InputMask</Label>
       <InputMask mask="99/99/9999" maskPlaceholder="_" onChangeHandler={(v: string) => setDay(v)} value={day} />
       <Label>Simple MaskInput</Label>
-      <MaskInput
+      <InputMask
         mask="9999 999999"
         name="passport"
         onChangeHandler={handleChangePassport}
         maskPlaceholder="_"
         value={passport}
-        type="tel"
-        pattern="9"
         style={commonStyle}
       />
       <Example code={exampleSimple} />
