@@ -21,3 +21,11 @@ export const getChangeType = (key: string): ChangeType => {
   if (key === 'Delete') return 'delete';
   return 'default';
 };
+
+export function getInputType(type: string) {
+  if (type === 'deleteContentBackward') return 'backspace';
+  if (type === 'deleteContentForward' || type === 'deleteByCut') return 'delete';
+  if (type === 'insertFromPaste') return 'textPasted';
+
+  return 'default';
+}
