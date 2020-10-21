@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const utils = require('../scripts/loadersTests');
 const {resolveApp} = require('../scripts/paths');
@@ -80,6 +81,15 @@ module.exports = webpackMerge.merge(commonConfig, {
         minifyCSS: true,
         minifyURLs: true,
       },
+    }),
+
+    new CopyPlugin({
+      patterns: [
+        {
+          from: resolveApp('site/_redirects'),
+          to: resolveApp('docs/'),
+        },
+      ],
     }),
 
     new webpack.DefinePlugin({
