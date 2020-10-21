@@ -98,12 +98,6 @@ function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticC
         deleteWordForward(inputValue, _pos);
         return;
       }
-      // if (e.inputType === 'historyUndo') {
-
-      //   historyUndo(prevValue.current);
-      //   return;
-      // }
-
     };
 
     const inputEl = inputRef.current;
@@ -126,7 +120,9 @@ function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticC
   }, [cursor, displayValue]);
 
   React.useEffect(() => {
-    prevValue.current = displayValue;
+    if (prevValue.current !== displayValue) {
+      prevValue.current = displayValue;
+    }
   }, [displayValue]);
 
   return (
@@ -138,6 +134,11 @@ function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticC
       {...restProps}
       ref={inputRef}
       type="tel"
+      inputMode="decimal"
+      autoComplete="off"
+      autoCorrect="off"
+      autoCapitalize="off"
+      spellCheck="false"
     />
   );
 }

@@ -5,6 +5,7 @@ import {useMask} from './useMask';
 import {patterns, getInputType} from './mask.utils';
 import {IMaskInputProps, ChangeType} from './types';
 
+/**@depricated*/
 export function MaskInput(props: IMaskInputProps) {
   const {className, mask, name, maskPlaceholder, onChangeHandler, value, pattern = '9', ...other} = props;
 

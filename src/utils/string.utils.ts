@@ -40,3 +40,5 @@ export const maxLengthString = (value: string, length: number) => {
     if (value.length > length) return value.slice(0, length);
     return value;
 };
+
+export const zeroPad = (value: number | string, length: number): string => `${value}`.padStart(length, '0');

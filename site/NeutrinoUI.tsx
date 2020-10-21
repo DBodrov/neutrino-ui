@@ -15,7 +15,7 @@ const componentsList = [
   {name: 'Checkbox', link: '/checkbox'},
   {name: 'Typography', link: '/typography'},
   {name: 'Input', link: '/input'},
-  {name: 'MaskInput', link: '/maskinput'},
+  {name: 'InputMask', link: '/inputmask'},
   {name: 'InputNumber', link: '/inputnumber'},
   {name: 'Select', link: '/select'},
   {name: 'Modal', link: '/modal'},
@@ -47,7 +47,7 @@ export function NeutrinoUI() {
               onClick={() => setIsOpen(!isOpen)}
               css={{
                 position: 'absolute',
-                bottom: 16,
+                top: '80%',
                 left: 8,
                 width: 48,
                 height: 48,
