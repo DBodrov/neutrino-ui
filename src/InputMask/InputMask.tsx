@@ -128,7 +128,7 @@ function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticC
   return (
     <input
       onKeyDown={handleKeyDown}
-      value={displayValue}
+      value={value}
       onChange={handleChange}
       onSelect={handleSelect}
       {...restProps}

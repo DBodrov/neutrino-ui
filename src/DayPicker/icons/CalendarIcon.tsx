@@ -11,7 +11,7 @@ export function CalendarIcon(props: React.SVGProps<SVGSVGElement>) {
       xmlns="http://www.w3.org/2000/svg"
       {...restProps}
     >
-      <g clip-path="url(#clip0)">
+      <g clipPath="url(#clip0)">
         <path
           d="M2.46667 22.001C1.65666 22.001 1 21.3811 1 20.6164V5.38559C1 4.6209 1.65666 4.00098 2.46667 4.00098H21.5333C22.3433 4.00098 23 4.6209 23 5.38559V20.6164C23 21.3811 22.3433 22.001 21.5333 22.001H2.46667Z"
           stroke={stroke}

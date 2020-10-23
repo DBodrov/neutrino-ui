@@ -22,9 +22,13 @@ export const getMonthsList = (locale: string | string[]): IMonth[] => {
   return months;
 };
 
+const thisMonthName = (locale: string | string[]) =>
+  getMonthsList(locale).find(m => Number(m.monthNumber) === THIS_MONTH).monthName;
+
 export function getMonthName(monthNumber: number, locale?: string | string[]) {
   const monthItem = getMonthsList(locale).find(m => Number(m.monthNumber) === Number(monthNumber));
-  return monthItem.monthName;
+  console.log(monthItem);
+  return monthItem?.monthName ?? thisMonthName(locale);
 }
 
 export const WEEK_DAYS = [

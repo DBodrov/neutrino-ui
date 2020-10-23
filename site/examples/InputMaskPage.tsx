@@ -62,7 +62,7 @@ export function InputMaskPage() {
       <Label>Props</Label>
       <Example code={exampleProps} />
       <Label>DateInput - implement InputMask</Label>
-      <DateInput name="birthDay" onChange={handleChangeDay} value={day} />
+      {/* <DateInput name="birthDay" onChange={handleChangeDay} value={day} /> */}
       <Example code={exampleDate} />
       <Label>Simple MaskInput (Passport)</Label>
       <InputMask

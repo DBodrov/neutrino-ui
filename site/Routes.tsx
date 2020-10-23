@@ -10,6 +10,7 @@ import {
   SelectPage,
   ModalPage,
   SwitchPage,
+  DatePickerPage
 } from './examples';
 
 export function Routes() {

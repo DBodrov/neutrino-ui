@@ -59,7 +59,7 @@ export function parseDate(value: string, format: string): TDay {
   });
   const day: TDay = {day: THIS_DAY, month: THIS_MONTH, year: THIS_YEAR};
   value.split(delimiter).forEach((dateChar, idx) => {
-    console.log(dateChar)
+    // console.log(dateChar)
     const charType = parsedFormat[idx];
     const defaultValue = day[charType];
     const _val = Number(dateChar);

@@ -1,6 +1,6 @@
 import React from 'react';
 import {css} from '@emotion/core';
-import {InputMask, Span} from 'neutrino-ui';
+import {InputMask, Span, useDayPicker} from 'neutrino-ui';
 import {zeroPad} from '../../../src/utils';
 
 const validate = (dateString: string) => {
@@ -14,12 +14,12 @@ const validate = (dateString: string) => {
   return {isValid: dayIsValid && monthIsValid && yearFormatIsValid, isComplete};
 };
 
-export function DateInput(props: any) {
-  const {name, onChange, value} = props;
-  const [displayDate, setDisplayDate] = React.useState(value);
+function DateInputComponent(props: any, ref?: React.ForwardRefExoticComponent<HTMLInputElement>) {
+  const {handleChangeDay, name, value} = useDayPicker();
+  // const [displayDate, setDisplayDate] = React.useState(value);
   const [hasError, setError] = React.useState(false);
   const baseCss = css({
-    height: '2rem',
+    height: '48px',
     width: '250px',
     padding: '4px',
     borderRadius: '8px',
@@ -33,28 +33,32 @@ export function DateInput(props: any) {
       border: `1px ${hasError ? '#ff435a' : '#18740B'} solid`,
     },
   });
+
   const inputRef = React.useRef<HTMLInputElement>(null);
+  React.useImperativeHandle(ref, () => inputRef.current, []);
   const handleDateChange = React.useCallback(
     (date: string) => {
-      setDisplayDate(date);
-      const {isComplete, isValid} = validate(date);
-      if (isComplete) {
-        setError(!isValid);
-        onChange(isValid ? date : '');
-      } else {
-        setError(false);
-      }
+      handleChangeDay(date);
+
+      // setDisplayDate(date);
+      // const {isComplete, isValid} = validate(date);
+      // if (isComplete) {
+      //   setError(!isValid);
+      //   handleChangeDay(isValid ? date : '');
+      // } else {
+      //   setError(false);
+      // }
     },
-    [onChange],
+    [handleChangeDay],
   );
 
   return (
     <div css={{display: 'flex', flexFlow: 'column nowrap'}}>
       <InputMask
-        mask="99.99.9999"
+        mask="99/99/9999"
         name={name}
         onChangeHandler={handleDateChange}
-        value={displayDate}
+        value={value}
         ref={inputRef}
         maskPlaceholder="_"
         css={[baseCss]}
@@ -63,3 +67,5 @@ export function DateInput(props: any) {
     </div>
   );
 }
+
+export const DateInput = React.forwardRef(DateInputComponent);
