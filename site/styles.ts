@@ -9,7 +9,8 @@ export const Main = styled.main`
   height: calc(100% - 80px);
   overflow: hidden;
   @media (max-width: 540px) {
-    grid-template-columns: 50px 1fr;
+    position: relative;
+    grid-template-columns: 0px 1fr;
   }
 `;
 

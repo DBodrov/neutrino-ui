@@ -1,5 +1,7 @@
 import React from 'react';
 
+/** const isMobile = useMedia('(max-width: 575px)'); */
+
 export function useMedia(query: string, initialState = false) {
   const [state, setState] = React.useState(initialState);
   React.useDebugValue(`\`${query}\` => ${state}`);

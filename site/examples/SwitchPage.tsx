@@ -25,7 +25,6 @@ export function SwitchPage() {
 
   return (
     <Wrapper>
-      <Example code={exampleDefault} />
       <Switch
         on={on}
         onToggle={() => setOn((on) => !on)}
@@ -33,6 +32,7 @@ export function SwitchPage() {
         buttonCss={buttonCss}
         disabled={false}
       />
+      <Example code={exampleDefault} />
     </Wrapper>
   );
 }

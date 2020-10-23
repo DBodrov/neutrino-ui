@@ -4,13 +4,12 @@ import {
   ButtonPage,
   TypographyPage,
   InputPage,
-  MaskInputPage,
+  InputMaskPage,
   CheckboxPage,
   InputNumberPage,
   SelectPage,
   ModalPage,
   SwitchPage,
-  DatePickerPage,
 } from './examples';
 
 export function Routes() {
@@ -31,8 +30,8 @@ export function Routes() {
       <Route path="/input">
         <InputPage />
       </Route>
-      <Route path="/maskinput">
-        <MaskInputPage />
+      <Route path="/inputmask">
+        <InputMaskPage />
       </Route>
       <Route path="/inputnumber">
         <InputNumberPage />
