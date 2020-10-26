@@ -1,12 +1,13 @@
 import React from 'react';
-import {Combobox} from '../Combobox';
+import {ToggleProvider} from '../ToggleProvider';
 import {DayPickerProvider} from './DayPickerProvider';
+import {TDatePickerProps} from './types'
 
-export function DatePicker(props: any) {
+export function DatePicker(props: TDatePickerProps & {children: React.ReactNode}) {
   const {children, ...restProps} = props;
   return (
-    <Combobox>
+    <ToggleProvider>
       <DayPickerProvider {...restProps}>{children}</DayPickerProvider>
-    </Combobox>
+    </ToggleProvider>
   );
 }

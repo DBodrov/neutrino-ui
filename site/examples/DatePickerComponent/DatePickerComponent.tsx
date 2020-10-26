@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import {Calendar, Dropdown, useCombobox, CalendarIcon, useTheme, useDayPicker} from 'neutrino-ui';
+import {Calendar, Dropdown, useToggle, CalendarIcon, useTheme, useDayPicker} from 'neutrino-ui';
 import {DateInput} from '../DateInput';
 
 const CalendarButton = styled.button`
@@ -14,15 +14,15 @@ const CalendarButton = styled.button`
 `;
 
 export function DatePickerComponent() {
-  const {isOpen, handleOpen, handleClose} = useCombobox();
-  const {handleChangeDay, value} = useDayPicker();
+  const {isOpen, handleOpen, handleClose} = useToggle();
+  const {value} = useDayPicker();
   const {colors} = useTheme();
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   const dateInputRef = React.useRef<HTMLInputElement>(null);
   const inputRect = dateInputRef?.current?.getBoundingClientRect();
 
   React.useEffect(() => {
-    const handleClickOutside = (e: PointerEvent) => {
+    const handleClickOutside = (e: PointerEvent | MouseEvent) => {
       if (e.target instanceof HTMLElement && isOpen) {
         const calendar = dropdownRef?.current;
         const pickerInput = dropdownRef?.current;
@@ -33,10 +33,9 @@ export function DatePickerComponent() {
       }
     };
 
-    const handleScroll = (e: PointerEvent) => handleClose();
+    const handleScroll = (e?: Event) => handleClose();
 
     if (isOpen) {
-      // setRect(datePickerRef?.current.getBoundingClientRect());
       document.addEventListener('click', handleClickOutside);
       window.addEventListener('scroll', handleScroll, true);
     }

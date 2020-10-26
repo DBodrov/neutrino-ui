@@ -2,7 +2,7 @@ import React from 'react';
 import {css} from '@emotion/core';
 import {Span} from '../../../Typography';
 import {useTheme} from '../../../Themes';
-import {useCombobox} from '../../../Combobox';
+import {useToggle} from '../../../ToggleProvider';
 import {useDayPicker} from '../../DayPickerProvider';
 import {zeroPad} from '../../utils/common';
 import {TCalendarDate} from '../../types';
@@ -31,7 +31,7 @@ export function Day({date, title = ''}: TDayProps) {
   } = useDayPicker();
   const theme = useTheme();
   const {day, month, year, isCurrentMonth} = date;
-  const {handleClose} = useCombobox();
+  const {handleClose} = useToggle();
 
   const isCurrentDay = React.useCallback(() => {
     return day === currentDay && month === currentMonth && year === currentYear;

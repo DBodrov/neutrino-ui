@@ -22,9 +22,6 @@ export interface IMonth {
   monthName: string;
 }
 
-type TDatePickerConfig = {
-};
-
 export type TDatePickerProps = {
   value?: string;
   name: string;
@@ -38,14 +35,14 @@ export type TDatePickerProps = {
   isEditable?: boolean;
 };
 
-/**@depricated */
+/**@deprecated */
 export type DatePickerValue = string;
-/**@depricated */
+/**@deprecated */
 export interface IYear {
   [id: number]: number;
 }
 
-/**@depricated */
+/**@deprecated */
 export interface IDatePickerProps {
   name: string;
   view: TCalendarView;
@@ -68,31 +65,31 @@ export interface IDatePickerProps {
   minDate?: string;
   calendarDefaultDate?: string;
 }
-/**@depricated */
+/**@deprecated */
 export interface IPickerValue {
   day: string;
   month: string;
   year: string;
 }
-/**@depricated */
+/**@deprecated */
 export interface IPickerDropdownProps {
   isOpen: boolean;
   offset?: ClientRect;
   // onClick: (value: string) => void;
   children?: never;
 }
-/**@depricated */
+/**@deprecated */
 export type TCalendarView = 'days' | 'months' | 'years';
-/**@depricated */
+/**@deprecated */
 export type ChangeDirection = 'prev' | 'next';
-/**@depricated */
+/**@deprecated */
 export type PanelType = 'month' | 'year' | 'decade';
-/**@depricated */
+/**@deprecated */
 export interface IDayCalendarOptions {
   minDate?: string;
   maxDate?: string;
 }
-/**@depricated */
+/**@deprecated */
 export interface IDatePickerContext extends Partial<IDatePickerProps> {
   value?: string;
   internalValue?: string;
@@ -113,7 +110,7 @@ export interface IDatePickerContext extends Partial<IDatePickerProps> {
   setInternalValue: (date: string) => void;
 }
 
-/**@depricated */
+/**@deprecated */
 export interface IDateObject {
   key: string;
   type: TDayType;
@@ -124,7 +121,7 @@ export interface IDateObject {
   calendarDate: Date;
   disabledDate: boolean;
 }
-/**@depricated */
+/**@deprecated */
 export interface IDateParams {
   day: number;
   month: number;

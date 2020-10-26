@@ -27,7 +27,6 @@ const thisMonthName = (locale: string | string[]) =>
 
 export function getMonthName(monthNumber: number, locale?: string | string[]) {
   const monthItem = getMonthsList(locale).find(m => Number(m.monthNumber) === Number(monthNumber));
-  console.log(monthItem);
   return monthItem?.monthName ?? thisMonthName(locale);
 }
 

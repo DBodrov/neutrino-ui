@@ -1,6 +1,6 @@
 import React from 'react';
 import {css} from '@emotion/core';
-import {InputMask, Span, useDayPicker} from 'neutrino-ui';
+import {InputMask, Span, useDayPicker, useToggle} from 'neutrino-ui';
 import {zeroPad} from '../../../src/utils';
 
 const validate = (dateString: string) => {
@@ -16,6 +16,7 @@ const validate = (dateString: string) => {
 
 function DateInputComponent(props: any, ref?: React.ForwardRefExoticComponent<HTMLInputElement>) {
   const {handleChangeDay, name, value} = useDayPicker();
+  const {isOpen} = useToggle();
   // const [displayDate, setDisplayDate] = React.useState(value);
   const [hasError, setError] = React.useState(false);
   const baseCss = css({
@@ -23,7 +24,7 @@ function DateInputComponent(props: any, ref?: React.ForwardRefExoticComponent<HT
     width: '250px',
     padding: '4px',
     borderRadius: '8px',
-    border: `1px ${hasError ? '#ff435a' : '#c5c5c5'} solid`,
+    border: `1px ${hasError ? '#ff435a' : isOpen ? '#18740B' : '#c5c5c5'} solid`,
     fontSize: '16px',
     '&:hover': {
       borderColor: `${hasError ? '#ff435a' : '#52ae30'}`,
