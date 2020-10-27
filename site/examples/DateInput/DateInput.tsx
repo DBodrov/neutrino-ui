@@ -23,7 +23,7 @@ function DateInputComponent(props: any, ref?: React.ForwardRefExoticComponent<HT
     height: '48px',
     width: '250px',
     padding: '4px',
-    borderRadius: '8px',
+    borderRadius: '4px',
     border: `1px ${hasError ? '#ff435a' : isOpen ? '#18740B' : '#c5c5c5'} solid`,
     fontSize: '16px',
     '&:hover': {

@@ -5,6 +5,7 @@ import {Button} from '../../../Button';
 import {LeftIcon} from '../../icons/LeftIcon';
 import {useDayPicker} from '../../DayPickerProvider';
 import {getMonthName, createDateString} from '../../utils/date';
+import {LinkButton} from './styles';
 
 const Panel = styled.div`
   display: flex;
@@ -35,7 +36,17 @@ const NavButton = styled(Button)`
 
 export function Navigator() {
   const theme = useTheme();
-  const {locale, month, year, day, handleChangeDay, format, delimiter} = useDayPicker();
+  const {
+    locale,
+    month,
+    year,
+    day,
+    handleChangeDay,
+    format,
+    delimiter,
+    handleChangeCalendarView,
+    calendarView,
+  } = useDayPicker();
 
   const monthName = getMonthName(month, locale);
 
@@ -77,13 +88,19 @@ export function Navigator() {
     handleChangeDay(newDate);
   }, [day, delimiter, format, handleChangeDay, month, year]);
 
+  const isMonthsView = calendarView === 'months';
+
   return (
     <Panel css={{borderBottom: `1px ${theme.colors.pageElementsColors.border} solid`}}>
       <NavButton flat onClick={handlePrevYear}>
         <LeftIcon />
       </NavButton>
-      <NavButton flat onClick={handlePrevMonth}>
-        <LeftIcon />
+      <NavButton
+        flat
+        onClick={isMonthsView ? undefined : handlePrevMonth}
+        css={{cursor: isMonthsView ? 'not-allowed' : 'pointer'}}
+      >
+        <LeftIcon css={{opacity: isMonthsView ? 0.3 : 1}} />
       </NavButton>
       <div
         css={{
@@ -95,12 +112,20 @@ export function Navigator() {
           width: '100%',
         }}
       >
-        <span>
-          {monthName} {year}
-        </span>
+        <LinkButton
+          css={{color: theme?.colors?.textColors?.link}}
+          onClick={() => handleChangeCalendarView('months')}
+        >
+          {monthName}
+        </LinkButton>
+        <LinkButton css={{color: theme?.colors?.textColors?.link}}>{year}</LinkButton>
       </div>
-      <NavButton flat css={{marginLeft: 'auto'}} onClick={handleNextMonth}>
-        <LeftIcon css={{transform: 'rotate(180deg)'}} />
+      <NavButton
+        flat
+        css={{marginLeft: 'auto', cursor: isMonthsView ? 'not-allowed' : 'pointer'}}
+        onClick={isMonthsView ? undefined : handleNextMonth}
+      >
+        <LeftIcon css={{transform: 'rotate(180deg)', opacity: isMonthsView ? 0.3 : 1}} />
       </NavButton>
       <NavButton flat onClick={handleNextYear}>
         <LeftIcon css={{transform: 'rotate(180deg)'}} />

@@ -24,8 +24,10 @@ export function DatePickerComponent() {
   React.useEffect(() => {
     const handleClickOutside = (e: PointerEvent | MouseEvent) => {
       if (e.target instanceof HTMLElement && isOpen) {
+
         const calendar = dropdownRef?.current;
-        const pickerInput = dropdownRef?.current;
+        const pickerInput = dateInputRef?.current;
+        console.log('outside click', e.target, calendar, calendar?.contains(e.target))
         if (calendar?.contains(e.target) || pickerInput?.contains(e.target)) {
           return;
         }
@@ -52,7 +54,7 @@ export function DatePickerComponent() {
         <CalendarIcon stroke={isOpen ? colors.mainColors.primary : undefined} />
       </CalendarButton>
       <Dropdown isOpen={isOpen} ref={dropdownRef} parentBound={isOpen ? inputRect : undefined}>
-        <Calendar />
+        <Calendar css={{borderRadius: 4}}/>
       </Dropdown>
     </div>
   );

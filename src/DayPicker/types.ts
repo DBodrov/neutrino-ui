@@ -17,6 +17,8 @@ export type TDayType = 'workday' | 'weekend';
 
 export type TDayCalendar = TCalendarDate[];
 
+export type TCalendarView = 'days' | 'months' | 'years';
+
 export interface IMonth {
   monthNumber: number;
   monthName: string;
@@ -78,8 +80,7 @@ export interface IPickerDropdownProps {
   // onClick: (value: string) => void;
   children?: never;
 }
-/**@deprecated */
-export type TCalendarView = 'days' | 'months' | 'years';
+
 /**@deprecated */
 export type ChangeDirection = 'prev' | 'next';
 /**@deprecated */
