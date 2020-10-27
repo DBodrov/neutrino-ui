@@ -7,7 +7,7 @@ export function DatePickerPage() {
   const [date, setDate] = useState('');
   // const dateInputRef = React.useRef<HTMLInputElement>(null);
   const handleChangeDate = (value: string) => {
-    console.log('page', value);
+    // console.log('page', value);
 
     setDate(value);
   }
@@ -15,7 +15,7 @@ export function DatePickerPage() {
   return (
     <Wrapper>
       <span>DatePicker</span>
-
+    <div css={{height: 50, overflow: 'hidden', border: '1px #c5c5c5 solid'}}>
       <DatePicker
         css={{width: 250}}
         name="someDate"
@@ -26,6 +26,8 @@ export function DatePickerPage() {
       >
         <DatePickerComponent />
       </DatePicker>
+
+    </div>
 
 
     </Wrapper>

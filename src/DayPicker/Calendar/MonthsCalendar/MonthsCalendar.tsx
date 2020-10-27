@@ -8,9 +8,9 @@ import {Months, Month} from './styles';
 export function MonthsCalendar() {
   const {locale, handleChangeMonth, month} = useDayPicker();
   const {colors} = useTheme();
-  const activeMonth = css({
+  const activeMonthStyles = css({
     cursor: 'pointer',
-    backgroundColor: colors?.mainColors?.primary,
+    backgroundColor: colors?.mainColors?.primaryDark,
     color: colors?.textColors?.textOnPrimary,
   });
 
@@ -34,7 +34,7 @@ export function MonthsCalendar() {
                   color: colors?.textColors?.textOnPrimary,
                 },
               },
-              monthNumber === month ? activeMonth : null
+              monthNumber === month ? activeMonthStyles : null
             ]}
             key={monthNumber}
             onClick={selectMonth}

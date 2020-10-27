@@ -5,6 +5,7 @@ import {Navigator} from './Navigator';
 import {DaysOfWeek} from './DaysOfWeek';
 import {DaysCalendar} from './DaysCalendar';
 import {MonthsCalendar} from './MonthsCalendar';
+import {YearsCalendar} from './YearsCalendar';
 import {CalendarBlock} from './styles';
 
 export function Calendar(props: any) {
@@ -17,6 +18,10 @@ export function Calendar(props: any) {
     if (calendarView === 'months') {
       return <MonthsCalendar />
     }
+    if (calendarView === 'years') {
+      return <YearsCalendar />
+    }
+    return <DaysCalendar />
   }
   return (
     <CalendarBlock

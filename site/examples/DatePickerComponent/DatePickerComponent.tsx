@@ -15,7 +15,7 @@ const CalendarButton = styled.button`
 
 export function DatePickerComponent() {
   const {isOpen, handleOpen, handleClose} = useToggle();
-  const {value} = useDayPicker();
+  const {value, handleChangeCalendarView} = useDayPicker();
   const {colors} = useTheme();
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   const dateInputRef = React.useRef<HTMLInputElement>(null);
@@ -24,18 +24,20 @@ export function DatePickerComponent() {
   React.useEffect(() => {
     const handleClickOutside = (e: PointerEvent | MouseEvent) => {
       if (e.target instanceof HTMLElement && isOpen) {
-
         const calendar = dropdownRef?.current;
         const pickerInput = dateInputRef?.current;
-        console.log('outside click', e.target, calendar, calendar?.contains(e.target))
         if (calendar?.contains(e.target) || pickerInput?.contains(e.target)) {
           return;
         }
         handleClose();
+        handleChangeCalendarView('days');
       }
     };
 
-    const handleScroll = (e?: Event) => handleClose();
+    const handleScroll = (e?: Event) => {
+      handleClose()
+      handleChangeCalendarView('days');
+    };
 
     if (isOpen) {
       document.addEventListener('click', handleClickOutside);
@@ -45,7 +47,7 @@ export function DatePickerComponent() {
       document.removeEventListener('click', handleClickOutside);
       window.removeEventListener('scroll', handleScroll, true);
     };
-  }, [handleClose, isOpen]);
+  }, [handleChangeCalendarView, handleClose, isOpen]);
 
   return (
     <div css={{position: 'relative', width: 250}}>

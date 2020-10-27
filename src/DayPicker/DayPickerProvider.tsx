@@ -1,6 +1,7 @@
 import React, {createContext, useContext, useMemo} from 'react';
 import {createMask, parseFormat, parseDate} from './utils/format';
-import {THIS_DAY, THIS_MONTH, THIS_YEAR, createDateString} from './utils/date';
+import {THIS_DAY, THIS_MONTH, THIS_YEAR, THIS_DECADE, createDateString} from './utils/date';
+import {createDecadeTitle} from './utils/calendar';
 import {TDay, TDatePickerProps, TCalendarView} from './types';
 
 export type TFormatConfig = {inputs: Map<string, {length: number}>; delimiter: string};
@@ -14,10 +15,12 @@ interface IDayPickerContext {
   day: number;
   month: number;
   year: number;
+  decade: string;
   handleChangeDay: (date: string) => void;
   handleChangeCalendarView: (view: TCalendarView) => void;
   handleChangeMonth: (monthNumber: number) => void;
   handleChangeYear: (year: number) => void;
+  handleChangeDecade: (decade: string) => void;
   locale: string | string[];
   value?: string;
   calendarView: TCalendarView;
@@ -25,18 +28,20 @@ interface IDayPickerContext {
 
 type TDatePickerState = TDay & {
   calendarView: TCalendarView;
+  decade: string;
 };
 
 const DayPickerContext = createContext<IDayPickerContext | undefined>(undefined);
 
 export function DayPickerProvider(props: TDatePickerProps) {
   const {format = 'DD.MM.YYYY', locale = 'ru', value, name, className, onChangeHandler, ...restProps} = props;
-  const [{day, month, year, calendarView}, dispatch] = React.useReducer(
+  const [{day, month, year, decade, calendarView}, dispatch] = React.useReducer(
     (state: TDatePickerState, change: Partial<TDatePickerState>): TDatePickerState => ({...state, ...change}),
     {
       day: THIS_DAY,
       month: THIS_MONTH,
       year: THIS_YEAR,
+      decade: THIS_DECADE,
       calendarView: 'days',
     },
   );
@@ -54,7 +59,8 @@ export function DayPickerProvider(props: TDatePickerProps) {
   React.useEffect(() => {
     if (value && format) {
       const currentDay = parseDate(value, format);
-      dispatch(currentDay);
+      const currentDecade = createDecadeTitle(currentDay.year);
+      dispatch({...currentDay, decade: currentDecade});
     }
   }, [calendarView, day, format, month, value, year]);
 
@@ -69,16 +75,27 @@ export function DayPickerProvider(props: TDatePickerProps) {
     (view: TCalendarView) => dispatch({calendarView: view}),
     [],
   );
-  const handleChangeMonth = React.useCallback((monthNumber: number) => {
-    console.log('value', value)
-    if (value) {
-      const updateDate = createDateString(format, delimiter, {day, month: monthNumber, year});
-      onChangeHandler(updateDate)
-    }
-    dispatch({month: monthNumber, calendarView: 'days'});
+  const handleChangeMonth = React.useCallback(
+    (monthNumber: number) => {
+      if (value) {
+        const updateDate = createDateString(format, delimiter, {day, month: monthNumber, year});
+        onChangeHandler(updateDate);
+      }
+      dispatch({month: monthNumber, calendarView: 'days'});
+    },
+    [day, delimiter, format, onChangeHandler, value, year],
+  );
 
-  }, [day, delimiter, format, onChangeHandler, value, year]);
-  const handleChangeYear = React.useCallback((year: number) => dispatch({year}), []);
+  const handleChangeYear = React.useCallback((year: number) => {
+    if (value) {
+      const updateDate = createDateString(format, delimiter, {day, month, year});
+      onChangeHandler(updateDate);
+    }
+    const newDecade = createDecadeTitle(year);
+    dispatch({year, decade: newDecade});
+  }, [day, delimiter, format, month, onChangeHandler, value]);
+
+  const handleChangeDecade = React.useCallback((decade: string) => dispatch({decade}), []);
 
   const ctxValue = useMemo<IDayPickerContext>(
     () => ({
@@ -90,10 +107,12 @@ export function DayPickerProvider(props: TDatePickerProps) {
       day,
       month,
       year,
+      decade,
       handleChangeDay,
       handleChangeCalendarView,
       handleChangeMonth,
       handleChangeYear,
+      handleChangeDecade,
       calendarView,
       locale,
       value,
@@ -107,10 +126,12 @@ export function DayPickerProvider(props: TDatePickerProps) {
       day,
       month,
       year,
+      decade,
       handleChangeDay,
       handleChangeCalendarView,
       handleChangeMonth,
       handleChangeYear,
+      handleChangeDecade,
       calendarView,
       locale,
       value,

@@ -1,38 +1,11 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import {useTheme} from '../../../Themes';
-import {Button} from '../../../Button';
+import {Span} from '../../../Typography';
 import {LeftIcon} from '../../icons/LeftIcon';
 import {useDayPicker} from '../../DayPickerProvider';
 import {getMonthName, createDateString} from '../../utils/date';
-import {LinkButton} from './styles';
-
-const Panel = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  height: 48px;
-  padding: 0px 4px;
-`;
-
-const NavButton = styled(Button)`
-  background: transparent;
-  border: 0;
-  outline: 0;
-  box-shadow: none;
-  min-width: 20px;
-  min-height: 32px;
-  width: 20px;
-  height: 32px;
-  &:hover {
-    background: none;
-  }
-  &:active {
-    box-shadow: none;
-  }
-`;
+import {createDecadeTitle} from '../../utils/calendar';
+import {LinkButton, NavButton, Panel} from './styles';
 
 export function Navigator() {
   const theme = useTheme();
@@ -46,6 +19,8 @@ export function Navigator() {
     delimiter,
     handleChangeCalendarView,
     calendarView,
+    decade,
+    handleChangeDecade,
   } = useDayPicker();
 
   const monthName = getMonthName(month, locale);
@@ -71,37 +46,70 @@ export function Navigator() {
   }, [day, delimiter, format, handleChangeDay, month, year]);
 
   const handlePrevYear = React.useCallback(() => {
-    let prevYear = year - 1;
-    if (prevYear < 1000) {
-      prevYear = 1000;
+    if (calendarView === 'years') {
+      const [firstYear] = decade.split('-');
+      const prevDecade = createDecadeTitle(Number(firstYear) - 10);
+      handleChangeDecade(prevDecade);
+    } else {
+      let prevYear = year - 1;
+      if (prevYear < 1000) {
+        prevYear = 1000;
+      }
+      const newDate = createDateString(format, delimiter, {day, month, year: prevYear});
+      handleChangeDay(newDate);
     }
-    const newDate = createDateString(format, delimiter, {day, month, year: prevYear});
-    handleChangeDay(newDate);
-  }, [day, delimiter, format, handleChangeDay, month, year]);
+  }, [calendarView, day, decade, delimiter, format, handleChangeDay, handleChangeDecade, month, year]);
 
   const handleNextYear = React.useCallback(() => {
-    let nextYear = year + 1;
-    if (nextYear > 9999) {
-      nextYear = 9999;
+    if (calendarView === 'years') {
+      const [firstYear] = decade.split('-');
+      const prevDecade = createDecadeTitle(Number(firstYear) + 10);
+      handleChangeDecade(prevDecade);
+    } else {
+      let nextYear = year + 1;
+      if (nextYear > 9999) {
+        nextYear = 9999;
+      }
+      const newDate = createDateString(format, delimiter, {day, month, year: nextYear});
+      handleChangeDay(newDate);
     }
-    const newDate = createDateString(format, delimiter, {day, month, year: nextYear});
-    handleChangeDay(newDate);
-  }, [day, delimiter, format, handleChangeDay, month, year]);
+  }, [calendarView, day, decade, delimiter, format, handleChangeDay, handleChangeDecade, month, year]);
+
+  const setMonthsView = React.useCallback(() => {
+    handleChangeCalendarView('months');
+  }, [handleChangeCalendarView]);
+
+  const setYearsView = React.useCallback(
+    (e: React.PointerEvent | React.MouseEvent) => {
+      handleChangeCalendarView('years');
+      e.stopPropagation();
+    },
+    [handleChangeCalendarView],
+  );
 
   const isMonthsView = calendarView === 'months';
+  const isYearsView = calendarView === 'years';
 
   return (
     <Panel css={{borderBottom: `1px ${theme.colors.pageElementsColors.border} solid`}}>
-      <NavButton flat onClick={handlePrevYear}>
-        <LeftIcon />
-      </NavButton>
-      <NavButton
-        flat
-        onClick={isMonthsView ? undefined : handlePrevMonth}
-        css={{cursor: isMonthsView ? 'not-allowed' : 'pointer'}}
-      >
-        <LeftIcon css={{opacity: isMonthsView ? 0.3 : 1}} />
-      </NavButton>
+      {isYearsView ? (
+        <NavButton flat onClick={handlePrevYear}>
+          <LeftIcon />
+        </NavButton>
+      ) : (
+        <>
+          <NavButton flat onClick={handlePrevYear}>
+            <LeftIcon />
+          </NavButton>
+          <NavButton
+            flat
+            onClick={isMonthsView ? undefined : handlePrevMonth}
+            css={{cursor: isMonthsView ? 'not-allowed' : 'pointer'}}
+          >
+            <LeftIcon css={{opacity: isMonthsView ? 0.3 : 1}} />
+          </NavButton>
+        </>
+      )}
       <div
         css={{
           display: 'flex',
@@ -112,24 +120,37 @@ export function Navigator() {
           width: '100%',
         }}
       >
-        <LinkButton
-          css={{color: theme?.colors?.textColors?.link}}
-          onClick={() => handleChangeCalendarView('months')}
-        >
-          {monthName}
-        </LinkButton>
-        <LinkButton css={{color: theme?.colors?.textColors?.link}}>{year}</LinkButton>
+        {isYearsView ? (
+          <Span css={{fontSize: 14}}>{decade}</Span>
+        ) : (
+          <>
+            <LinkButton css={{color: theme?.colors?.textColors?.link}} onClick={setMonthsView}>
+              {monthName}
+            </LinkButton>
+            <LinkButton css={{color: theme?.colors?.textColors?.link}} onClick={setYearsView}>
+              {year}
+            </LinkButton>
+          </>
+        )}
       </div>
-      <NavButton
-        flat
-        css={{marginLeft: 'auto', cursor: isMonthsView ? 'not-allowed' : 'pointer'}}
-        onClick={isMonthsView ? undefined : handleNextMonth}
-      >
-        <LeftIcon css={{transform: 'rotate(180deg)', opacity: isMonthsView ? 0.3 : 1}} />
-      </NavButton>
-      <NavButton flat onClick={handleNextYear}>
-        <LeftIcon css={{transform: 'rotate(180deg)'}} />
-      </NavButton>
+      {isYearsView ? (
+        <NavButton flat onClick={handleNextYear}>
+          <LeftIcon css={{transform: 'rotate(180deg)'}} />
+        </NavButton>
+      ) : (
+        <>
+          <NavButton
+            flat
+            css={{marginLeft: 'auto', cursor: isMonthsView ? 'not-allowed' : 'pointer'}}
+            onClick={isMonthsView ? undefined : handleNextMonth}
+          >
+            <LeftIcon css={{transform: 'rotate(180deg)', opacity: isMonthsView ? 0.3 : 1}} />
+          </NavButton>
+          <NavButton flat onClick={handleNextYear}>
+            <LeftIcon css={{transform: 'rotate(180deg)'}} />
+          </NavButton>
+        </>
+      )}
     </Panel>
   );
 }
