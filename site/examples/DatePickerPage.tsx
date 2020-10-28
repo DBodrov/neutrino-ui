@@ -15,7 +15,7 @@ export function DatePickerPage() {
   return (
     <Wrapper>
       <span>DatePicker</span>
-    <div css={{height: 50, overflow: 'hidden', border: '1px #c5c5c5 solid'}}>
+    <div>
       <DatePicker
         css={{width: 250}}
         name="someDate"
@@ -23,6 +23,8 @@ export function DatePickerPage() {
         onChangeHandler={handleChangeDate}
         format="DD/MM/YYYY"
         locale="ru"
+        minDate="15/09/2020"
+        maxDate="30/10/2020"
       >
         <DatePickerComponent />
       </DatePicker>

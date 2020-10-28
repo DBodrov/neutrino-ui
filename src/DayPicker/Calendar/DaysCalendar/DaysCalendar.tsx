@@ -6,8 +6,8 @@ import {createDayCalendar} from './utils';
 import {Days} from './styles';
 
 export function DaysCalendar() {
-  const {month, year, locale} = useDayPicker();
-  const calendar = createDayCalendar(month, year);
+  const {month, year, locale, minDate, maxDate, format} = useDayPicker();
+  const calendar = createDayCalendar(month, year, {format, minDate, maxDate});
 
   return (
     <Days>

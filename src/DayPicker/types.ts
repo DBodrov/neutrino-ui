@@ -11,6 +11,7 @@ export type TCalendarDate = {
   type: TDayType;
   date: Date;
   isCurrentMonth: boolean;
+  isDisabled?: boolean;
 } & TDay;
 
 export type TDayType = 'workday' | 'weekend';
@@ -18,6 +19,12 @@ export type TDayType = 'workday' | 'weekend';
 export type TDayCalendar = TCalendarDate[];
 
 export type TCalendarView = 'days' | 'months' | 'years';
+
+export type TDayCalendarOptions = {
+  minDate?: string;
+  maxDate?: string;
+  format?: string;
+}
 
 export interface IMonth {
   monthNumber: number;
@@ -35,6 +42,8 @@ export type TDatePickerProps = {
   children?: React.ReactNode;
   pickerInputStyles?: SerializedStyles;
   isEditable?: boolean;
+  minDate?: string;
+  maxDate?: string;
 };
 
 /**@deprecated */
@@ -85,11 +94,7 @@ export interface IPickerDropdownProps {
 export type ChangeDirection = 'prev' | 'next';
 /**@deprecated */
 export type PanelType = 'month' | 'year' | 'decade';
-/**@deprecated */
-export interface IDayCalendarOptions {
-  minDate?: string;
-  maxDate?: string;
-}
+
 /**@deprecated */
 export interface IDatePickerContext extends Partial<IDatePickerProps> {
   value?: string;

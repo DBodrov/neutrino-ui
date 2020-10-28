@@ -1,5 +1,6 @@
 import {TDay, TDayType} from '../types';
 import {THIS_MONTH, THIS_YEAR, THIS_DECADE} from './date';
+import {parseDate} from './format';
 
 export const getDaysInMonth = (month = THIS_MONTH, year = THIS_YEAR) => {
   const months30 = [4, 6, 9, 11]; // апрель, июнь, сентябрь, ноябрь - по 30 дней
@@ -80,22 +81,25 @@ export const getDisabledState = (
   day: number,
   month: number,
   year: number,
+  format: string,
   minDate?: string,
   maxDate?: string,
 ) => {
-  const currentDate = new Date(year, month, day);
+  const currentDate = new Date(year, month - 1, day);
   let minResult = false;
   let maxResult = false;
   if (minDate) {
-    const [minDay, minMonth, minYear] = minDate.split('.').map(Number);
-    const minNativeDate = new Date(minYear, minMonth, minDay);
+    const {day: minDay, month: minMonth, year: minYear} = parseDate(minDate, format);
+    const minNativeDate = new Date(minYear, minMonth - 1, minDay);
+    // console.log('***********', currentDate, minNativeDate, currentDate < minNativeDate)
     minResult = currentDate < minNativeDate;
   }
   if (maxDate) {
-    const [maxDay, maxMonth, maxYear] = maxDate.split('.').map(Number);
-    const maxNativeDate = new Date(maxYear, maxMonth, maxDay);
+    const {day: maxDay, month: maxMonth, year: maxYear} = parseDate(maxDate, format);
+    const maxNativeDate = new Date(maxYear, maxMonth - 1, maxDay);
     maxResult = currentDate > maxNativeDate;
   }
+  //console.log(currentDate, minDate, minResult )
   return minResult || maxResult;
 };
 

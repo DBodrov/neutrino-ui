@@ -14,7 +14,6 @@ const baseStyles = css`
   justify-content: center;
   align-items: center;
   font-size: 12px;
-  cursor: pointer;
   border-radius: 50%;
 `;
 
@@ -30,7 +29,7 @@ export function Day({date, title = ''}: TDayProps) {
     year: currentYear,
   } = useDayPicker();
   const theme = useTheme();
-  const {day, month, year, isCurrentMonth} = date;
+  const {day, month, year, isCurrentMonth, isDisabled} = date;
   const {handleClose} = useToggle();
 
   const isCurrentDay = React.useCallback(() => {
@@ -38,12 +37,17 @@ export function Day({date, title = ''}: TDayProps) {
   }, [currentDay, currentMonth, currentYear, day, month, year]);
 
   const dayStyles = css`
-    opacity: ${isCurrentMonth ? 1 : 0.5};
+    opacity: ${isCurrentMonth && !isDisabled ? 1 : 0.5};
     background-color: ${isCurrentDay() ? theme.colors.mainColors.primaryDark : 'transparent'};
-    color: ${isCurrentDay() ? theme.colors.textColors.textOnPrimary : theme.colors.textColors.text};
+    color: ${isCurrentDay()
+      ? theme.colors.textColors.textOnPrimary
+      : date.type === 'weekend'
+      ? '#D40000'
+      : theme.colors.textColors.text};
+    cursor: ${isDisabled ? 'not-allowed' : 'pointer'};
     &:hover {
-      background-color: ${theme.colors.mainColors.primary};
-      color: ${theme.colors.textColors.textOnPrimary};
+      background-color: ${isDisabled ? 'transparent' : theme.colors.mainColors.primary};
+      color: ${isDisabled ? 'initial' : theme.colors.textColors.textOnPrimary};
     }
   `;
 
@@ -64,9 +68,9 @@ export function Day({date, title = ''}: TDayProps) {
   }, [day, delimiter, format, handleChangeDay, handleClose, month, year]);
   return (
     <Span
-      onClickCapture={handleSelectDay}
+      onClickCapture={isDisabled ? undefined : handleSelectDay}
       title={title}
-      css={[baseStyles, css({color: date.type === 'weekend' && '#D40000'}), dayStyles]}
+      css={[baseStyles, dayStyles, css({})]}
     >
       {date.day}
     </Span>

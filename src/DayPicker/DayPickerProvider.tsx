@@ -24,6 +24,8 @@ interface IDayPickerContext {
   locale: string | string[];
   value?: string;
   calendarView: TCalendarView;
+  minDate?: string;
+  maxDate?: string;
 }
 
 type TDatePickerState = TDay & {
@@ -34,7 +36,17 @@ type TDatePickerState = TDay & {
 const DayPickerContext = createContext<IDayPickerContext | undefined>(undefined);
 
 export function DayPickerProvider(props: TDatePickerProps) {
-  const {format = 'DD.MM.YYYY', locale = 'ru', value, name, className, onChangeHandler, ...restProps} = props;
+  const {
+    format = 'DD.MM.YYYY',
+    locale = 'ru',
+    value,
+    name,
+    className,
+    onChangeHandler,
+    minDate,
+    maxDate,
+    ...restProps
+  } = props;
   const [{day, month, year, decade, calendarView}, dispatch] = React.useReducer(
     (state: TDatePickerState, change: Partial<TDatePickerState>): TDatePickerState => ({...state, ...change}),
     {
@@ -86,14 +98,17 @@ export function DayPickerProvider(props: TDatePickerProps) {
     [day, delimiter, format, onChangeHandler, value, year],
   );
 
-  const handleChangeYear = React.useCallback((year: number) => {
-    if (value) {
-      const updateDate = createDateString(format, delimiter, {day, month, year});
-      onChangeHandler(updateDate);
-    }
-    const newDecade = createDecadeTitle(year);
-    dispatch({year, decade: newDecade});
-  }, [day, delimiter, format, month, onChangeHandler, value]);
+  const handleChangeYear = React.useCallback(
+    (year: number) => {
+      if (value) {
+        const updateDate = createDateString(format, delimiter, {day, month, year});
+        onChangeHandler(updateDate);
+      }
+      const newDecade = createDecadeTitle(year);
+      dispatch({year, decade: newDecade});
+    },
+    [day, delimiter, format, month, onChangeHandler, value],
+  );
 
   const handleChangeDecade = React.useCallback((decade: string) => dispatch({decade}), []);
 
@@ -116,6 +131,8 @@ export function DayPickerProvider(props: TDatePickerProps) {
       calendarView,
       locale,
       value,
+      minDate,
+      maxDate,
     }),
     [
       mask,
@@ -135,6 +152,8 @@ export function DayPickerProvider(props: TDatePickerProps) {
       calendarView,
       locale,
       value,
+      minDate,
+      maxDate,
     ],
   );
 

@@ -40,15 +40,6 @@ function DateInputComponent(props: any, ref?: React.ForwardRefExoticComponent<HT
   const handleDateChange = React.useCallback(
     (date: string) => {
       handleChangeDay(date);
-
-      // setDisplayDate(date);
-      // const {isComplete, isValid} = validate(date);
-      // if (isComplete) {
-      //   setError(!isValid);
-      //   handleChangeDay(isValid ? date : '');
-      // } else {
-      //   setError(false);
-      // }
     },
     [handleChangeDay],
   );
