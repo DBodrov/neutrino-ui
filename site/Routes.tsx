@@ -10,6 +10,7 @@ import {
   SelectPage,
   ModalPage,
   SwitchPage,
+  DatePickerPage
 } from './examples';
 
 export function Routes() {
@@ -45,9 +46,9 @@ export function Routes() {
       <Route path="/switch">
         <SwitchPage />
       </Route>
-      {/* <Route path="/datepicker">
+      <Route path="/datepicker">
         <DatePickerPage />
-      </Route> */}
+      </Route>
     </Switch>
   );
 }
