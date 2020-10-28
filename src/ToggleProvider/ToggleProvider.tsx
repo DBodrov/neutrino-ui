@@ -7,7 +7,6 @@ const initState = {
 };
 
 export const toggleReducer = (state: IToggleState, changes: IToggleState): IToggleState => {
-  console.info(changes)
   switch (changes.type) {
     case ToggleChangeTypes.idle:
     default:
