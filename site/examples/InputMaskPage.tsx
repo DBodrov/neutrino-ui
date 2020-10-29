@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import styled from '@emotion/styled';
-import {Span, InputMask, H4} from 'neutrino-ui';
+import {Span, InputMask, H4, PhoneInput} from 'neutrino-ui';
 import {DateInput} from './DateInput';
 import {Example, Wrapper} from './Example';
 
@@ -50,10 +50,15 @@ interface IInputMaskProps extends React.HTMLProps<HTMLInputElement> {
 
 export function InputMaskPage() {
   const [passport, setPassport] = useState('');
+  const [phone, setPhone] = useState('');
 
   const [day, setDay] = useState('');
   const handleChangePassport = (value: string) => setPassport(value);
   const handleChangeDay = (date: string) => setDay(date);
+  const handleChangePhone = (phone: string) => {
+    console.log('phone', phone);
+    setPhone(phone);
+  };
 
   return (
     <Wrapper>
@@ -62,7 +67,22 @@ export function InputMaskPage() {
       <Label>Props</Label>
       <Example code={exampleProps} />
       <Label>DateInput - implement InputMask</Label>
-      {/* <DateInput name="birthDay" onChange={handleChangeDay} value={day} /> */}
+      <InputMask
+        mask="99.99.9999"
+        name="date"
+        onChangeHandler={handleChangeDay}
+        value={day}
+        maskPlaceholder="_"
+      />
+      <Label>PhoneInput - implement InputMask</Label>
+      <PhoneInput
+        countryCode="7"
+        mask="(999) 99-999"
+        onChangeHandler={handleChangePhone}
+        value={phone}
+        css={{height: 48, fontSize: 14}}
+        maskPlaceholder="_"
+      />
       <Example code={exampleDate} />
       <Label>Simple MaskInput (Passport)</Label>
       <InputMask
