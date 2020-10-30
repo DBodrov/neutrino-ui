@@ -25,17 +25,45 @@ export function usePhoneInputMask(
       }
       if (value?.length > 1) {
         const result = maskValue(emptyMask, value, maskPlaceholder);
+        const nextPlaceholder = result.indexOf(maskPlaceholder);
         let pos = prevCursor + 1;
         const nextChar = result[pos];
-        //if
-        const nextCursor = result.indexOf(maskPlaceholder);
+        console.log('next char', nextChar);
+        let nextCursor: number;
+        if (isSpecSymbol(nextChar)) {
+          if (nextPlaceholder === -1) {
+            if (isSpecSymbol(result[pos + 1])) {
+              nextCursor = pos + 2;
+            } else {
+              nextCursor = pos + 1;
+            }
+          } else if (nextPlaceholder >= 0) {
+            nextCursor = nextPlaceholder;
+          }
+        } else if (nextPlaceholder === -1) {
+          if (isSpecSymbol(nextChar)) {
+            if (nextPlaceholder === -1) {
+              if (isSpecSymbol(result[pos + 1])) {
+                nextCursor = pos + 2;
+              } else {
+                nextCursor = pos + 1;
+              }
+            }
+          } else {
+            nextCursor = pos + 2;
+          }
+        } else {
+          nextCursor = nextPlaceholder;
+        }
+
         //console.log('idx', placeholderIndex);
 
         // const nextCursor = nextChar !== maskPlaceholder ? prevCursor + 2 : prevCursor + 1;
         // console.log('result', result, 'next char', nextChar, 'nextCursor', nextCursor);
         setDisplayValue(result);
         changeCallback(result);
-        setCursor(nextCursor);
+        console.log('setted cursor', prevCursor, nextCursor);
+        setCursor(nextCursor ?? prevCursor);
         // changeCount.current++;
       }
     },
@@ -44,7 +72,7 @@ export function usePhoneInputMask(
 
   const deleteContentBackward = React.useCallback(
     (value: string, prevCursor: number) => {
-      console.log('backspace', value)
+      console.log('backspace', value);
       if (value) {
         const result = maskValue(emptyMask, value, maskPlaceholder);
         const nextCursor = prevCursor - 1;

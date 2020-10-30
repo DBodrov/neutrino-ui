@@ -9,7 +9,7 @@ export function createEmptyMask(mask: string, maskPlaceholder: string, countryCo
   return fullMask;
 }
 
-export const SPEC_SYMBOLS = ['(', ')', '-', ' ', '+'];
+export const SPEC_SYMBOLS = ['(', ')', '-', ' ', '+', '_'];
 export const isSpecSymbol = (char: string) => SPEC_SYMBOLS.includes(char);
 
 export function unmaskValue(maskPlaceholder: string, countryCode: string, value: string) {
