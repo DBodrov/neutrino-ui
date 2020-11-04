@@ -16,16 +16,21 @@ export function useInputMask(
   const insertText = React.useCallback(
     (value: string, prevCursor: number) => {
       if (value) {
-        const ret = maskValue(maskParams.emptyMask, value, maskPlaceholder);
-        const nextChar = ret[prevCursor + 1];
-        const nextCursor =
-          nextChar === maskParams.delimiter || ret[prevCursor] === maskParams.delimiter
-            ? prevCursor + 2
-            : prevCursor + 1;
-        setDisplayValue(ret);
-        changeCallback(ret);
+        const result = maskValue(maskParams.emptyMask, value, maskPlaceholder);
+        const nextPlaceholder = result.indexOf(maskPlaceholder);
+        let nextCursor = nextPlaceholder;
+
+        if (nextPlaceholder === -1) {
+          const nextChar = result[prevCursor + 1];
+          nextCursor =
+            nextChar === maskParams.delimiter || result[prevCursor] === maskParams.delimiter
+              ? prevCursor + 2
+              : prevCursor + 1;
+        }
+
+        setDisplayValue(result);
+        changeCallback(result);
         setCursor(nextCursor);
-        changeCount.current++;
       }
     },
     [changeCallback, maskParams.delimiter, maskParams.emptyMask, maskPlaceholder],
@@ -109,6 +114,18 @@ export function useInputMask(
     [changeCallback, maskParams.emptyMask, maskPlaceholder],
   );
 
+  const setCursorOnFocus = React.useCallback(
+    (value: string) => {
+      if (!value) return;
+      const nextPlaceholder = value.indexOf(maskPlaceholder);
+      if (nextPlaceholder === -1) {
+        return;
+      }
+      setCursor(nextPlaceholder);
+    },
+    [maskPlaceholder],
+  );
+
   return {
     insertText,
     displayValue,
@@ -120,5 +137,6 @@ export function useInputMask(
     insertFromPaste,
     insertFromDrop,
     deleteWordForward,
+    setCursorOnFocus,
   };
 }

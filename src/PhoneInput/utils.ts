@@ -20,7 +20,6 @@ export function unmaskValue(maskPlaceholder: string, countryCode: string, value:
 }
 
 export function maskValue(emptyMask: string, value: string, maskPlaceholder: string) {
-  console.log('maskValue', value);
   const splittedValue = [...value];
   const ret = [...emptyMask]
     .map(char => {

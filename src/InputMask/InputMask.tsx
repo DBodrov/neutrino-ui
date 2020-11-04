@@ -29,6 +29,7 @@ function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticC
     insertFromDrop,
     deleteWordBackward,
     deleteWordForward,
+    setCursorOnFocus
   } = useInputMask(mask, maskPlaceholder, value, onChangeHandler);
 
   const prevValue = React.useRef('');
@@ -53,9 +54,15 @@ function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticC
     selectionEnd.current = end;
   }, []);
 
+  const handleFocus = React.useCallback(
+    (event: React.FocusEvent<HTMLInputElement>) => {
+      setCursorOnFocus(event.currentTarget.value);
+    },
+    [setCursorOnFocus],
+  );
+
   React.useEffect(() => {
     const handleInput = (e: InputEvent) => {
-      // console.log('**** input type ****', e.inputType);
       const el = e.target as HTMLInputElement;
       const inputValue = [...el.value].filter(ch => !isEmptyString(ch) && isFinite(Number(ch))).join('');
       if (e.inputType === 'insertText') {
@@ -115,9 +122,8 @@ function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticC
   ]);
 
   React.useLayoutEffect(() => {
-    // console.log('layout cursor ', cursor);
     inputRef.current.setSelectionRange(cursor, cursor);
-  }, [cursor, displayValue]);
+  });
 
   React.useEffect(() => {
     if (prevValue.current !== displayValue) {
@@ -130,6 +136,7 @@ function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticC
       onKeyDown={handleKeyDown}
       value={value}
       onChange={handleChange}
+      onFocus={handleFocus}
       onSelect={handleSelect}
       {...restProps}
       ref={inputRef}

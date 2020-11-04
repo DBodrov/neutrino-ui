@@ -10,7 +10,10 @@ interface IPhoneInputProps extends React.HTMLProps<HTMLInputElement> {
   onChangeHandler: (value: string) => void;
 }
 
-function PhoneInputComponent(props: IPhoneInputProps, ref: React.ForwardRefExoticComponent<HTMLInputElement>) {
+function PhoneInputComponent(
+  props: IPhoneInputProps,
+  ref: React.ForwardRefExoticComponent<HTMLInputElement>,
+) {
   const {mask, value = '', countryCode, maskPlaceholder, onChangeHandler, ...restProps} = props;
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -24,12 +27,13 @@ function PhoneInputComponent(props: IPhoneInputProps, ref: React.ForwardRefExoti
     displayValue,
     cursor,
     deleteContentBackward,
-    // deleteContentForward,
-    // deleteByCut,
-    // insertFromPaste,
-    // insertFromDrop,
+    deleteContentForward,
+    deleteByCut,
+    insertFromPaste,
+    insertFromDrop,
     deleteWordBackward,
-    // deleteWordForward,
+    deleteWordForward,
+    setCursorOnFocus,
   } = usePhoneInputMask(mask, countryCode, maskPlaceholder, value, onChangeHandler);
 
   const prevValue = React.useRef('');
@@ -54,19 +58,23 @@ function PhoneInputComponent(props: IPhoneInputProps, ref: React.ForwardRefExoti
     selectionEnd.current = end;
   }, []);
 
+  const handleFocus = React.useCallback(
+    (event: React.FocusEvent<HTMLInputElement>) => {
+      setCursorOnFocus(event.currentTarget.value);
+    },
+    [setCursorOnFocus],
+  );
+
   React.useEffect(() => {
     const handleInput = (e: InputEvent) => {
       const el = e.target as HTMLInputElement;
 
       const inputValue = [...el.value].filter(ch => !isEmptyString(ch) && isFinite(Number(ch))).join('');
-      console.log('**** input value ****', inputValue, inputValue.length);
-      // .slice(countryCode.length);
 
       if (e.inputType === 'insertText') {
         let noCountryCodeValue = '';
         if (inputValue.length > 1) {
           noCountryCodeValue = inputValue.slice(countryCode.length);
-          console.log(countryCode.length, noCountryCodeValue);
         } else if (inputValue.length === 1) {
           noCountryCodeValue = inputValue;
         }
@@ -81,48 +89,64 @@ function PhoneInputComponent(props: IPhoneInputProps, ref: React.ForwardRefExoti
         deleteContentBackward(noCountryCodeValue, _pos);
         return;
       }
-      // if (e.inputType === 'deleteContentForward') {
-      //   const _pos = selectionStart.current;
-      //   deleteContentForward(inputValue, _pos);
-      //   return;
-      // }
-      // if (e.inputType === 'deleteByCut') {
-      //   const _pos = selectionStart.current;
-      //   deleteByCut(inputValue, _pos);
-      //   return;
-      // }
-      // if (e.inputType === 'insertFromPaste') {
-      //   const _pos = selectionEnd.current;
-      //   insertFromPaste(inputValue, _pos);
-      //   return;
-      // }
-      // if (e.inputType === 'insertFromDrop') {
-      //   const _pos = selectionEnd.current;
-      //   insertFromDrop(inputValue, _pos);
-      //   return;
-      // }
+      if (e.inputType === 'deleteContentForward') {
+        const noCountryCodeValue = inputValue.slice(countryCode.length);
+        const _pos = selectionStart.current;
+        deleteContentForward(noCountryCodeValue, _pos);
+        return;
+      }
+      if (e.inputType === 'deleteByCut') {
+        const noCountryCodeValue = inputValue.slice(countryCode.length);
+        const _pos = selectionStart.current;
+        deleteByCut(noCountryCodeValue, _pos);
+        return;
+      }
+      if (e.inputType === 'insertFromPaste') {
+        const noCountryCodeValue = inputValue.slice(countryCode.length);
+        const _pos = selectionEnd.current;
+        insertFromPaste(noCountryCodeValue, _pos);
+        return;
+      }
+      if (e.inputType === 'insertFromDrop') {
+        const noCountryCodeValue = inputValue.slice(countryCode.length);
+        const _pos = selectionEnd.current;
+        insertFromDrop(noCountryCodeValue, _pos);
+        return;
+      }
       if (e.inputType === 'deleteWordBackward') {
+        const noCountryCodeValue = inputValue.slice(countryCode.length);
         const _pos = el.selectionEnd;
         deleteWordBackward(noCountryCodeValue, _pos);
         return;
       }
-      // if (e.inputType === 'deleteWordForward') {
-      //   const _pos = el.selectionStart;
-      //   deleteWordForward(inputValue, _pos);
-      //   return;
-      // }
+      if (e.inputType === 'deleteWordForward') {
+        const noCountryCodeValue = inputValue.slice(countryCode.length);
+        const _pos = el.selectionStart;
+        deleteWordForward(noCountryCodeValue, _pos);
+        return;
+      }
     };
 
     const inputEl = inputRef.current;
     inputEl.addEventListener('input', handleInput);
     return () => inputEl.removeEventListener('input', handleInput);
-  }, [countryCode.length, deleteContentBackward, insertText]);
+  }, [
+    countryCode.length,
+    deleteByCut,
+    deleteContentBackward,
+    deleteContentForward,
+    deleteWordBackward,
+    deleteWordForward,
+    insertFromDrop,
+    insertFromPaste,
+    insertText,
+  ]);
 
   React.useLayoutEffect(() => {
-    // console.log('layout cursor ', cursor);
     inputRef.current.setSelectionRange(cursor, cursor);
-  }, [cursor, displayValue]);
+  });
 
+  //TODO: undo/redo
   React.useEffect(() => {
     if (prevValue.current !== displayValue) {
       prevValue.current = displayValue;
@@ -132,6 +156,7 @@ function PhoneInputComponent(props: IPhoneInputProps, ref: React.ForwardRefExoti
   return (
     <input
       onKeyDown={handleKeyDown}
+      onFocus={handleFocus}
       value={value}
       onChange={handleChange}
       onSelect={handleSelect}

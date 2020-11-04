@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import styled from '@emotion/styled';
 import {Span, InputMask, H4, PhoneInput} from 'neutrino-ui';
-import {DateInput} from './DateInput';
 import {Example, Wrapper} from './Example';
 
 const Label = styled(Span)`
@@ -80,7 +79,7 @@ export function InputMaskPage() {
         mask="(999) 99-999"
         onChangeHandler={handleChangePhone}
         value={phone}
-        css={{height: 48, fontSize: 14}}
+        css={{width: 300, height: 48, fontSize: 14, borderRadius: 8, border: '1px green solid', outline: 0}}
         maskPlaceholder="_"
       />
       <Example code={exampleDate} />
