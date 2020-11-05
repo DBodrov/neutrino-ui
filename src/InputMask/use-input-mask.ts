@@ -8,10 +8,8 @@ export function useInputMask(
   changeCallback: (value: string) => void,
 ) {
   const maskParams = React.useMemo(() => createMaskParams(mask, maskPlaceholder), [mask, maskPlaceholder]);
-  //const init = initValue ?? maskParams.emptyMask;
   const [displayValue, setDisplayValue] = React.useState(initValue);
   const [cursor, setCursor] = React.useState(0);
-  const changeCount = React.useRef(0);
 
   const insertText = React.useCallback(
     (value: string, prevCursor: number) => {
@@ -38,56 +36,86 @@ export function useInputMask(
 
   const deleteContentBackward = React.useCallback(
     (value: string, prevCursor: number) => {
-      const result = maskValue(maskParams.emptyMask, value, maskPlaceholder);
-      const nextCursor = prevCursor - 1;
-      setDisplayValue(result === maskParams.emptyMask ? '' : result);
-      changeCallback(result);
-      setCursor(nextCursor < 0 ? 0 : nextCursor);
-      changeCount.current++;
+      if (value) {
+        const result = maskValue(maskParams.emptyMask, value, maskPlaceholder);
+        const nextCursor = prevCursor - 1;
+        setDisplayValue(result === maskParams.emptyMask ? '' : result);
+        changeCallback(result);
+        setCursor(nextCursor < 0 ? 0 : nextCursor);
+      } else {
+        setDisplayValue('');
+        changeCallback('');
+        setCursor(0);
+      }
     },
     [changeCallback, maskParams.emptyMask, maskPlaceholder],
   );
 
   const deleteWordBackward = React.useCallback(
     (value: string, prevCursor: number) => {
-      const result = maskValue(maskParams.emptyMask, value, maskPlaceholder);
-      const nextCursor = prevCursor;
-      setDisplayValue(result === maskParams.emptyMask ? '' : result);
-      changeCallback(result);
-      setCursor(nextCursor < 0 ? 0 : nextCursor);
+      if (value) {
+        const result = maskValue(maskParams.emptyMask, value, maskPlaceholder);
+        const nextCursor = prevCursor;
+        setDisplayValue(result === maskParams.emptyMask ? '' : result);
+        changeCallback(result);
+        setCursor(nextCursor < 0 ? 0 : nextCursor);
+      } else {
+        setDisplayValue('');
+        changeCallback('');
+        setCursor(0);
+      }
     },
     [changeCallback, maskParams.emptyMask, maskPlaceholder],
   );
 
   const deleteWordForward = React.useCallback(
     (value: string, prevCursor: number) => {
-      const result = maskValue(maskParams.emptyMask, value, maskPlaceholder);
-      const nextCursor = prevCursor;
-      setDisplayValue(result === maskParams.emptyMask ? '' : result);
-      changeCallback(result);
-      setCursor(nextCursor < 0 ? 0 : nextCursor);
+      if (value) {
+        const result = maskValue(maskParams.emptyMask, value, maskPlaceholder);
+        const nextCursor = prevCursor;
+        setDisplayValue(result === maskParams.emptyMask ? '' : result);
+        changeCallback(result);
+        setCursor(nextCursor < 0 ? 0 : nextCursor);
+      } else {
+        setDisplayValue('');
+        changeCallback('');
+        setCursor(0);
+      }
     },
     [changeCallback, maskParams.emptyMask, maskPlaceholder],
   );
 
   const deleteContentForward = React.useCallback(
     (value: string, prevCursor: number) => {
-      const result = maskValue(maskParams.emptyMask, value, maskPlaceholder);
-      const nextCursor = result[prevCursor] === maskParams.delimiter ? prevCursor + 1 : prevCursor;
-      setDisplayValue(result === maskParams.emptyMask ? '' : result);
-      changeCallback(result);
-      setCursor(nextCursor);
+
+      if (value) {
+        const result = maskValue(maskParams.emptyMask, value, maskPlaceholder);
+        const nextCursor = result[prevCursor] === maskParams.delimiter ? prevCursor + 1 : prevCursor;
+        setDisplayValue(result === maskParams.emptyMask ? '' : result);
+        changeCallback(result);
+        setCursor(nextCursor);
+      } else {
+        setDisplayValue('');
+        changeCallback('');
+        setCursor(0);
+      }
     },
     [changeCallback, maskParams.delimiter, maskParams.emptyMask, maskPlaceholder],
   );
 
   const deleteByCut = React.useCallback(
     (value: string, prevCursor: number) => {
-      const result = maskValue(maskParams.emptyMask, value, maskPlaceholder);
-      const nextCursor = prevCursor;
-      setDisplayValue(result === maskParams.emptyMask ? '' : result);
-      changeCallback(result);
-      setCursor(nextCursor);
+      if (value) {
+        const result = maskValue(maskParams.emptyMask, value, maskPlaceholder);
+        const nextCursor = prevCursor;
+        setDisplayValue(result === maskParams.emptyMask ? '' : result);
+        changeCallback(result);
+        setCursor(nextCursor);
+      } else {
+        setDisplayValue('');
+        changeCallback('');
+        setCursor(0);
+      }
     },
     [changeCallback, maskParams.emptyMask, maskPlaceholder],
   );

@@ -11,7 +11,6 @@ export function usePhoneInputMask(
   const emptyMask = createEmptyMask(mask, maskPlaceholder, countryCode);
   const [displayValue, setDisplayValue] = React.useState(initValue);
   const [cursor, setCursor] = React.useState(0);
-  const [changeCount, setCount] = React.useState(0);
 
   const insertText = React.useCallback(
     (value: string, prevCursor: number) => {
@@ -21,7 +20,6 @@ export function usePhoneInputMask(
         setDisplayValue(result);
         changeCallback(result);
         setCursor(nextCursor);
-        setCount(s => s + 1);
       }
       if (value?.length > 1) {
         let nextCursor: number;
@@ -47,7 +45,6 @@ export function usePhoneInputMask(
         setDisplayValue(result);
         changeCallback(result);
         setCursor(nextCursor ?? prevCursor);
-        setCount(s => s + 1);
       }
     },
     [changeCallback, countryCode.length, emptyMask, maskPlaceholder],
@@ -61,12 +58,10 @@ export function usePhoneInputMask(
         setDisplayValue(result === emptyMask ? '' : result);
         changeCallback(result);
         setCursor(nextCursor < 0 ? 0 : nextCursor);
-        setCount(s => s + 1);
       } else {
         setDisplayValue('');
         changeCallback('');
         setCursor(0);
-        setCount(s => s + 1);
       }
     },
     [changeCallback, emptyMask, maskPlaceholder],
@@ -80,12 +75,10 @@ export function usePhoneInputMask(
         setDisplayValue(result === emptyMask ? '' : result);
         changeCallback(result);
         setCursor(nextCursor < 0 ? 0 : nextCursor);
-        setCount(s => s + 1);
       } else {
         setDisplayValue('');
         changeCallback('');
         setCursor(0);
-        setCount(s => s + 1);
       }
     },
     [changeCallback, emptyMask, maskPlaceholder],
@@ -93,35 +86,50 @@ export function usePhoneInputMask(
 
   const deleteWordForward = React.useCallback(
     (value: string, prevCursor: number) => {
-      const result = maskValue(emptyMask, value, maskPlaceholder);
-      setDisplayValue(result === emptyMask ? '' : result);
-      changeCallback(result);
-      setCursor(prevCursor);
-      setCount(s => s + 1);
+      if (value) {
+        const result = maskValue(emptyMask, value, maskPlaceholder);
+        setDisplayValue(result === emptyMask ? '' : result);
+        changeCallback(result);
+        setCursor(prevCursor);
+      } else {
+        setDisplayValue('');
+        changeCallback('');
+        setCursor(0);
+      }
     },
     [changeCallback, emptyMask, maskPlaceholder],
   );
 
   const deleteContentForward = React.useCallback(
     (value: string, prevCursor: number) => {
-      const result = maskValue(emptyMask, value, maskPlaceholder);
-      const nextCursor = isSpecSymbol(result[prevCursor]) ? prevCursor + 1 : prevCursor;
-      setDisplayValue(result === emptyMask ? '' : result);
-      changeCallback(result);
-      setCursor(nextCursor);
-      setCount(s => s + 1);
+      if (value) {
+        const result = maskValue(emptyMask, value, maskPlaceholder);
+        const nextCursor = isSpecSymbol(result[prevCursor]) ? prevCursor + 1 : prevCursor;
+        setDisplayValue(result === emptyMask ? '' : result);
+        changeCallback(result);
+        setCursor(nextCursor);
+      } else {
+        setDisplayValue('');
+        changeCallback('');
+        setCursor(0);
+      }
     },
     [changeCallback, emptyMask, maskPlaceholder],
   );
 
   const deleteByCut = React.useCallback(
     (value: string, prevCursor: number) => {
-      const result = maskValue(emptyMask, value, maskPlaceholder);
-      const nextCursor = prevCursor;
-      setDisplayValue(result === emptyMask ? '' : result);
-      changeCallback(result);
-      setCursor(nextCursor);
-      setCount(s => s + 1);
+      if (value) {
+        const result = maskValue(emptyMask, value, maskPlaceholder);
+        const nextCursor = prevCursor;
+        setDisplayValue(result === emptyMask ? '' : result);
+        changeCallback(result);
+        setCursor(nextCursor);
+      } else {
+        setDisplayValue('');
+        changeCallback('');
+        setCursor(0);
+      }
     },
     [changeCallback, emptyMask, maskPlaceholder],
   );
@@ -133,7 +141,6 @@ export function usePhoneInputMask(
       setDisplayValue(result === emptyMask ? '' : result);
       changeCallback(result);
       setCursor(nextCursor);
-      setCount(s => s + 1);
     },
     [changeCallback, emptyMask, maskPlaceholder],
   );
@@ -145,7 +152,6 @@ export function usePhoneInputMask(
       setDisplayValue(result === emptyMask ? '' : result);
       changeCallback(result);
       setCursor(nextCursor);
-      setCount(s => s + 1);
     },
     [changeCallback, emptyMask, maskPlaceholder],
   );
@@ -158,13 +164,11 @@ export function usePhoneInputMask(
         return;
       }
       setCursor(nextPlaceholder);
-      setCount(s => s + 1);
     },
     [maskPlaceholder],
   );
 
   return {
-    changeCount,
     insertText,
     displayValue,
     cursor,
