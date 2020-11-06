@@ -1,11 +1,11 @@
 import React from 'react';
 import {css} from '@emotion/core';
-import {Span} from '../../../Typography';
 import {useTheme} from '../../../Themes';
 import {useToggle} from '../../../ToggleProvider';
 import {useDayPicker} from '../../DayPickerProvider';
 import {zeroPad} from '../../utils/common';
 import {TCalendarDate} from '../../types';
+import {DayButton} from './styles';
 
 const baseStyles = css`
   display: flex;
@@ -49,6 +49,9 @@ export function Day({date, title = ''}: TDayProps) {
       background-color: ${isDisabled ? 'transparent' : theme.colors.mainColors.primary};
       color: ${isDisabled ? 'initial' : theme.colors.textColors.textOnPrimary};
     }
+    &:focus {
+      outline: 1px ${theme.colors.mainColors.secondary} solid;
+    }
   `;
 
   const handleSelectDay = React.useCallback(() => {
@@ -67,12 +70,13 @@ export function Day({date, title = ''}: TDayProps) {
     handleClose();
   }, [day, delimiter, format, handleChangeDay, handleClose, month, year]);
   return (
-    <Span
+    <DayButton
       onClickCapture={isDisabled ? undefined : handleSelectDay}
       title={title}
-      css={[baseStyles, dayStyles, css({})]}
+      css={[baseStyles, dayStyles]}
+      tabIndex={0}
     >
       {date.day}
-    </Span>
+    </DayButton>
   );
 }

@@ -1,16 +1,20 @@
 import React from 'react';
-import {isEmptyString} from '../utils';
-import {useInputMask} from './use-input-mask';
+import {isEmptyString} from '../utils/string.utils';
+import {usePhoneInputMask} from './use-phoneinput-mask';
 
-interface IInputMaskProps extends React.HTMLProps<HTMLInputElement> {
+interface IPhoneInputProps extends React.HTMLProps<HTMLInputElement> {
   value?: string;
   mask: string;
+  countryCode: string;
   maskPlaceholder?: string;
   onChangeHandler: (value: string) => void;
 }
 
-function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticComponent<HTMLInputElement>) {
-  const {mask, value = '', maskPlaceholder, onChangeHandler, ...restProps} = props;
+function PhoneInputComponent(
+  props: IPhoneInputProps,
+  ref: React.ForwardRefExoticComponent<HTMLInputElement>,
+) {
+  const {mask, value = '', countryCode, maskPlaceholder, onChangeHandler, ...restProps} = props;
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const selectionStart = React.useRef(0);
@@ -29,8 +33,8 @@ function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticC
     insertFromDrop,
     deleteWordBackward,
     deleteWordForward,
-    setCursorOnFocus
-  } = useInputMask(mask, maskPlaceholder, value, onChangeHandler);
+    setCursorOnFocus,
+  } = usePhoneInputMask(mask, countryCode, maskPlaceholder, value, onChangeHandler);
 
   const prevValue = React.useRef('');
 
@@ -65,44 +69,59 @@ function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticC
     const handleInput = (e: InputEvent) => {
       const el = e.target as HTMLInputElement;
       const inputValue = [...el.value].filter(ch => !isEmptyString(ch) && isFinite(Number(ch))).join('');
+
       if (e.inputType === 'insertText') {
+        let noCountryCodeValue = '';
+        if (inputValue.length > 1) {
+          noCountryCodeValue = inputValue.slice(countryCode.length);
+        } else if (inputValue.length === 1) {
+          noCountryCodeValue = inputValue;
+        }
         const _pos = selectionStart.current;
-        insertText(inputValue, _pos);
+        insertText(noCountryCodeValue, _pos);
         return;
       }
+
       if (e.inputType === 'deleteContentBackward') {
+        const noCountryCodeValue = inputValue.slice(countryCode.length);
         const _pos = selectionStart.current;
-        deleteContentBackward(inputValue, _pos);
+        deleteContentBackward(noCountryCodeValue, _pos);
         return;
       }
       if (e.inputType === 'deleteContentForward') {
+        const noCountryCodeValue = inputValue.slice(countryCode.length);
         const _pos = selectionStart.current;
-        deleteContentForward(inputValue, _pos);
+        deleteContentForward(noCountryCodeValue, _pos);
         return;
       }
       if (e.inputType === 'deleteByCut') {
+        const noCountryCodeValue = inputValue.slice(countryCode.length);
         const _pos = selectionStart.current;
-        deleteByCut(inputValue, _pos);
+        deleteByCut(noCountryCodeValue, _pos);
         return;
       }
       if (e.inputType === 'insertFromPaste') {
+        const noCountryCodeValue = inputValue.slice(countryCode.length);
         const _pos = selectionEnd.current;
-        insertFromPaste(inputValue, _pos);
+        insertFromPaste(noCountryCodeValue, _pos);
         return;
       }
       if (e.inputType === 'insertFromDrop') {
+        const noCountryCodeValue = inputValue.slice(countryCode.length);
         const _pos = selectionEnd.current;
-        insertFromDrop(inputValue, _pos);
+        insertFromDrop(noCountryCodeValue, _pos);
         return;
       }
       if (e.inputType === 'deleteWordBackward') {
+        const noCountryCodeValue = inputValue.slice(countryCode.length);
         const _pos = el.selectionEnd;
-        deleteWordBackward(inputValue, _pos);
+        deleteWordBackward(noCountryCodeValue, _pos);
         return;
       }
       if (e.inputType === 'deleteWordForward') {
+        const noCountryCodeValue = inputValue.slice(countryCode.length);
         const _pos = el.selectionStart;
-        deleteWordForward(inputValue, _pos);
+        deleteWordForward(noCountryCodeValue, _pos);
         return;
       }
     };
@@ -111,6 +130,7 @@ function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticC
     inputEl.addEventListener('input', handleInput);
     return () => inputEl.removeEventListener('input', handleInput);
   }, [
+    countryCode.length,
     deleteByCut,
     deleteContentBackward,
     deleteContentForward,
@@ -125,6 +145,7 @@ function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticC
     inputRef.current.setSelectionRange(cursor, cursor);
   });
 
+  //TODO: undo/redo
   React.useEffect(() => {
     if (prevValue.current !== displayValue) {
       prevValue.current = displayValue;
@@ -134,9 +155,9 @@ function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticC
   return (
     <input
       onKeyDown={handleKeyDown}
+      onFocus={handleFocus}
       value={value}
       onChange={handleChange}
-      onFocus={handleFocus}
       onSelect={handleSelect}
       {...restProps}
       ref={inputRef}
@@ -150,4 +171,4 @@ function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticC
   );
 }
 
-export const InputMask = React.forwardRef(InputMaskComponent);
+export const PhoneInput = React.forwardRef(PhoneInputComponent);

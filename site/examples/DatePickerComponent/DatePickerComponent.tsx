@@ -11,6 +11,7 @@ const CalendarButton = styled.button`
   top: 25%;
   left: 85%;
   cursor: pointer;
+
 `;
 
 export function DatePickerComponent() {
@@ -52,7 +53,7 @@ export function DatePickerComponent() {
   return (
     <div css={{position: 'relative', width: 250}}>
       <DateInput ref={dateInputRef} value={value}/>
-      <CalendarButton onClick={handleOpen}>
+      <CalendarButton onClick={handleOpen} css={{'&:focus': {outline: `1px ${colors.mainColors.secondary} solid`}}}>
         <CalendarIcon stroke={isOpen ? colors.mainColors.primary : undefined} />
       </CalendarButton>
       <Dropdown isOpen={isOpen} ref={dropdownRef} parentBound={isOpen ? inputRect : undefined}>

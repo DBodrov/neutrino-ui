@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import {Button} from '../../../Button';
+import {ITheme} from '../../../Themes';
 
 export const LinkButton = styled.button`
   background: none;
@@ -11,7 +12,10 @@ export const LinkButton = styled.button`
   padding: 0 2px;
   text-decoration: underline;
   cursor: pointer;
-  font-size: 14px
+  font-size: 14px;
+  &:focus {
+    outline: 1px ${(props: {theme: ITheme}) => props?.theme?.colors?.mainColors?.secondary} dotted;
+  }
 `;
 
 export const Panel = styled.div`
@@ -38,5 +42,8 @@ export const NavButton = styled(Button)`
   }
   &:active {
     box-shadow: none;
+  }
+  &:focus {
+    outline: 1px ${(props: {theme: ITheme}) => props?.theme?.colors?.mainColors?.secondary} dotted;
   }
 `;

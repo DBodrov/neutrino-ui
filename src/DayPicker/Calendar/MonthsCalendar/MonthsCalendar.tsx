@@ -33,6 +33,9 @@ export function MonthsCalendar() {
                   backgroundColor: colors?.mainColors?.primary,
                   color: colors?.textColors?.textOnPrimary,
                 },
+                '&:focus': {
+                  outline: `1px ${colors.mainColors.secondary} solid`
+                }
               },
               monthNumber === month ? activeMonthStyles : null
             ]}
