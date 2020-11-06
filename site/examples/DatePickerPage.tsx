@@ -12,7 +12,7 @@ export function DatePickerPage() {
   return (
     <Wrapper>
       <span>DatePicker</span>
-      <input type="date" name="date" id="date" />
+
       <div>
         <DatePicker
           css={{width: 250}}

@@ -4,7 +4,7 @@ module.exports = api => {
     [
       '@babel/preset-env',
       {
-        modules: 'cjs',
+        loose: true,
       },
     ],
     '@babel/preset-react',
@@ -25,6 +25,7 @@ module.exports = api => {
     '@babel/plugin-proposal-export-default-from',
     '@babel/plugin-proposal-optional-chaining',
     '@babel/plugin-proposal-nullish-coalescing-operator',
+    '@babel/plugin-transform-spread',
     'emotion',
     !api.env('production') && 'react-refresh/babel',
   ].filter(Boolean);

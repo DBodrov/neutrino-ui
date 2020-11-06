@@ -47,7 +47,6 @@ module.exports = webpackMerge.merge(commonConfig, {
     runtimeChunk: {
       name: 'runtime',
     },
-    noEmitOnErrors: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -68,5 +67,6 @@ module.exports = webpackMerge.merge(commonConfig, {
     hot: true,
     stats: 'minimal',
     contentBase: resolveApp('site'),
+    publicPath: '/'
   },
 });

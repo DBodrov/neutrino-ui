@@ -68,7 +68,6 @@ function PhoneInputComponent(
   React.useEffect(() => {
     const handleInput = (e: InputEvent) => {
       const el = e.target as HTMLInputElement;
-
       const inputValue = [...el.value].filter(ch => !isEmptyString(ch) && isFinite(Number(ch))).join('');
 
       if (e.inputType === 'insertText') {
