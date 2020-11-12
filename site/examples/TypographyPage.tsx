@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider } from 'emotion-theming';
+import { ThemeProvider } from '@emotion/react';
 import { H1, H2, H3, H4, H5, H6, P, Span, createTheme } from 'neutrino-ui';
 import { Example, Wrapper, Label } from './Example';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {css} from '@emotion/core';
+import {css} from '@emotion/react';
 import {useTheme} from '../../../Themes';
 import {useDayPicker} from '../../DayPickerProvider';
 import {yearsCalendarBuilder} from '../../utils/calendar';
@@ -38,9 +38,9 @@ export function YearsCalendar() {
                 backgroundColor: colors?.mainColors?.primary,
                 color: colors?.textColors?.textOnPrimary,
               },
-              '&:focus': {
-                outline: `1px ${colors.mainColors.secondary} solid`
-              }
+              // '&:focus': {
+              //   outline: `1px ${colors.mainColors.secondary} solid`
+              // }
             },
             year === storedYear ? activeYearStyles : null,
           ]}

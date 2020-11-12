@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { ITheme } from '../Themes';
 import {IDropdownProps} from './types';
 

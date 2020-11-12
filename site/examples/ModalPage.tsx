@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { Button, H5, Modal, IModalState, ModalChangeTypes } from 'neutrino-ui';
 import { Example, Wrapper } from './Example';
 

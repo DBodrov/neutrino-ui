@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { ITheme } from '../Themes';
 import { VariantStyles, ButtonProps } from './types';
 

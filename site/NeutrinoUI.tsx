@@ -1,6 +1,6 @@
 import React from 'react';
 import {BrowserRouter} from 'react-router-dom';
-import {Global} from '@emotion/core';
+import {Global} from '@emotion/react';
 import styled from '@emotion/styled';
 import {Button} from 'neutrino-ui';
 import {useMedia} from '../src/utils/use-media';

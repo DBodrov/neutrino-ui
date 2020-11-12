@@ -7,12 +7,12 @@ module.exports = api => {
         loose: true,
       },
     ],
-    '@babel/preset-react',
+    ['@babel/preset-react', {runtime: 'automatic', importSource: '@emotion/react'}],
     '@babel/preset-typescript',
     [
       '@emotion/babel-preset-css-prop',
       {
-        autoLabel: true,
+        autoLabel: 'dev-only',
         labelFormat: '[local]',
       },
     ],
@@ -26,7 +26,7 @@ module.exports = api => {
     '@babel/plugin-proposal-optional-chaining',
     '@babel/plugin-proposal-nullish-coalescing-operator',
     '@babel/plugin-transform-spread',
-    'emotion',
+    '@emotion',
     !api.env('production') && 'react-refresh/babel',
   ].filter(Boolean);
   return {presets, plugins};

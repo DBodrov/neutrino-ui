@@ -1,4 +1,4 @@
-import {SerializedStyles} from '@emotion/core';
+import {SerializedStyles} from '@emotion/react';
 
 type OptionItem = {
   id: string | number;

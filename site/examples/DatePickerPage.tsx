@@ -5,9 +5,14 @@ import {DatePickerComponent} from './DatePickerComponent';
 
 export function DatePickerPage() {
   const [date, setDate] = useState('');
+  //const [number, setNumber] = React.useState(500000);
   const handleChangeDate = (value: string) => {
     setDate(value);
   };
+
+  // const handleChangeRange = (value: number, e?: React.ChangeEvent<HTMLInputElement>) => {
+  //   setNumber(value);
+  // };
 
   return (
     <Wrapper>

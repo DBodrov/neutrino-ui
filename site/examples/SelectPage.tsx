@@ -1,6 +1,6 @@
 import React from 'react';
-import {css} from '@emotion/core';
-import {ThemeProvider} from 'emotion-theming';
+import {css} from '@emotion/react';
+import {ThemeProvider} from '@emotion/react';
 import {Wrapper, Example, Label} from './Example';
 import {createTheme, SimpleSelect} from 'neutrino-ui';
 import {MultiSelect, example} from './MultiSelect';

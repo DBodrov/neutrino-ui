@@ -1,6 +1,6 @@
 import React, { useState, createRef } from 'react';
 import styled from '@emotion/styled';
-import { ThemeProvider } from 'emotion-theming';
+import { ThemeProvider } from '@emotion/react';
 import { Input, Span, Button, createTheme } from 'neutrino-ui';
 import { Example, Wrapper } from './Example';
 

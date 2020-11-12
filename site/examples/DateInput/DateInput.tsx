@@ -1,5 +1,5 @@
 import React from 'react';
-import {css} from '@emotion/core';
+import {css} from '@emotion/react';
 import {InputMask, Span, useDayPicker, useToggle} from 'neutrino-ui';
 import {zeroPad} from '../../../src/utils';
 

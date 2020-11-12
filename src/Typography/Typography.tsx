@@ -1,5 +1,5 @@
 import React, {ReactText, ReactNode} from 'react';
-import {css} from '@emotion/core';
+import {css} from '@emotion/react';
 import {useTheme, TypographyElements} from '../Themes';
 
 type TypographyProps = {

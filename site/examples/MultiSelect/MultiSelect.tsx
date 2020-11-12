@@ -1,5 +1,5 @@
 import React from 'react';
-import {css} from '@emotion/core';
+import {css} from '@emotion/react';
 import styled from '@emotion/styled';
 import {ArrowIcon, Combobox, useCombobox, useTheme, Span, Dropdown} from 'neutrino-ui';
 
