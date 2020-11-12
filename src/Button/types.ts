@@ -1,7 +1,7 @@
 import React from 'react';
-import { SerializedStyles } from '@emotion/core';
+import { SerializedStyles } from '@emotion/react';
 
-interface IButtonProps {
+export interface IButtonProps {
     className?: string;
     flat?: boolean;
     outline?: boolean;

@@ -6,8 +6,8 @@ const {resolveApp} = require('./paths');
 process.env.NODE_ENV = 'production';
 
 function buildLib() {
-    const components = fse.readdirSync(resolveApp('src')).filter(folder => folder !== 'index.ts');
-    console.log('Clear Lib dir');
+    const components = fse.readdirSync(resolveApp('src')).filter(folder => folder !== 'index.ts' && folder !== 'types.d.ts');
+    console.log('Clear /lib dir');
     fse.emptyDirSync('lib');
     console.log('Create typings....')
     execSync("npm run compile");

@@ -14,3 +14,4 @@ export * from './Combobox';
 export * from './DayPicker';
 export * from './ToggleProvider';
 export * from './PhoneInput';
+export * from './Slider';

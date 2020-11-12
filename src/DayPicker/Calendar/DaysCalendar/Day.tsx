@@ -1,5 +1,5 @@
 import React from 'react';
-import {css} from '@emotion/core';
+import {css} from '@emotion/react';
 import {useTheme} from '../../../Themes';
 import {useToggle} from '../../../ToggleProvider';
 import {useDayPicker} from '../../DayPickerProvider';
@@ -49,9 +49,9 @@ export function Day({date, title = ''}: TDayProps) {
       background-color: ${isDisabled ? 'transparent' : theme.colors.mainColors.primary};
       color: ${isDisabled ? 'initial' : theme.colors.textColors.textOnPrimary};
     }
-    &:focus {
-      outline: 1px ${theme.colors.mainColors.secondary} solid;
-    }
+    /* &:focus {
+      outline: 1px ${theme.colors.pageElementsColors.activeBorder} solid;
+    } */
   `;
 
   const handleSelectDay = React.useCallback(() => {

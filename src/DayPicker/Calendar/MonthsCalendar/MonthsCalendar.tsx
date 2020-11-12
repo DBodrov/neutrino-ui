@@ -1,5 +1,5 @@
 import React from 'react';
-import {css} from '@emotion/core';
+import {css} from '@emotion/react';
 import {useTheme} from '../../../Themes';
 import {getMonthsList} from '../../utils/date';
 import {useDayPicker} from '../../DayPickerProvider';
@@ -33,9 +33,9 @@ export function MonthsCalendar() {
                   backgroundColor: colors?.mainColors?.primary,
                   color: colors?.textColors?.textOnPrimary,
                 },
-                '&:focus': {
-                  outline: `1px ${colors.mainColors.secondary} solid`
-                }
+                // '&:focus': {
+                //   outline: `1px ${colors.mainColors.secondary} solid`
+                // }
               },
               monthNumber === month ? activeMonthStyles : null
             ]}

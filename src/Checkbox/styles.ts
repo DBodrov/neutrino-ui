@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { ITheme } from '../Themes';
 import { IBoxProps, IWrapperProps, ICheckboxProps } from './types';
 

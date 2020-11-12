@@ -1,9 +1,9 @@
-import { useTheme } from 'emotion-theming';
+import { useTheme, Theme } from '@emotion/react';
 import { mergeColors, mergeShadows, mergeTypography, mergeGlobals } from './utils';
 import { baseTheme } from './baseTheme';
-import { ITheme } from './types';
+//import { ITheme } from './types';
 
-export function createTheme(customTheme: ITheme): ITheme {
+export function createTheme(customTheme: Theme): Theme {
     const mergedColors = mergeColors(customTheme);
     const mergedTypography = mergeTypography(customTheme);
     const mergedShadows = mergeShadows(customTheme);
@@ -13,7 +13,7 @@ export function createTheme(customTheme: ITheme): ITheme {
 }
 
 const useNeutrinoTheme = () => {
-    const providedTheme = useTheme<ITheme>();
+    const providedTheme = useTheme();
     return Object.keys(providedTheme).length > 0 ? providedTheme : baseTheme;
 };
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ThemeProvider } from 'emotion-theming';
+import { ThemeProvider } from '@emotion/react';
 import { Checkbox, createTheme } from 'neutrino-ui';
 import { Example, Wrapper } from './Example';
 

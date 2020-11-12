@@ -16,10 +16,14 @@
     "access": "public"
   },
   "scripts": {
-    "typecheck": "tsc -p tsconfig.build.json --noEmit",
+    "typecheck": "tsc -p tsconfig.check.json --noEmit",
+    "lint": "eslint src/**/*.{ts,tsx}",
+    "lint:site": "eslint site/**/*.{ts,tsx}",
+    "lint:site:fix": "eslint site/**/*.{ts,tsx} --fix",
+    "lint:fix": "eslint src/**/*.{ts,tsx} --fix",
     "build": "node scripts/build.js",
     "compile": "tsc -p tsconfig.build.json",
-    "start": "webpack-dev-server --inline --color --hot",
+    "start": "webpack serve",
     "dev": "webpack serve",
     "build:docs": "webpack --config config/webpack.config.prod.js",
     "version": "git add -A",
@@ -42,11 +46,6 @@
     "url": "https://github.com/DBodrov/neutrino-ui/issues"
   },
   "homepage": "https://neutrino-ui.netlify.app/",
-  "peerDependencies": {
-    "@emotion/core": "^10.1.1",
-    "@emotion/styled": "^10.0.27",
-    "emotion-theming": "^10.0.27"
-  },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.12.3",
@@ -61,28 +60,28 @@
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.5",
     "@babel/preset-typescript": "^7.12.1",
-    "@emotion/babel-preset-css-prop": "^10.1.0",
-    "@emotion/core": "^10.1.1",
-    "@emotion/styled": "^10.0.27",
+    "@emotion/babel-plugin": "^11.0.0",
+    "@emotion/babel-preset-css-prop": "^11.0.0",
+    "@emotion/core": "^11.0.0",
+    "@emotion/eslint-plugin": "^11.0.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@testing-library/jest-dom": "^5.11.5",
-    "@testing-library/react": "^11.1.1",
-    "@testing-library/user-event": "^12.2.0",
+    "@testing-library/react": "^11.1.2",
+    "@testing-library/user-event": "^12.2.2",
     "@types/jest": "^26.0.15",
-    "@types/node": "^14.14.6",
+    "@types/node": "^14.14.7",
     "@types/react": "^16.9.56",
     "@types/react-dom": "^16.9.9",
     "@types/react-router-dom": "^5.1.6",
-    "@typescript-eslint/eslint-plugin": "^4.6.1",
-    "@typescript-eslint/parser": "^4.6.1",
+    "@typescript-eslint/eslint-plugin": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
     "babel-eslint": "^10.1.0",
-    "babel-jest": "^26.6.3",
-    "babel-loader": "^8.1.0",
-    "babel-plugin-emotion": "^10.0.33",
+    "babel-loader": "^8.2.1",
+    "babel-plugin-emotion": "^11.0.0",
     "copy-webpack-plugin": "^6.3.0",
-    "core-js": "^2.6.11",
-    "emotion-theming": "^10.0.27",
-    "eslint": "^7.12.1",
+    "core-js": "^3.7.0",
+    "emotion-theming": "^11.0.0",
+    "eslint": "^7.13.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-config-react-app": "^6.0.0",
     "eslint-plugin-flowtype": "^5.2.0",
@@ -95,9 +94,6 @@
     "fs-extra": "^9.0.1",
     "html-webpack-plugin": "^4.5.0",
     "husky": "^4.3.0",
-    "jest": "^26.6.3",
-    "jest-emotion": "^10.0.32",
-    "jest-resolve": "^26.6.2",
     "lint-staged": "^10.5.1",
     "prettier": "^2.1.2",
     "prism-react-renderer": "^1.1.1",
@@ -110,9 +106,15 @@
     "webpack": "^5.4.0",
     "webpack-cli": "^4.2.0",
     "webpack-dev-server": "^3.11.0",
-    "webpack-merge": "^5.3.0"
+    "webpack-merge": "^5.4.0"
   },
   "dependencies": {
-    "react-spring": "^8.0.27"
+    "react-spring": "^8.0.27",
+    "@emotion/react": "^11.0.0",
+    "@emotion/styled": "^11.0.0"
+  },
+  "peerDependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   }
 }

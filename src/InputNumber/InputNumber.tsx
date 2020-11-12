@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { css } from '@emotion/core'
+import { css } from '@emotion/react'
 import { isEmptyString } from '../utils/string.utils';
 import { toDecimalString } from '../utils/numeric.utils';
 import { Input } from '../Input';
