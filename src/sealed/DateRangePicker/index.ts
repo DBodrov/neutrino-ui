@@ -1,1 +1,1 @@
-export * from './DateReangePicker';
+export * from './DateRangePicker';
