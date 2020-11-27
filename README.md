@@ -3,5 +3,5 @@ react components library
 ## Demo
 https://neutrino-ui.netlify.app/
 
-##install
+## install
 npm i neutrino-ui
