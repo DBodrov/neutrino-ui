@@ -62,7 +62,7 @@ export function Day({date, title = '', section}: TDayProps) {
     });
     const newDate = outputDate.join('-');
     handleChangeDay(newDate, section);
-    handleClose();
+    section === 'end' && handleClose();
   }, [day, format, handleChangeDay, handleClose, month, section, year]);
   return (
     <DayButton

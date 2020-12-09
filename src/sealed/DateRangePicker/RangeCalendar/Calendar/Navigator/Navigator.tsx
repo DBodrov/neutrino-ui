@@ -38,6 +38,7 @@ export function Navigator(props: TNavigatorProps) {
       prevMonth = 12;
     }
     const newDate = createDateString(format, '-', {day, month: prevMonth, year});
+
     handleChangeDay(newDate, section);
   }, [day, format, handleChangeDay, month, section, year]);
 

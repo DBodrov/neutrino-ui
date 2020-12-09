@@ -12,10 +12,17 @@ function DateRangeComponent(props: TDateRangeProps) {
   const rangeInputRef = React.useRef<HTMLDivElement>(null);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   const rangeInputRect = rangeInputRef?.current?.getBoundingClientRect();
+  const getBound = React.useCallback(() => {
+    const rect = rangeInputRect.toJSON();
+    console.log(rect);
+    const bound = {...rect, width: 490, left: rect.left - (490 - rangeInputRect?.width)/2};
+    console.log('bound', bound);
+    return bound;
+  }, [rangeInputRect]);
   return (
     <div css={{position: 'relative', width: '100%'}}>
       <DateRangeInput inputCss={inputCss} ref={rangeInputRef} onClick={handleToggle} />
-      <Dropdown isOpen={isOpen} parentBound={isOpen ? rangeInputRect : undefined} ref={dropdownRef}>
+      <Dropdown isOpen={isOpen} parentBound={isOpen ? getBound() : undefined} ref={dropdownRef}>
         <RangeCalendar />
       </Dropdown>
     </div>

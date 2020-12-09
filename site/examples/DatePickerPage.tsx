@@ -7,10 +7,16 @@ import {DatePickerComponent} from './DatePickerComponent';
 
 export function DatePickerPage() {
   const [date, setDate] = useState('');
+  const [dateRange, setDateRange] = useState<[string?, string?]>([]);
   //const [number, setNumber] = React.useState(500000);
   const handleChangeDate = (value: string) => {
     setDate(value);
   };
+
+  const handleChangeRange = (range: [string?, string?]) => {
+    console.log(range);
+    setDateRange(range);
+  }
 
   // const handleChangeRange = (value: number, e?: React.ChangeEvent<HTMLInputElement>) => {
   //   setNumber(value);
@@ -38,7 +44,7 @@ export function DatePickerPage() {
         <div css={{marginTop: 20}}>
           <span>DateRangePicker</span>
           <div css={{width: 300}}>
-            <DateRangePicker />
+            <DateRangePicker name="range" onChangeHandler={handleChangeRange} value={dateRange}/>
           </div>
         </div>
       </ThemeProvider>

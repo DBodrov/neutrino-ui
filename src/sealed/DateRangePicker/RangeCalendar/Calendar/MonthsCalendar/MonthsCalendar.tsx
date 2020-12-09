@@ -1,12 +1,16 @@
 import React from 'react';
 import {css} from '@emotion/react';
-import {useTheme} from '../../../Themes';
-import {getMonthsList} from '../../utils/date';
-import {useDayPicker} from '../../DayPickerProvider';
+import {useTheme} from '../../../../../Themes';
+import {getMonthsList} from '../../../utils/date';
+import {useDateRange} from '../../../DateRangeProvider';
+import {TCalendarSection} from '../../../types';
 import {Months, Month} from './styles';
 
-export function MonthsCalendar() {
-  const {locale, handleChangeMonth, month} = useDayPicker();
+type Props = {
+  section: TCalendarSection;
+}
+export function MonthsCalendar({section}: Props) {
+  const {locale, handleChangeMonth, dayEnd, dayStart} = useDateRange();
   const {colors} = useTheme();
   const activeMonthStyles = css({
     cursor: 'pointer',
@@ -14,12 +18,14 @@ export function MonthsCalendar() {
     color: colors?.textColors?.textOnPrimary,
   });
 
+  const {month} = section === 'start' ? dayStart : dayEnd;
+
   const selectMonth = React.useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     //e.preventDefault();
     const monthNumber = Number(e.currentTarget.value);
-    handleChangeMonth(monthNumber);
+    handleChangeMonth(monthNumber, section);
     e.stopPropagation();
-  }, [handleChangeMonth])
+  }, [handleChangeMonth, section])
 
   return (
     <Months>

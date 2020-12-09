@@ -33,13 +33,13 @@ export interface IMonth {
   monthName: string;
 }
 
-export type TDateRangeValue = [string | undefined, string | undefined];
+export type TDateRangeValue = [string?, string?];
 
 export type TDateRangeProps = {
   value?: TDateRangeValue;
   name: string;
   className?: string;
-  onChangeHandler: (dateRange: TDateRangeValue) => void;
+  onChangeHandler: (dateRange?: TDateRangeValue) => void;
   locale?: string;
   placeholder?: string;
   children?: React.ReactNode;

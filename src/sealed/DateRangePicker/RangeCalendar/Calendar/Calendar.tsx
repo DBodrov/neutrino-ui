@@ -3,7 +3,7 @@ import {useTheme} from '../../../../Themes';
 import {Navigator} from './Navigator';
 import {DaysOfWeek} from './DaysOfWeek';
 import {DaysCalendar} from './DaysCalendar';
-// import {MonthsCalendar} from './MonthsCalendar';
+import {MonthsCalendar} from './MonthsCalendar';
 // import {YearsCalendar} from './YearsCalendar';
 import {CalendarBlock} from './styles';
 import {TCalendarProps} from '../../types';
@@ -16,9 +16,9 @@ export function Calendar(props: TCalendarProps) {
     if (calendarView === 'days') {
       return <DaysCalendar section={calendarSection}/>
     }
-    // if (calendarView === 'months') {
-    //   return <MonthsCalendar type={calendarType}/>
-    // }
+    if (calendarView === 'months') {
+      return <MonthsCalendar section={calendarSection}/>
+    }
     // if (calendarView === 'years') {
     //   return <YearsCalendar type={calendarType}/>
     // }

@@ -5,4 +5,6 @@ export const RangeCalendarBox = styled.div`
   flex-flow: row nowrap;
   justify-content: flex-start;
   align-items: center;
+  width: 490px;
+  height: 285px;
 `;

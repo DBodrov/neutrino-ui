@@ -38,6 +38,7 @@ const DateRangeContext = createContext<IDateRangeContext | undefined>(undefined)
 export function DateRangeProvider(props: TDateRangeProps) {
   const {locale = 'ru', value, name, className, onChangeHandler, minDate, maxDate, ...restProps} = props;
   const hasValue = value && !isEmptyString(value[0]) && !isEmptyString(value[1]);
+  const internalRange = React.useRef<TDateRangeValue>([]);
 
   const initState: IDateRangeState = {
     dayStart: {
@@ -72,15 +73,21 @@ export function DateRangeProvider(props: TDateRangeProps) {
       const endDecade = createDecadeTitle(endDay.year);
       dispatch({dayStart: startDay, dayEnd: endDay, decadeStart: startDecade, decadeEnd: endDecade});
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+  }, [hasValue, value]);
 
   const handleChangeDay = React.useCallback((date: string, section: TCalendarSection) => {
-    const day = section === 'start' ? 'dayStart' : 'dayEnd';
+    // const rangeDate: TDateRangeValue = [];
+    if (section === 'start') {
+      internalRange.current[0] = date;
+    } else {
+      internalRange.current[1] = date;
+    }
     // dispatch({[day]: {...[day], }})
 
-    // onChangeHandler(isEmptyString(date) ? '' : date);
-  }, []);
+
+    internalRange.current.length === 2 && onChangeHandler(internalRange.current);
+  }, [onChangeHandler]);
 
   const handleChangeCalendarView = React.useCallback((view: TCalendarView, section: TCalendarSection) => {
     const calendarView = section === 'start' ? 'calendarStartView' : 'calendarEndView';
