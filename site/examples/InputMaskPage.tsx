@@ -91,6 +91,7 @@ export function InputMaskPage() {
       <Label>PhoneInput - implement InputMask</Label>
       <PhoneInput
         countryCode="7"
+        name="phone"
         mask="(999) 99-999"
         onChangeHandler={handleChangePhone}
         value={phone}

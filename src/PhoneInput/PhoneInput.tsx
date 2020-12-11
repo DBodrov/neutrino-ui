@@ -69,8 +69,16 @@ function PhoneInputComponent(
     const handleInput = (e: InputEvent) => {
       const el = e.target as HTMLInputElement;
       const inputValue = [...el.value].filter(ch => !isEmptyString(ch) && isFinite(Number(ch))).join('');
-
-      if (e.inputType === 'insertText') {
+      let inputType: string;
+      if (!e.inputType && e.data) {
+        inputType = 'insertText';
+      } else if (!e.inputType && e.data === null) {
+        // Maybe test runner worked
+        inputType = 'deleteContentBackward';
+      } else {
+        inputType = e.inputType;
+      }
+      if (inputType === 'insertText') {
         let noCountryCodeValue = '';
         if (inputValue.length > 1) {
           noCountryCodeValue = inputValue.slice(countryCode.length);
@@ -82,43 +90,43 @@ function PhoneInputComponent(
         return;
       }
 
-      if (e.inputType === 'deleteContentBackward') {
+      if (inputType === 'deleteContentBackward') {
         const noCountryCodeValue = inputValue.slice(countryCode.length);
         const _pos = selectionStart.current;
         deleteContentBackward(noCountryCodeValue, _pos);
         return;
       }
-      if (e.inputType === 'deleteContentForward') {
+      if (inputType === 'deleteContentForward') {
         const noCountryCodeValue = inputValue.slice(countryCode.length);
         const _pos = selectionStart.current;
         deleteContentForward(noCountryCodeValue, _pos);
         return;
       }
-      if (e.inputType === 'deleteByCut') {
+      if (inputType === 'deleteByCut') {
         const noCountryCodeValue = inputValue.slice(countryCode.length);
         const _pos = selectionStart.current;
         deleteByCut(noCountryCodeValue, _pos);
         return;
       }
-      if (e.inputType === 'insertFromPaste') {
+      if (inputType === 'insertFromPaste') {
         const noCountryCodeValue = inputValue.slice(countryCode.length);
         const _pos = selectionEnd.current;
         insertFromPaste(noCountryCodeValue, _pos);
         return;
       }
-      if (e.inputType === 'insertFromDrop') {
+      if (inputType === 'insertFromDrop') {
         const noCountryCodeValue = inputValue.slice(countryCode.length);
         const _pos = selectionEnd.current;
         insertFromDrop(noCountryCodeValue, _pos);
         return;
       }
-      if (e.inputType === 'deleteWordBackward') {
+      if (inputType === 'deleteWordBackward') {
         const noCountryCodeValue = inputValue.slice(countryCode.length);
         const _pos = el.selectionEnd;
         deleteWordBackward(noCountryCodeValue, _pos);
         return;
       }
-      if (e.inputType === 'deleteWordForward') {
+      if (inputType === 'deleteWordForward') {
         const noCountryCodeValue = inputValue.slice(countryCode.length);
         const _pos = el.selectionStart;
         deleteWordForward(noCountryCodeValue, _pos);
