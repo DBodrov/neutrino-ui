@@ -1,13 +1,12 @@
 import React from 'react';
 import {isEmptyString} from '../utils/string.utils';
 import {usePhoneInputMask} from './use-phoneinput-mask';
+import {IInputProps} from '../Input'
 
-interface IPhoneInputProps extends React.HTMLProps<HTMLInputElement> {
-  value?: string;
+interface IPhoneInputProps extends IInputProps {
   mask: string;
   countryCode: string;
   maskPlaceholder?: string;
-  onChangeHandler: (value: string) => void;
 }
 
 function PhoneInputComponent(
@@ -34,7 +33,7 @@ function PhoneInputComponent(
     deleteWordBackward,
     deleteWordForward,
     setCursorOnFocus,
-  } = usePhoneInputMask(mask, countryCode, maskPlaceholder, value, onChangeHandler);
+  } = usePhoneInputMask(mask, countryCode, maskPlaceholder, String(value), onChangeHandler);
 
   const prevValue = React.useRef('');
 
@@ -73,7 +72,6 @@ function PhoneInputComponent(
       if (!e.inputType && e.data) {
         inputType = 'insertText';
       } else if (!e.inputType && e.data === null) {
-        // Maybe test runner worked
         inputType = 'deleteContentBackward';
       } else {
         inputType = e.inputType;

@@ -75,8 +75,9 @@ export function InputMaskPage() {
   return (
     <Wrapper>
       <H4>InputMask</H4>
-      <Span>For modern browsers only</Span>
-      <Label>Props</Label>
+      <Span>For modern browsers only.</Span><br />
+      <Span>used InputEvent under the hood. <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event">MDN</a></Span>
+      <Label css={{marginTop: 20}}>Props</Label>
       <Example code={exampleProps} />
       <Label>DateInput - implement InputMask</Label>
       <InputMask
@@ -86,6 +87,8 @@ export function InputMaskPage() {
         value={day}
         maskPlaceholder="_"
         css={{width: 300, height: 48, fontSize: 14, borderRadius: 8, border: '1px blue solid', outline: 0}}
+        aria-label="Date"
+
       />
       <Example code={exampleDate} />
       <Label>PhoneInput - implement InputMask</Label>
@@ -97,6 +100,7 @@ export function InputMaskPage() {
         value={phone}
         css={{width: 300, height: 48, fontSize: 14, borderRadius: 8, border: '1px green solid', outline: 0}}
         maskPlaceholder="_"
+        aria-label="Phone"
       />
       <Example code={examplePhone} />
       <Label>Simple MaskInput (Passport)</Label>

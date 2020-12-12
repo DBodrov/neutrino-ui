@@ -1,13 +1,9 @@
 import React from 'react';
 import {isEmptyString} from '../utils';
 import {useInputMask} from './use-input-mask';
+import {IInputMaskProps} from './types';
 
-interface IInputMaskProps extends React.HTMLProps<HTMLInputElement> {
-  value?: string;
-  mask: string;
-  maskPlaceholder?: string;
-  onChangeHandler: (value: string) => void;
-}
+
 
 function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticComponent<HTMLInputElement>) {
   const {mask, value = '', maskPlaceholder, onChangeHandler, ...restProps} = props;
@@ -30,7 +26,7 @@ function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticC
     deleteWordBackward,
     deleteWordForward,
     setCursorOnFocus
-  } = useInputMask(mask, maskPlaceholder, value, onChangeHandler);
+  } = useInputMask(mask, maskPlaceholder, String(value), onChangeHandler);
 
   const prevValue = React.useRef('');
 
@@ -69,7 +65,6 @@ function InputMaskComponent(props: IInputMaskProps, ref: React.ForwardRefExoticC
       if (!e.inputType && e.data) {
         inputType = 'insertText';
       } else if (!e.inputType && e.data === null) {
-        // Maybe test runner worked
         inputType = 'deleteContentBackward';
       } else {
         inputType = e.inputType;
