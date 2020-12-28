@@ -1,5 +1,9 @@
 import {IInputProps} from '../Input';
 
+export interface IInputMaskProps extends IInputProps {
+  mask: string;
+  maskPlaceholder?: string;
+}
 export interface IMaskInputProps extends IInputProps {
   value?: string;
   mask: string;

@@ -15,7 +15,8 @@
     "outDir": "./lib",
     "target": "ESNext",
     "jsx": "react",
-    "typeRoots": ["node_modules/@types"],
+    "typeRoots": ["node_modules/@types", "node_modules/cypress", "node_modules/@testing-library/cypress"],
+    "types": ["cypress", "@testing-library/cypress"],
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "baseUrl": ".",
@@ -26,5 +27,5 @@
     }
   },
   "include": ["src/**/*", "site/**/*"],
-  "exclude": ["node_modules", "**/*.spec.tsx", "__tests__"]
+  "exclude": ["node_modules", "__tests__"]
 }

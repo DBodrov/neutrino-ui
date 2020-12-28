@@ -53,6 +53,8 @@ export function Checkbox(props: ICheckboxProps) {
     return (
         <div css={wrapperCss({ width })} style={wrapperStyles} className={className}>
             <div
+                role="checkbox"
+                aria-checked={checked}
                 css={getCheckboxVariant(props, theme)}
                 style={boxStyles}
                 onClick={disabled ? undefined : handleChange}
