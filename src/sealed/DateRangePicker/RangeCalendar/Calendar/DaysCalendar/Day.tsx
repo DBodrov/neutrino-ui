@@ -1,7 +1,7 @@
 import React from 'react';
 import {css} from '@emotion/react';
 import {useTheme} from '../../../../../Themes';
-import {useToggle} from '../../../../../ToggleProvider';
+// import {useToggle} from '../../../../../ToggleProvider';
 import {useDateRange} from '../../../DateRangeProvider';
 import {zeroPad} from '../../../utils/common';
 import {TCalendarDate, TCalendarSection} from '../../../types';
@@ -23,7 +23,7 @@ export function Day({date, title = '', section}: TDayProps) {
   const {handleChangeDay, format, dayEnd, dayStart} = useDateRange();
   const theme = useTheme();
   const {day, month, year, isCurrentMonth, isDisabled} = date;
-  const {handleClose} = useToggle();
+  // const {handleClose} = useToggle();
 
   const {day: currentDay, month: currentMonth, year: currentYear} = section === 'start' ? dayStart : dayEnd;
 
@@ -62,8 +62,8 @@ export function Day({date, title = '', section}: TDayProps) {
     });
     const newDate = outputDate.join('-');
     handleChangeDay(newDate, section);
-    section === 'end' && handleClose();
-  }, [day, format, handleChangeDay, handleClose, month, section, year]);
+    // section === 'end' && handleClose();
+  }, [day, format, handleChangeDay, month, section, year]);
   return (
     <DayButton
       onClickCapture={isDisabled ? undefined : handleSelectDay}

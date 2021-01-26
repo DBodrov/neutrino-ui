@@ -4,7 +4,7 @@ import {Navigator} from './Navigator';
 import {DaysOfWeek} from './DaysOfWeek';
 import {DaysCalendar} from './DaysCalendar';
 import {MonthsCalendar} from './MonthsCalendar';
-// import {YearsCalendar} from './YearsCalendar';
+import {YearsCalendar} from './YearsCalendar';
 import {CalendarBlock} from './styles';
 import {TCalendarProps} from '../../types';
 
@@ -14,16 +14,16 @@ export function Calendar(props: TCalendarProps) {
   // const {calendarView} = useDayPicker();
   const renderCalendar = () => {
     if (calendarView === 'days') {
-      return <DaysCalendar section={calendarSection}/>
+      return <DaysCalendar section={calendarSection} />;
     }
     if (calendarView === 'months') {
-      return <MonthsCalendar section={calendarSection}/>
+      return <MonthsCalendar section={calendarSection} />;
     }
-    // if (calendarView === 'years') {
-    //   return <YearsCalendar type={calendarType}/>
-    // }
-    return <DaysCalendar section={calendarSection} />
-  }
+    if (calendarView === 'years') {
+      return <YearsCalendar section={calendarSection} />;
+    }
+    return <DaysCalendar section={calendarSection} />;
+  };
   return (
     <CalendarBlock
       css={{
@@ -32,7 +32,7 @@ export function Calendar(props: TCalendarProps) {
       }}
       {...props}
     >
-      <Navigator section={calendarSection}/>
+      <Navigator section={calendarSection} />
       {calendarView === 'days' ? <DaysOfWeek /> : null}
       {renderCalendar()}
     </CalendarBlock>

@@ -1,12 +1,17 @@
 import React from 'react';
 import {css} from '@emotion/react';
-import {useTheme} from '../../../Themes';
-import {useDayPicker} from '../../DayPickerProvider';
-import {yearsCalendarBuilder} from '../../utils/calendar';
+import {useTheme} from '../../../../../Themes';
+import {useDateRange} from '../../../DateRangeProvider';
+import {yearsCalendarBuilder} from '../../../utils/calendar';
+import {TCalendarSection} from '../../../types';
 import {Years, Year} from './styles';
 
-export function YearsCalendar() {
-  const {decade, year: storedYear, handleChangeYear, handleChangeCalendarView} = useDayPicker();
+type Props = {
+  section: TCalendarSection;
+};
+
+export function YearsCalendar({section}: Props) {
+  const {handleChangeYear, decadeEnd, decadeStart, dayStart, dayEnd} = useDateRange();
   const {colors} = useTheme();
   const activeYearStyles = css({
     cursor: 'pointer',
@@ -14,16 +19,20 @@ export function YearsCalendar() {
     color: colors?.textColors?.textOnPrimary,
   });
 
-  const yearsCalendar = React.useMemo(() => yearsCalendarBuilder(decade), [decade]);
+  const currentYear = section === 'start' ? dayStart.year : dayEnd.year;
+
+  const yearsCalendar = React.useMemo(
+    () => yearsCalendarBuilder(section === 'start' ? decadeStart : decadeEnd),
+    [decadeEnd, decadeStart, section],
+  );
 
   const setYear = React.useCallback(
     (e: React.PointerEvent<HTMLButtonElement> | React.MouseEvent<HTMLButtonElement>) => {
       const year = Number(e.currentTarget.value);
-      handleChangeYear(year);
-      handleChangeCalendarView('months');
+      handleChangeYear(year, section);
       e.stopPropagation();
     },
-    [handleChangeCalendarView, handleChangeYear],
+    [handleChangeYear, section],
   );
 
   return (
@@ -38,11 +47,8 @@ export function YearsCalendar() {
                 backgroundColor: colors?.mainColors?.primary,
                 color: colors?.textColors?.textOnPrimary,
               },
-              // '&:focus': {
-              //   outline: `1px ${colors.mainColors.secondary} solid`
-              // }
             },
-            year === storedYear ? activeYearStyles : null,
+            year === currentYear ? activeYearStyles : null,
           ]}
           key={year}
           onClick={setYear}

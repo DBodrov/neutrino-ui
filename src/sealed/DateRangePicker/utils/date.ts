@@ -46,6 +46,9 @@ export const CALENDAR_WEEKS = 6;
 export const createDateString = (format: string, delimiter: string, date: TDay) => {
   const outputDate = [];
   const {day, month, year} = date;
+  if (!day || !month || !year) {
+    return ''
+  }
   format.split(delimiter).forEach(ch => {
     if (ch === 'DD') {
       outputDate.push(zeroPad(day, 2));
@@ -58,3 +61,11 @@ export const createDateString = (format: string, delimiter: string, date: TDay) 
   const dateString = outputDate.join(delimiter);
   return dateString;
 };
+
+export const createDateLocaleString = (date: TDay) => {
+  if (!date) return '';
+  const {day, month, year} = date;
+  const dayNumber = zeroPad(day, 2);
+  const monthName = getMonthName(month, 'ru');
+  return `${dayNumber} ${monthName} ${year}`;
+}

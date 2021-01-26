@@ -50,6 +50,7 @@ export type TDateRangeProps = {
 
 export interface IDateRangeInputProps extends React.HTMLProps<HTMLDivElement> {
   inputCss?: SerializedStyles;
+  value?: TDateRangeValue;
 }
 
 export type TCalendarProps = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {getDayTooltip} from '../../../../../DayPicker/utils/calendar';
+import {getDayTooltip} from '../../../utils/calendar';
 import {useDateRange} from '../../../DateRangeProvider';
 import {Day} from './Day';
 import {createDayCalendar} from './utils';
