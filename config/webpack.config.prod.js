@@ -51,7 +51,6 @@ module.exports = webpackMerge.merge(commonConfig, {
     runtimeChunk: {
       name: 'runtime',
     },
-    noEmitOnErrors: true,
     minimize: true,
     minimizer: [new TerserPlugin()],
   },
