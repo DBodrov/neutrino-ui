@@ -22,7 +22,7 @@
     "baseUrl": ".",
     "paths": {
       "neutrino-ui": ["src"],
-      "neutrino-ui/Themes": ["src/Themes"],
+      "neutrino-ui/lib/sealed": ["src/sealed"],
       "neutrino-ui/Button": ["src/Button"]
     }
   },

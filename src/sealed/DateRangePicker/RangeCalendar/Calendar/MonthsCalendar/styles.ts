@@ -1,18 +1,17 @@
 import styled from '@emotion/styled';
 
-export const Days = styled.div`
+export const Months = styled.div`
   display: grid;
-  grid-template-columns: repeat(7, minmax(2rem, 1fr));
-  grid-template-rows: repeat(6, 2rem);
-  gap: 1px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, minmax(3rem, 1fr));
+  gap: 5px;
   width: 100%;
-  height: clamp(220px, 250px, 300px);
-  align-content: center;
-  justify-items: center;
-  padding: 10px 8px;
+  height: 100%;
+  overflow-y: auto;
+  padding: 10px;
 `;
 
-export const DayButton = styled.button`
+export const Month = styled.button`
   display: flex;
   flex-flow: column;
   justify-content: center;
@@ -25,4 +24,5 @@ export const DayButton = styled.button`
   background-color: transparent;
   outline: 0;
   border: 0;
+  color: ${props => props.theme.colors.textColors.text};
 `;
