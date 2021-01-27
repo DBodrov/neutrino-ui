@@ -89,7 +89,7 @@
     "babel-plugin-emotion": "^11.0.0",
     "copy-webpack-plugin": "^6.3.0",
     "core-js": "^3.7.0",
-    "cypress": "^6.1.0",
+    "cypress": "^6.3.0",
     "emotion-theming": "^11.0.0",
     "eslint": "^7.16.0",
     "eslint-config-prettier": "^7.1.0",

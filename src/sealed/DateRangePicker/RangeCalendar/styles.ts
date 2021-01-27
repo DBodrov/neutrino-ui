@@ -7,4 +7,6 @@ export const RangeCalendarBox = styled.div`
   align-items: center;
   width: 490px;
   height: 285px;
+  border: 1px ${props => props.theme.colors.pageElementsColors.border} solid;
+  background-color: ${props => props.theme.colors.pageElementsColors.formElements};
 `;

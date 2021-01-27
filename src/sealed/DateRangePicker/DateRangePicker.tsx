@@ -7,7 +7,7 @@ import {RangeCalendar} from './RangeCalendar';
 import {TDateRangeProps} from './types';
 
 function DateRangeComponent(props: TDateRangeProps) {
-  const {inputCss, value} = props;
+  const {inputCss, value, calendarCss} = props;
   const {isOpen, handleToggle, handleClose} = useToggle();
   const {handleChangeCalendarView} = useDateRange();
   const rangeInputRef = React.useRef<HTMLDivElement>(null);
@@ -15,12 +15,16 @@ function DateRangeComponent(props: TDateRangeProps) {
   const rangeInputRect = rangeInputRef?.current?.getBoundingClientRect();
   const getBound = React.useCallback(() => {
     const rect = rangeInputRect?.toJSON();
-    // console.log(rect);
     if (!rect) return {};
     const bound = {...rect, width: 490, left: rect.left - (490 - rangeInputRect?.width) / 2};
-    // console.log('bound', bound);
     return bound;
   }, [rangeInputRect]);
+
+  const handleInputClick = React.useCallback(() => {
+    handleToggle();
+    handleChangeCalendarView('days', 'start');
+    handleChangeCalendarView('days', 'end');
+  }, [handleChangeCalendarView, handleToggle]);
 
   React.useEffect(() => {
     const handleClickOutside = (e: PointerEvent | MouseEvent) => {
@@ -55,9 +59,9 @@ function DateRangeComponent(props: TDateRangeProps) {
 
   return (
     <div css={{position: 'relative', width: '100%'}}>
-      <DateRangeInput value={value} inputCss={inputCss} ref={rangeInputRef} onClick={handleToggle} />
+      <DateRangeInput value={value} inputCss={inputCss} ref={rangeInputRef} onClick={handleInputClick} />
       <Dropdown isOpen={isOpen} parentBound={isOpen ? getBound() : undefined} ref={dropdownRef}>
-        <RangeCalendar />
+        <RangeCalendar calendarCss={calendarCss}/>
       </Dropdown>
     </div>
   );

@@ -1,4 +1,4 @@
-import { ChangeDirection } from '../types';
+// import { ChangeDirection } from '../types';
 import { THIS_DAY, THIS_MONTH, THIS_YEAR } from './date';
 import { zeroPad } from './common';
 import { createDecadeTitle } from './calendar';
@@ -32,48 +32,48 @@ export const getPickerDay = (date: string) => {
     return dayOrMonthValid(formattedDay) ? formattedDay : zeroPad(THIS_DAY, 2);
 };
 
-export const changeMonth = (direction: ChangeDirection, currentValue: number): string => {
-    let monthValue: number;
-    if (direction === 'prev') {
-        monthValue = currentValue - 1;
-        if (monthValue < 1) {
-            monthValue = 12;
-        }
-    } else if (direction === 'next') {
-        monthValue = currentValue + 1;
-        if (monthValue > 12) {
-            monthValue = 1;
-        }
-    }
-    return String(monthValue);
-};
+// export const changeMonth = (direction: ChangeDirection, currentValue: number): string => {
+//     let monthValue: number;
+//     if (direction === 'prev') {
+//         monthValue = currentValue - 1;
+//         if (monthValue < 1) {
+//             monthValue = 12;
+//         }
+//     } else if (direction === 'next') {
+//         monthValue = currentValue + 1;
+//         if (monthValue > 12) {
+//             monthValue = 1;
+//         }
+//     }
+//     return String(monthValue);
+// };
 
 interface IDateOptions {
     minDate?: string;
     maxDate?: string;
 }
 
-export const changeYear = (direction: ChangeDirection, currentValue: number): number => {
-    let yearValue: number;
-    if (direction === 'prev') {
-        yearValue = currentValue - 1;
-    } else if (direction === 'next') {
-        yearValue = currentValue + 1;
-    }
-    return yearValue;
-};
+// export const changeYear = (direction: ChangeDirection, currentValue: number): number => {
+//     let yearValue: number;
+//     if (direction === 'prev') {
+//         yearValue = currentValue - 1;
+//     } else if (direction === 'next') {
+//         yearValue = currentValue + 1;
+//     }
+//     return yearValue;
+// };
 
-export const changeDecade = (direction: ChangeDirection, currentValue: string) => {
-    let decadeValue: string;
-    if (direction === 'prev') {
-        const [firstYear] = currentValue.split('-');
-        decadeValue = createDecadeTitle(Number(firstYear) - 10);
-    } else if (direction === 'next') {
-        const [firstYear] = currentValue.split('-');
-        decadeValue = createDecadeTitle(Number(firstYear) + 10);
-    }
-    return decadeValue;
-};
+// export const changeDecade = (direction: ChangeDirection, currentValue: string) => {
+//     let decadeValue: string;
+//     if (direction === 'prev') {
+//         const [firstYear] = currentValue.split('-');
+//         decadeValue = createDecadeTitle(Number(firstYear) - 10);
+//     } else if (direction === 'next') {
+//         const [firstYear] = currentValue.split('-');
+//         decadeValue = createDecadeTitle(Number(firstYear) + 10);
+//     }
+//     return decadeValue;
+// };
 
 export const createDateString = (day: string | number, month: string | number, year: string | number) =>
     `${zeroPad(day, 2)}.${zeroPad(month, 2)}.${year}`;

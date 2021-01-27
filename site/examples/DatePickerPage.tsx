@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ThemeProvider} from '@emotion/react';
+import {ThemeProvider, css} from '@emotion/react';
 import {Wrapper} from './Example';
 import {DatePicker, baseTheme, createTheme, Switch} from 'neutrino-ui';
 import {DateRangePicker} from 'neutrino-ui/lib/sealed';
@@ -17,7 +17,7 @@ const darkTheme = createTheme({
     pageElementsColors: {
       border: '#313d4f',
       body: '#3a3d43',
-      formElements: '#222C3C',
+      formElements: '#273142',
       formElementsActive: '#313D4F',
       activeBorder: '#289df5',
       selectedItem: '#313D4F',
@@ -74,7 +74,13 @@ export function DatePickerPage() {
         <div css={{marginTop: 20}}>
           <span>DateRangePicker</span>
           <div css={{width: 300}}>
-            <DateRangePicker name="range" onChangeHandler={handleChangeRange} value={dateRange} />
+            <DateRangePicker
+              name="range"
+              onChangeHandler={handleChangeRange}
+              value={dateRange}
+              inputCss={css({borderRadius: 8})}
+              calendarCss={css({borderRadius: 8})}
+            />
           </div>
         </div>
       </ThemeProvider>

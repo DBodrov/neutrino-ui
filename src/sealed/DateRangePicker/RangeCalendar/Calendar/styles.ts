@@ -6,4 +6,7 @@ export const CalendarBlock = styled.div`
   width: 50%;
   min-height: 250px;
   height: 100%;
+  &:first-of-type {
+    border-right: 1px ${props => props.theme.colors.pageElementsColors.border} solid;
+  }
 `;

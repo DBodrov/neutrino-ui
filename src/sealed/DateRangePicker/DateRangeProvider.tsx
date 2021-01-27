@@ -1,12 +1,13 @@
 import React, {createContext, useContext, useMemo} from 'react';
+import {SerializedStyles} from '@emotion/react';
 import {useToggle} from '../../ToggleProvider';
 import {isEmptyString} from '../../utils';
 import {parseDate} from './utils/format';
-import {THIS_DAY, THIS_MONTH, THIS_YEAR, THIS_DECADE, createDateString} from './utils/date';
+// import {THIS_DAY, THIS_MONTH, THIS_YEAR, THIS_DECADE, createDateString} from './utils/date';
 import {createDecadeTitle} from './utils/calendar';
 import {TDateRangeProps, TDay, TDateRangeValue, TCalendarSection, TCalendarView} from './types';
 
-export type TFormatConfig = {inputs: Map<string, {length: number}>; delimiter: string};
+// export type TFormatConfig = {inputs: Map<string, {length: number}>; delimiter: string};
 
 interface IDateRangeState {
   dayStart?: TDay;
@@ -31,6 +32,7 @@ interface IDateRangeContext extends IDateRangeState {
   minDate?: string;
   maxDate?: string;
   format: string;
+  calendarCss?: SerializedStyles;
 }
 
 const FORMAT = 'YYYY-MM-DD';
@@ -76,22 +78,24 @@ export function DateRangeProvider(props: TDateRangeProps) {
       const endDecade = createDecadeTitle(endDay.year);
       dispatch({dayStart: startDay, dayEnd: endDay, decadeStart: startDecade, decadeEnd: endDecade});
     }
-
   }, [hasValue, value]);
 
-  const handleChangeDay = React.useCallback((date: string, section: TCalendarSection) => {
-    const {day, month, year} = parseDate(date, FORMAT);
-    if (section === 'start') {
-      internalRange.current[0] = date;
-      dispatch({dayStart: {day, month, year}});
-    } else {
-      dispatch({dayEnd: {day, month, year}});
-      internalRange.current[1] = date;
-      internalRange.current[0] && handleClose();
-    }
-    const safeRange = internalRange.current.filter(Boolean);
-    safeRange.length === 2 && onChangeHandler(internalRange.current);
-  }, [handleClose, onChangeHandler]);
+  const handleChangeDay = React.useCallback(
+    (date: string, section: TCalendarSection) => {
+      const {day, month, year} = parseDate(date, FORMAT);
+      if (section === 'start') {
+        internalRange.current[0] = date;
+        dispatch({dayStart: {day, month, year}});
+      } else {
+        dispatch({dayEnd: {day, month, year}});
+        internalRange.current[1] = date;
+        internalRange.current[0] && handleClose();
+      }
+      const safeRange = internalRange.current.filter(Boolean);
+      safeRange.length === 2 && onChangeHandler(internalRange.current);
+    },
+    [handleClose, onChangeHandler],
+  );
 
   const handleChangeCalendarView = React.useCallback((view: TCalendarView, section: TCalendarSection) => {
     const calendarView = section === 'start' ? 'calendarStartView' : 'calendarEndView';
@@ -115,9 +119,17 @@ export function DateRangeProvider(props: TDateRangeProps) {
     (year: number, section: TCalendarSection, needChangeView = false) => {
       const newDecade = createDecadeTitle(year);
       if (section === 'start') {
-        dispatch({dayStart: {...dayStart, year}, decadeStart: newDecade, calendarStartView: needChangeView ? 'months' : calendarStartView});
+        dispatch({
+          dayStart: {...dayStart, year},
+          decadeStart: newDecade,
+          calendarStartView: needChangeView ? 'months' : calendarStartView,
+        });
       } else {
-        dispatch({dayEnd: {...dayEnd, year}, decadeEnd: newDecade, calendarEndView: needChangeView ? 'months' : calendarEndView});
+        dispatch({
+          dayEnd: {...dayEnd, year},
+          decadeEnd: newDecade,
+          calendarEndView: needChangeView ? 'months' : calendarEndView,
+        });
       }
     },
     [calendarEndView, calendarStartView, dayEnd, dayStart],
@@ -148,7 +160,7 @@ export function DateRangeProvider(props: TDateRangeProps) {
       minDate,
       maxDate,
       format: FORMAT,
-      dispatch
+      dispatch,
     }),
     [
       calendarEndView,

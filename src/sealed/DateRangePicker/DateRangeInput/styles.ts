@@ -8,8 +8,9 @@ export const DateRangeInputBox = styled.div`
   width: 100%;
   min-height: 36px;
   padding: 0;
+  cursor: pointer;
   border: 1px ${props => props.theme.colors.pageElementsColors.border} solid;
-  background-color: ${props => props.theme.colors.pageElementsColors.body};
+  background-color: ${props => props.theme.colors.pageElementsColors.formElements};
   &:hover {
     border-color: ${props => props.theme.colors.mainColors.primary};
   }

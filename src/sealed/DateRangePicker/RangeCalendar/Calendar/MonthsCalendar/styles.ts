@@ -24,4 +24,5 @@ export const Month = styled.button`
   background-color: transparent;
   outline: 0;
   border: 0;
+  color: ${props => props.theme.colors.textColors.text};
 `;

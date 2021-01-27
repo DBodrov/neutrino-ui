@@ -29,7 +29,7 @@ export function YearsCalendar({section}: Props) {
   const setYear = React.useCallback(
     (e: React.PointerEvent<HTMLButtonElement> | React.MouseEvent<HTMLButtonElement>) => {
       const year = Number(e.currentTarget.value);
-      handleChangeYear(year, section);
+      handleChangeYear(year, section, true);
       e.stopPropagation();
     },
     [handleChangeYear, section],

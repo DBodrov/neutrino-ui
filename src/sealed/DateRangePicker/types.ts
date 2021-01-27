@@ -46,6 +46,7 @@ export type TDateRangeProps = {
   minDate?: string;
   maxDate?: string;
   inputCss?: SerializedStyles;
+  calendarCss?: SerializedStyles;
 };
 
 export interface IDateRangeInputProps extends React.HTMLProps<HTMLDivElement> {

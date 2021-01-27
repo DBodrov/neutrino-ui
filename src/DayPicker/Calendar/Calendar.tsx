@@ -27,7 +27,7 @@ export function Calendar(props: any) {
     <CalendarBlock
       css={{
         border: `1px ${theme?.colors?.pageElementsColors?.border} solid`,
-        backgroundColor: theme?.colors?.pageElementsColors?.body,
+        backgroundColor: theme?.colors?.pageElementsColors?.formElements,
       }}
       {...props}
     >

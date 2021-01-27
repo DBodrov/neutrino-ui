@@ -2,13 +2,13 @@ import React from 'react';
 import {Span} from '../../../Typography';
 import {useDateRange} from '../DateRangeProvider';
 import {CalendarIcon} from './CalendarIcon';
-import {createDateLocaleString, createDateString} from '../utils/date';
+import {createDateString} from '../utils/date';
 import {DateRangeInputBox, DateRangeInputSection} from './styles';
 import {IDateRangeInputProps} from '../types';
 
 
 function DateRangeInputComponent(props: IDateRangeInputProps, ref: React.ForwardRefExoticComponent<HTMLDivElement>) {
-  const {inputCss, onClick, value} = props;
+  const {inputCss, onClick} = props;
   const {dayEnd, dayStart, format} = useDateRange();
   const inputRef = React.useRef<HTMLDivElement>(null);
   React.useImperativeHandle(ref, () => inputRef.current, []);

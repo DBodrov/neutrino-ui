@@ -6,6 +6,7 @@ export const Days = styled.div`
   grid-template-rows: repeat(6, 2rem);
   gap: 1px;
   width: 100%;
+  height: clamp(220px, 250px, 300px);
   align-content: center;
   justify-items: center;
   padding: 10px 8px;
