@@ -48,10 +48,10 @@ export const getPickerDay = (date: string) => {
 //     return String(monthValue);
 // };
 
-interface IDateOptions {
-    minDate?: string;
-    maxDate?: string;
-}
+// interface IDateOptions {
+//     minDate?: string;
+//     maxDate?: string;
+// }
 
 // export const changeYear = (direction: ChangeDirection, currentValue: number): number => {
 //     let yearValue: number;

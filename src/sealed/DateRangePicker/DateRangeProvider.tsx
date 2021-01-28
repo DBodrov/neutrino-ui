@@ -89,10 +89,11 @@ export function DateRangeProvider(props: TDateRangeProps) {
       } else {
         dispatch({dayEnd: {day, month, year}});
         internalRange.current[1] = date;
-        internalRange.current[0] && handleClose();
+        if (internalRange.current[0]) {
+          onChangeHandler(internalRange.current);
+          handleClose();
+        }
       }
-      const safeRange = internalRange.current.filter(Boolean);
-      safeRange.length === 2 && onChangeHandler(internalRange.current);
     },
     [handleClose, onChangeHandler],
   );

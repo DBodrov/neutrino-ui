@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {ThemeProvider, css} from '@emotion/react';
-import {Wrapper} from './Example';
+import {Wrapper, Example} from './Example';
 import {DatePicker, baseTheme, createTheme, Switch} from 'neutrino-ui';
 import {DateRangePicker} from 'neutrino-ui/lib/sealed';
 import {DatePickerComponent} from './DatePickerComponent';
@@ -30,6 +30,28 @@ const darkTheme = createTheme({
   },
 });
 
+const exampleDaterange = `
+import React, {useState} from 'react';
+import {css} from '@emotion/react';
+import {DateRangePicker} from 'neutrino-ui/lib/sealed';
+
+/** somewhere in app... */
+const [dateRange, setDateRange] = useState<[string?, string?]>([]);
+//...
+
+const handleChangeRange = (range: [string?, string?]) => {
+  setDateRange(range);
+};
+
+<DateRangePicker
+  name="range"
+  onChangeHandler={handleChangeRange}
+  value={dateRange}
+  inputCss={css({borderRadius: 8})}
+  calendarCss={css({borderRadius: 8})}
+/>
+`.trim();
+
 export function DatePickerPage() {
   const [date, setDate] = useState('');
   const [dateRange, setDateRange] = useState<[string?, string?]>([]);
@@ -40,7 +62,7 @@ export function DatePickerPage() {
   };
 
   const handleChangeRange = (range: [string?, string?]) => {
-    console.log(range);
+    // console.log(range);
     setDateRange(range);
   };
 
@@ -73,6 +95,7 @@ export function DatePickerPage() {
         </div>
         <div css={{marginTop: 20}}>
           <span>DateRangePicker</span>
+          <Example code={exampleDaterange} />
           <div css={{width: 300}}>
             <DateRangePicker
               name="range"
