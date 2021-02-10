@@ -1,6 +1,6 @@
 import React from 'react';
 import {SerializedStyles} from '@emotion/react';
-import {removeMask, createDisplayValue, isSpecSymbol} from './utils';
+import {removeMask, createDisplayValue} from './utils';
 import {InputPhoneBlock, CountryCode, StyledInput} from './styles';
 
 interface IInputPhoneProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
@@ -33,7 +33,6 @@ export function InputPhone(props: IInputPhoneProps) {
       const rawValue = removeMask('_', event.currentTarget.value);
       const cursor = selectionStart.current;
       const displayValue = createDisplayValue(rawValue, mask);
-      console.log('inputType = ', inputType.current);
 
       switch (inputType.current) {
         default:
@@ -77,53 +76,7 @@ export function InputPhone(props: IInputPhoneProps) {
           selectionStart.current = displayValue.length;
           selectionEnd.current = displayValue.length;
         }
-
       }
-
-
-      // console.log('nextchar', nextChar);
-      // console.log('cursor', cursor);
-      // if (cursor === displayValue.length) {
-      //   console.log('cursor === displayValue.length')
-      //   selectionStart.current = cursor;
-      //   selectionEnd.current = cursor;
-      // } else if (prevValue.current.length === 0) {
-      //   console.log('prevValue.current.length === 0')
-      //   selectionStart.current = displayValue.length;
-      //   selectionEnd.current = displayValue.length;
-      // } else if (cursor < displayValue.length) {
-      //   console.log('cursor < displayValue.length')
-      //   const addedChars = displayValue.length - prevMaskedValue.current.length;
-      //   const addedNums = rawValue.length - prevValue.current.length;
-      //   if (addedChars < 0) {
-      //     console.log('addedChars < 0')
-      //     selectionStart.current = cursor;
-      //     selectionEnd.current = cursor;
-      //   } else if (addedChars > 0) {
-      //     console.log('addedChars > 0')
-      //     console.log('addedChars', addedChars);
-      //     if (addedChars === 1) {
-      //       console.log('addedChars === 1')
-      //       selectionStart.current = cursor;
-      //       selectionEnd.current = cursor;
-      //     } else if (addedChars > 1) {
-      //       console.log('addedChars > 1', displayValue.length, cursor)
-      //       if (addedChars !== addedNums) {
-      //         selectionStart.current = cursor + addedNums;
-      //         selectionEnd.current = cursor + addedNums;
-      //       } else {
-      //         selectionStart.current = cursor + addedChars;
-      //         selectionEnd.current = cursor + addedChars;
-      //       }
-      //       // const delta = addedChars - addedNums;
-      //     }
-      //   } else if (addedChars === 0) {
-      //     console.log('addedChars === 0')
-      //     selectionStart.current = cursor;
-      //     selectionEnd.current = cursor;
-      //     forceUpdate({});
-      //   }
-      // }
       onChange(displayValue);
       prevValue.current = rawValue;
       prevMaskedValue.current = displayValue;
@@ -138,7 +91,6 @@ export function InputPhone(props: IInputPhoneProps) {
   const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
     const {ctrlKey, metaKey, key} = event;
     const isNumericKey = isFinite(Number(key));
-    console.log('key', key);
     if (ctrlKey || metaKey) {
       return;
     }
@@ -163,16 +115,12 @@ export function InputPhone(props: IInputPhoneProps) {
       }
     }
 
-    console.log('keydown', start, end);
-
     selectionStart.current = start;
     selectionEnd.current = end;
   }, []);
 
   const handlePaste = React.useCallback(() => {
     inputType.current = 'insertFromPaste';
-    // if (selectionStart.current === selectionEnd.current) {
-    // }
   }, [])
 
   React.useLayoutEffect(() => {

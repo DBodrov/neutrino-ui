@@ -31,7 +31,7 @@ export function Routes() {
       <Route path="/input">
         <InputPage />
       </Route>
-      <Route path="/inputmask">
+      <Route path="/inputphone">
         <InputMaskPage />
       </Route>
       <Route path="/inputnumber">
