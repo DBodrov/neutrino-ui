@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from '@emotion/styled';
 import {css} from '@emotion/react';
-import {Span, InputMask, H4, InputPhone} from 'neutrino-ui';
+import {Span, H4, InputPhone} from 'neutrino-ui';
 import {Example, Wrapper} from './Example';
 
 const Label = styled(Span)`
@@ -53,6 +53,18 @@ const [day, setDay] = useState('');
 const examplePhone = `
 import { InputPhone } from 'neutrino-ui';
 
+const phoneStyle = css({
+  height: 48,
+  borderRadius: 4,
+  width: 250,
+  fontSize: 16,
+  outline: 0,
+  border: '1px #ababab solid',
+  '&:hover, &:focus': {
+    border: '1px #0ed308 solid',
+  },
+});
+
 const [phone, setPhone] = useState('');
 
 const handleChangePhone = (phone: string) => {
@@ -62,7 +74,7 @@ const handleChangePhone = (phone: string) => {
 <InputPhone
   name="phoneNumber"
   countryCode="+7"
-  css={{height: 48, borderRadius: 4, width: 250, fontSize: 16}}
+  css={phoneStyle}
   onChange={handleChangePhone}
   value={phone}
   placeholder="(___) ___-__-__"
@@ -70,11 +82,11 @@ const handleChangePhone = (phone: string) => {
 `.trim();
 
 const exampleProps = `
-interface IInputMaskProps extends React.HTMLProps<HTMLInputElement> {
-  value?: string;
-  mask: string;
-  maskPlaceholder?: string;
-  onChangeHandler: (value: string) => void;
+interface IInputPhoneProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
+  onChange: (value: string, event?: React.ChangeEvent<HTMLInputElement>) => void;
+  countryCode: string; //default: '+7'
+  countryCodeCSS?: SerializedStyles;
+  mask?: string; // default: '(999) 999-99-99'
 }
 `.trim();
 
@@ -91,16 +103,16 @@ export function InputMaskPage() {
 
   return (
     <Wrapper>
-      <H4>InputMask</H4>
-      <Span>For modern browsers only.</Span>
+      <H4>InputPhone</H4>
+      {/* <Span>For modern browsers only.</Span>
       <br />
       <Span>
         used InputEvent under the hood.{' '}
         <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event">MDN</a>
-      </Span>
+      </Span> */}
       <Label css={{marginTop: 20}}>Props</Label>
       <Example code={exampleProps} />
-      <Label>DateInput - implement InputMask</Label>
+      {/* <Label>DateInput - implement InputMask</Label>
       <InputMask
         mask="99.99.9999"
         name="date"
@@ -110,8 +122,8 @@ export function InputMaskPage() {
         css={{width: 300, height: 48, fontSize: 14, borderRadius: 8, border: '1px blue solid', outline: 0}}
         aria-label="Date"
       />
-      <Example code={exampleDate} />
-      <Label>PhoneInput - implement InputMask</Label>
+      <Example code={exampleDate} /> */}
+      <Label>InputPhone</Label>
       <InputPhone
         name="phoneNumber"
         countryCode="+7"
@@ -131,7 +143,7 @@ export function InputMaskPage() {
         aria-label="Phone"
       /> */}
       <Example code={examplePhone} />
-      <Label>Simple MaskInput (Passport)</Label>
+      {/* <Label>Simple MaskInput (Passport)</Label>
       <InputMask
         mask="9999 999999"
         name="passport"
@@ -141,7 +153,7 @@ export function InputMaskPage() {
         css={{height: 48, fontSize: 16}}
         style={commonStyle}
       />
-      <Example code={exampleSimple} />
+      <Example code={exampleSimple} /> */}
     </Wrapper>
   );
 }
