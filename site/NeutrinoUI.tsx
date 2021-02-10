@@ -15,7 +15,7 @@ const componentsList = [
   {name: 'Checkbox', link: '/checkbox'},
   {name: 'Typography', link: '/typography'},
   {name: 'Input', link: '/input'},
-  {name: 'InputMask', link: '/inputmask'},
+  {name: 'InputPhone', link: '/inputphone'},
   {name: 'InputNumber', link: '/inputnumber'},
   {name: 'Select', link: '/select'},
   {name: 'Modal', link: '/modal'},
