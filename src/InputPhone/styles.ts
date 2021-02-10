@@ -19,9 +19,5 @@ export const CountryCode = styled.div`
 `;
 
 export const StyledInput = styled.input`
-  /* display: inline-flex;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
-  align-items: center; */
   padding: 4px 0 4px 30px;
 `;

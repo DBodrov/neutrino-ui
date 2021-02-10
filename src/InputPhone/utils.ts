@@ -5,7 +5,6 @@ export function createEmptyMask(mask: string, maskPlaceholder: string) {
       return ch;
     })
     .join('');
-  //const fullMask = `+${countryCode}${emptyMask}`;
   return emptyMask;
 }
 
