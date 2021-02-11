@@ -10,7 +10,7 @@ interface IInputPhoneProps extends Omit<React.InputHTMLAttributes<HTMLInputEleme
   mask?: string;
 }
 
-export function InputPhone(props: IInputPhoneProps) {
+function InputPhoneComponent(props: IInputPhoneProps, ref: React.ForwardRefExoticComponent<HTMLInputElement>) {
   const {
     name,
     countryCode = '+7',
@@ -24,6 +24,7 @@ export function InputPhone(props: IInputPhoneProps) {
   const prevValue = React.useRef<string>('');
   const prevMaskedValue = React.useRef<string>('');
   const inputEl = React.useRef<HTMLInputElement>(null);
+  React.useImperativeHandle(ref, () => inputEl.current, []);
   const selectionStart = React.useRef(0);
   const selectionEnd = React.useRef(0);
   const inputType = React.useRef<string>('');
@@ -144,3 +145,5 @@ export function InputPhone(props: IInputPhoneProps) {
     </InputPhoneBlock>
   );
 }
+
+export const InputPhone = React.forwardRef(InputPhoneComponent);
