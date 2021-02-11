@@ -86,13 +86,15 @@ interface IInputPhoneProps extends Omit<React.InputHTMLAttributes<HTMLInputEleme
   onChange: (value: string, event?: React.ChangeEvent<HTMLInputElement>) => void;
   countryCode: string; //default: '+7'
   countryCodeCSS?: SerializedStyles;
-  mask?: string; // default: '(999) 999-99-99'
+  mask?: string; // default: '(999) 999-99-99';
+  ref: React.Ref<HTMLInputElement>;
 }
 `.trim();
 
 export function InputMaskPage() {
   const [passport, setPassport] = useState('');
   const [phone, setPhone] = useState('');
+  const phoneRef = React.useRef(null);
 
   const [day, setDay] = useState('');
   const handleChangePassport = (value: string) => setPassport(value);
@@ -100,6 +102,10 @@ export function InputMaskPage() {
   const handleChangePhone = (phone: string) => {
     setPhone(phone);
   };
+
+  const setFocus = () => {
+    phoneRef.current.focus();
+  }
 
   return (
     <Wrapper>
@@ -123,9 +129,11 @@ export function InputMaskPage() {
         aria-label="Date"
       />
       <Example code={exampleDate} /> */}
+      <button onClick={setFocus}>focus</button>
       <Label>InputPhone</Label>
       <InputPhone
         name="phoneNumber"
+        ref={phoneRef}
         countryCode="+7"
         css={phoneStyle}
         onChange={handleChangePhone}
