@@ -20,4 +20,5 @@ export const CountryCode = styled.div`
 
 export const StyledInput = styled.input`
   padding: 4px 0 4px 30px;
+  font-size: 1rem;
 `;

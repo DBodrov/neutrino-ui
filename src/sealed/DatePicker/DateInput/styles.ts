@@ -13,6 +13,7 @@ export const StyledInput = styled.input`
   color: ${props => props.theme.colors.textColors.text};
   background-color: ${props => props.theme.colors.pageElementsColors.formElements};
   outline: 0;
+  font-size: 1rem;
   &:hover, &:focus {
     border-color: ${props => props.theme.colors.pageElementsColors.activeBorder}
   }
