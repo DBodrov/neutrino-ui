@@ -5,4 +5,5 @@ export const CalendarBlock = styled.div`
   flex-flow: column nowrap;
   width: 100%;
   min-height: 250px;
+  height: 300px;
 `;
