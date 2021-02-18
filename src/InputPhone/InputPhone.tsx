@@ -10,6 +10,11 @@ interface IInputPhoneProps extends Omit<React.InputHTMLAttributes<HTMLInputEleme
   mask?: string;
 }
 
+type TCursorPosition = {
+  cursorStart?: number;
+  cursorEnd?: number;
+};
+
 function InputPhoneComponent(props: IInputPhoneProps, ref: React.ForwardRefExoticComponent<HTMLInputElement>) {
   const {
     name,
@@ -20,73 +25,79 @@ function InputPhoneComponent(props: IInputPhoneProps, ref: React.ForwardRefExoti
     value,
     ...restProps
   } = props;
-  const [, forceUpdate] = React.useState({});
+
+  const [{cursorStart, cursorEnd}, setCursor] = React.useReducer(
+    (s: TCursorPosition, a: TCursorPosition): TCursorPosition => ({...s, ...a}),
+    {
+      cursorStart: undefined,
+      cursorEnd: undefined,
+    },
+  );
+  const [updateKey, forceUpdate] = React.useState(0);
   const prevValue = React.useRef<string>('');
   const prevMaskedValue = React.useRef<string>('');
-  const inputEl = React.useRef<HTMLInputElement>(null);
-  React.useImperativeHandle(ref, () => inputEl.current, []);
-  const selectionStart = React.useRef(0);
-  const selectionEnd = React.useRef(0);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  React.useImperativeHandle(ref, () => inputRef.current, []);
+
   const inputType = React.useRef<string>('');
 
   const handleChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const rawValue = removeMask('_', event.currentTarget.value);
-      const cursor = selectionStart.current;
+      let cursor = cursorStart;
       const displayValue = createDisplayValue(rawValue, mask);
 
       switch (inputType.current) {
         default:
         case 'insertText': {
-          if ([0, 9, 12].includes(cursor)) {
-            selectionStart.current = cursor + 2;
-            selectionEnd.current = cursor + 2;
-          } else if (cursor === 4) {
-            selectionStart.current = cursor + 3;
-            selectionEnd.current = cursor + 3;
+          if ([0, 9, 12].includes(cursorStart)) {
+            cursor = cursorStart + 2;
+            // selectionEnd.current = cursor + 2;
+          } else if (cursorStart === 4) {
+            cursor = cursorStart + 3;
+            // selectionEnd.current = cursor + 3;
           } else {
-            selectionStart.current = cursor + 1;
-            selectionEnd.current = cursor + 1;
+            cursor = cursorStart + 1;
           }
+          setCursor({cursorStart: cursor, cursorEnd: cursor});
           break;
         }
         case 'deleteContentBackward': {
-          if ([1, 5, 6, 10, 13].includes(cursor)) {
-            selectionStart.current = cursor - 1;
-            selectionEnd.current = cursor - 1;
-            forceUpdate({});
-          } else {
-            selectionStart.current = cursor - 1;
-            selectionEnd.current = cursor - 1;
-          }
+          // if ([1, 5, 6, 10, 13].includes(cursor)) {
+
+          // } else {
+          //   selectionStart.current = cursor - 1;
+          //   selectionEnd.current = cursor - 1;
+          // }
+          cursor = cursorStart - 1;
+          setCursor({cursorStart: cursor, cursorEnd: cursor});
           break;
         }
         case 'deleteContentForward': {
-          selectionStart.current = cursor;
-          selectionEnd.current = cursor;
-          forceUpdate({});
+          setCursor({cursorStart: cursor, cursorEnd: cursor});
+          forceUpdate(s => s + 1);
           break;
         }
         case 'deleteSection': {
-          selectionStart.current = cursor;
-          selectionEnd.current = cursor;
-          forceUpdate({});
+          cursor = cursorStart
+          setCursor({cursorStart: cursor, cursorEnd: cursor});
           break;
         }
         case 'insertFromPaste': {
-          selectionStart.current = displayValue.length;
-          selectionEnd.current = displayValue.length;
+          cursor = displayValue.length;
+          setCursor({cursorStart: cursor, cursorEnd: cursor});
+          break;
         }
       }
       onChange(displayValue);
       prevValue.current = rawValue;
       prevMaskedValue.current = displayValue;
     },
-    [mask, onChange],
+    [cursorStart, mask, onChange],
   );
 
   const handleClick = React.useCallback((e: React.PointerEvent<any> | React.MouseEvent<any>) => {
-    inputEl.current.focus();
+    inputRef.current.focus();
   }, []);
 
   const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
@@ -115,9 +126,7 @@ function InputPhoneComponent(props: IInputPhoneProps, ref: React.ForwardRefExoti
         inputType.current = 'deleteSection';
       }
     }
-
-    selectionStart.current = start;
-    selectionEnd.current = end;
+    setCursor({cursorStart: start, cursorEnd: end});
   }, []);
 
   const handlePaste = React.useCallback(() => {
@@ -125,8 +134,8 @@ function InputPhoneComponent(props: IInputPhoneProps, ref: React.ForwardRefExoti
   }, [])
 
   React.useLayoutEffect(() => {
-    inputEl.current.setSelectionRange(selectionStart.current, selectionEnd.current);
-  });
+    inputRef.current.setSelectionRange(cursorStart, cursorEnd);
+  }, [cursorStart, cursorEnd, updateKey]);
 
   return (
     <InputPhoneBlock onClick={handleClick}>
@@ -138,7 +147,7 @@ function InputPhoneComponent(props: IInputPhoneProps, ref: React.ForwardRefExoti
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         onPaste={handlePaste}
-        ref={inputEl}
+        ref={inputRef}
         value={value}
         {...restProps}
       />
