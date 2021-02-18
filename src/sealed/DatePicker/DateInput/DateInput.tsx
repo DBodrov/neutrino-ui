@@ -3,66 +3,71 @@ import {useDatePicker} from '../DatePickerProvider';
 import {removeMask, createDisplayValue} from '../utils/format';
 import {StyledInput} from './styles';
 
+type TCursorPosition = {
+  cursorStart?: number;
+  cursorEnd?: number;
+};
+
 function DateInputComponent(props: any, ref?: React.ForwardRefExoticComponent<HTMLInputElement>) {
   const {handleInputDate, name, value, inputStyles, format, onBlur} = useDatePicker();
-  const [, forceUpdate] = React.useState({});
+  const [{cursorStart, cursorEnd}, setCursor] = React.useReducer(
+    (s: TCursorPosition, a: TCursorPosition): TCursorPosition => ({...s, ...a}),
+    {
+      cursorStart: undefined,
+      cursorEnd: undefined,
+    },
+  );
+  const [updateKey, forceUpdate] = React.useState(0);
   const inputRef = React.useRef<HTMLInputElement>(null);
   React.useImperativeHandle(ref, () => inputRef.current, []);
 
-  const selectionStart = React.useRef(0);
-  const selectionEnd = React.useRef(0);
   const inputType = React.useRef<string>('');
 
   const handleDateChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const rawValue = removeMask('_', e.currentTarget.value);
-      const cursor = selectionStart.current;
       const displayValue = createDisplayValue(rawValue, format);
+      let updatedCursor = cursorStart;
 
       switch (inputType.current) {
         default:
         case 'insertText': {
-          if ([2, 5].includes(cursor)) {
-            selectionStart.current = cursor + 2;
-            selectionEnd.current = cursor + 2;
+          if ([2, 5].includes(cursorStart)) {
+            updatedCursor = cursorStart + 2;
           } else {
-            selectionStart.current = cursor + 1;
-            selectionEnd.current = cursor + 1;
+            updatedCursor = cursorStart + 1;
           }
+          setCursor({cursorStart: updatedCursor, cursorEnd: updatedCursor});
           break;
         }
         case 'deleteContentBackward': {
-          if ([3, 6].includes(cursor)) {
-            selectionStart.current = cursor - 1;
-            selectionEnd.current = cursor - 1;
-            forceUpdate({});
-          } else {
-            selectionStart.current = cursor - 1;
-            selectionEnd.current = cursor - 1;
-          }
+          // if ([3, 6].includes(cursorStart)) {
+          // } else {
+          //   selectionStart.current = cursor - 1;
+          //   selectionEnd.current = cursor - 1;
+          // }
+          updatedCursor = cursorStart - 1;
+          setCursor({cursorStart: updatedCursor, cursorEnd: updatedCursor});
           break;
         }
         case 'deleteContentForward': {
-          selectionStart.current = cursor;
-          selectionEnd.current = cursor;
-          forceUpdate({});
+          setCursor({cursorStart: updatedCursor, cursorEnd: updatedCursor});
+          forceUpdate(s => s + 1);
           break;
         }
         case 'deleteSection': {
-          selectionStart.current = cursor;
-          selectionEnd.current = cursor;
-          forceUpdate({});
+          setCursor({cursorStart: updatedCursor, cursorEnd: updatedCursor});
           break;
         }
         case 'insertFromPaste': {
-          selectionStart.current = displayValue.length;
-          selectionEnd.current = displayValue.length;
+          updatedCursor = displayValue.length;
+          setCursor({cursorStart: updatedCursor, cursorEnd: updatedCursor});
           break;
         }
       }
       handleInputDate(displayValue);
     },
-    [format, handleInputDate],
+    [cursorStart, format, handleInputDate],
   );
 
   const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
@@ -91,9 +96,7 @@ function DateInputComponent(props: any, ref?: React.ForwardRefExoticComponent<HT
         inputType.current = 'deleteSection';
       }
     }
-
-    selectionStart.current = start;
-    selectionEnd.current = end;
+    setCursor({cursorStart: start, cursorEnd: end});
   }, []);
 
   const handlePaste = React.useCallback(() => {
@@ -101,8 +104,8 @@ function DateInputComponent(props: any, ref?: React.ForwardRefExoticComponent<HT
   }, []);
 
   React.useLayoutEffect(() => {
-    inputRef.current.setSelectionRange(selectionStart.current, selectionEnd.current);
-  });
+    inputRef.current.setSelectionRange(cursorStart, cursorEnd);
+  }, [cursorStart, cursorEnd, updateKey]);
 
   return (
     <StyledInput
@@ -119,6 +122,7 @@ function DateInputComponent(props: any, ref?: React.ForwardRefExoticComponent<HT
       autoCorrect="off"
       autoCapitalize="off"
       spellCheck="false"
+      autoFocus={false}
     />
   );
 }

@@ -115,7 +115,7 @@ export function DatePickerPage() {
       </div>
 
       <ThemeProvider theme={theme === 'dark' ? darkTheme : baseTheme}>
-        <form>
+        <div>
           <div css={{marginBottom: 16}}>
             <label css={{color: 'gray', fontSize: 12}}>Mobile</label>
             <InputPhone
@@ -127,6 +127,7 @@ export function DatePickerPage() {
               value={phone}
               placeholder="(___) ___-__-__"
             />
+            <input type="text"/>
           </div>
           <DatePicker
             name="someDate"
@@ -141,7 +142,7 @@ export function DatePickerPage() {
             maxDate="30.10.2023"
           />
           <span css={{fontSize: 10, color: 'red'}}>Validation</span>
-        </form>
+        </div>
         <div css={{marginTop: 20}}>
           <span>DateRangePicker</span>
           <Example code={exampleDaterange} />
