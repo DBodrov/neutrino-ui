@@ -62,8 +62,7 @@ export const getDayType = (displayDate: TDay): TDayType => {
 };
 
 export const getDayTooltip = (date: Date, locale: string | string[]) => {
-  const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
-  return date.toLocaleDateString(locale, options);
+  return date.toLocaleDateString(locale, {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
 };
 
 export const getFirstYearInDecade = (year = THIS_YEAR) => {
@@ -91,7 +90,6 @@ export const getDisabledState = (
   if (minDate) {
     const {day: minDay, month: minMonth, year: minYear} = parseDate(minDate, format);
     const minNativeDate = new Date(minYear, minMonth - 1, minDay);
-    // console.log('***********', currentDate, minNativeDate, currentDate < minNativeDate)
     minResult = currentDate < minNativeDate;
   }
   if (maxDate) {
@@ -99,7 +97,6 @@ export const getDisabledState = (
     const maxNativeDate = new Date(maxYear, maxMonth - 1, maxDay);
     maxResult = currentDate > maxNativeDate;
   }
-  //console.log(currentDate, minDate, minResult )
   return minResult || maxResult;
 };
 
