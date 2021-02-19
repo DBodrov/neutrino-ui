@@ -10,7 +10,7 @@ import {IDatePickerProps} from './types';
 
 //TODO: click outside
 function DatePickerComponent() {
-  const {inputStyles, width, handleChangeCalendarView, onBlur} = useDatePicker();
+  const {inputStyles, width, calendarButtonStyles, calendarStyles, handleChangeCalendarView, onBlur} = useDatePicker();
   const {isOpen, handleToggle, handleClose} = useToggle();
   const dateInputRef = React.useRef<HTMLInputElement>(null);
   const inputRect = dateInputRef?.current?.getBoundingClientRect();
@@ -57,12 +57,12 @@ function DatePickerComponent() {
         type="button"
         onClick={handleToggle}
         ref={calendarButtonRef}
-        css={{position: 'absolute', top: '50%', right: 8, transform: 'translateY(-50%)'}}
+        style={calendarButtonStyles}
       >
-        <CalendarIcon />
+        <CalendarIcon color={calendarButtonStyles.color} />
       </CalendarButton>
       <Dropdown isOpen={isOpen} ref={dropdownRef} parentBound={isOpen ? inputRect : undefined}>
-        <Calendar css={{borderRadius: 4}} />
+        <Calendar css={calendarStyles} />
       </Dropdown>
     </div>
   );

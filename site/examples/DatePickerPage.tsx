@@ -57,6 +57,12 @@ const datePickerCss = css`
   border-radius: 8px;
   margin-bottom: 4px;
 `;
+
+const calendarButtonStyles: React.CSSProperties = {
+  color: 'green',
+  backgroundColor: 'gray',
+  borderRadius: '8px',
+};
 //({height: 48, borderRadius: 4, marginBottom: 4});
 
 // const validate = (dateString: string) => {
@@ -127,7 +133,7 @@ export function DatePickerPage() {
               value={phone}
               placeholder="(___) ___-__-__"
             />
-            <input type="text"/>
+            <input type="text" />
           </div>
           <DatePicker
             name="someDate"
@@ -138,6 +144,8 @@ export function DatePickerPage() {
             locale="ru"
             width={600}
             inputStyles={datePickerCss}
+            calendarStyles={css({borderRadius: 4})}
+            calendarButtonStyles={calendarButtonStyles}
             minDate="15.09.1980"
             maxDate="30.10.2023"
           />

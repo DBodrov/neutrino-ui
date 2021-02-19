@@ -12,6 +12,10 @@ export const TextBox = styled.div`
 `;
 
 export const CalendarButton = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
   background-color: transparent;
   border: 0;
   outline: 0;

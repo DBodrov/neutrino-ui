@@ -41,6 +41,8 @@ export interface IDatePickerProps {
   placeholder?: string;
   children?: React.ReactNode;
   inputStyles?: SerializedStyles;
+  calendarButtonStyles?: React.CSSProperties;
+  calendarStyles?: SerializedStyles;
   isEditable?: boolean;
   width?: number;
   minDate?: string;
