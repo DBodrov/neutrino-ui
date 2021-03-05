@@ -59,7 +59,8 @@ function DatePickerComponent() {
         ref={calendarButtonRef}
         style={calendarButtonStyles}
       >
-        <CalendarIcon color={calendarButtonStyles.color} />
+        {/* FIXME: BUG: color may be undefined */}
+        <CalendarIcon color={calendarButtonStyles?.color} />
       </CalendarButton>
       <Dropdown isOpen={isOpen} ref={dropdownRef} parentBound={isOpen ? inputRect : undefined}>
         <Calendar css={calendarStyles} />

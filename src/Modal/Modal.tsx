@@ -42,6 +42,7 @@ export function Modal(props: IModalProps) {
     className,
     overlayCss,
     onOverlayClick,
+    onClose,
   } = props;
   const modalRef = React.useRef<HTMLDivElement>(null);
   const [{ showModal }, dispatch] = React.useReducer(stateReducer, initState);
@@ -73,13 +74,16 @@ export function Modal(props: IModalProps) {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         dispatch({ type: ModalChangeTypes.keyDownEsc });
+        if (Boolean(onClose)) {
+          onClose();
+        }
       }
     };
     document.addEventListener('keydown', handleKeyPress);
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
     };
-  }, []);
+  }, [onClose]);
 
   return (
     <Portal>

@@ -20,4 +20,5 @@ export interface IModalProps {
   className?: string;
   overlayCss?: SerializedStyles;
   onOverlayClick?: () => void;
+  onClose?: () => void;
 }

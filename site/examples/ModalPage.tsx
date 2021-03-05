@@ -22,7 +22,7 @@ export interface IModalProps {
   isOpen: boolean;
   placement?: 'top' | 'center' | 'bottom';
   className?: string;
-  overlayCss?: SerializedStyles;
+  overlayCss?: SerializedStyles; //from Emotion (css-in-js)
   onClose?: () => void;
   onOverlayClick?: () => void;
 }
@@ -30,11 +30,10 @@ export interface IModalProps {
 
 const exampleCenter = `
 import React, { useState } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { Button, Modal } from 'neutrino-ui';
 
 const modalReducer = (state: IModalState, changes: IModalState): IModalState => {
-  console.log(state, changes)
   switch (changes.type) {
     case ModalChangeTypes.clickOutside:
     case ModalChangeTypes.keyDownEsc:
@@ -59,6 +58,7 @@ export function Page() {
         placement="bottom"
         overlayCss={css({ backgroundColor: 'rgba(49,61,79, 0.5)' })}
         onOverlayClick={() => setModalState(false)}
+        onClose={() => setModalState(false)} //if you need close modal on escape key press
       >
         <div css={{ width: '500px', height: '300px', borderRadius: 24, backgroundColor: '#fff', margin: 'auto auto 0' }}>
           Modal content!
@@ -70,7 +70,7 @@ export function Page() {
 `.trim();
 
 const modalReducer = (state: IModalState, changes: IModalState): IModalState => {
-  console.log(state, changes);
+  //console.log(state, changes);
   switch (changes.type) {
     case ModalChangeTypes.clickOutside:
     case ModalChangeTypes.keyDownEsc:
@@ -94,11 +94,12 @@ export function ModalPage() {
         Open modal
       </Button>
       <Modal
-        stateReducer={modalReducer}
+        // stateReducer={modalReducer}
         isOpen={isOpen}
         placement="bottom"
-        overlayCss={css({ backgroundColor: 'rgba(49,61,79, 0.5)' })}
+        overlayCss={css({ backgroundColor: 'rgba(49,61,79, 0.5)', backdropFilter: 'blur(10px)' })}
         onOverlayClick={() => setModalState(false)}
+        onClose={() => setModalState(false)}
       >
         <div
           css={{
