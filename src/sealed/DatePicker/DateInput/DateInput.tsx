@@ -9,7 +9,7 @@ type TCursorPosition = {
 };
 
 function DateInputComponent(props: any, ref?: React.ForwardRefExoticComponent<HTMLInputElement>) {
-  const {handleInputDate, name, value, inputStyles, format, onBlur} = useDatePicker();
+  const {handleInputDate, name, value, inputStyles, format, onBlur, inputProps} = useDatePicker();
   const [{cursorStart, cursorEnd}, setCursor] = React.useReducer(
     (s: TCursorPosition, a: TCursorPosition): TCursorPosition => ({...s, ...a}),
     {
@@ -123,6 +123,7 @@ function DateInputComponent(props: any, ref?: React.ForwardRefExoticComponent<HT
       autoCapitalize="off"
       spellCheck="false"
       autoFocus={false}
+      {...inputProps}
     />
   );
 }

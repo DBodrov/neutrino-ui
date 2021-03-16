@@ -148,6 +148,7 @@ export function DatePickerPage() {
             calendarButtonStyles={calendarButtonStyles}
             minDate="15.09.1980"
             maxDate="30.10.2023"
+            inputProps={{'aria-label': 'date picker'}}
           />
           <span css={{fontSize: 10, color: 'red'}}>Validation</span>
         </div>
