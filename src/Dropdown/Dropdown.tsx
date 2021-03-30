@@ -7,6 +7,7 @@ import {IDropdownProps, IParentBound} from './types';
 
 const Dropdown = forwardRef((props: IDropdownProps, ref: React.RefObject<HTMLDivElement>) => {
   const {isOpen, parentBound, parentNode, children, styles = {}} = props;
+  const dropdownProps = props;
   const theme = useTheme();
 
   const onUpdate = () => {
@@ -41,7 +42,7 @@ const Dropdown = forwardRef((props: IDropdownProps, ref: React.RefObject<HTMLDiv
     return {};
   };
 
-  const transitions = useTransition(isOpen, null, {
+  const transitions = useTransition(isOpen, {
     from: {opacity: 0, transform: 'translateY(20px)'},
     update: onUpdate(),
     leave: {opacity: 0, transform: 'translateY(20px)'},
@@ -49,14 +50,13 @@ const Dropdown = forwardRef((props: IDropdownProps, ref: React.RefObject<HTMLDiv
   });
 
   const renderDropdown = () =>
-    transitions.map(
-      ({item, props: springProps, key}) =>
+    transitions(
+      (props, item, key) =>
         item && (
           <animated.div
-            key={key}
-            css={createDropdownCSS(props, theme)}
+            css={createDropdownCSS(dropdownProps, theme)}
             ref={ref}
-            style={{...springProps, ...styles}}
+            style={{...props, ...styles}}
             tabIndex={-1}
           >
             {children}
