@@ -2,22 +2,22 @@ import React from 'react';
 import {css} from '@emotion/react';
 import styled from '@emotion/styled';
 import {useTheme} from '../Themes';
-import {Combobox, ArrowIcon, useCombobox} from '../Combobox';
+import {ToggleArrowIcon, ToggleProvider, useToggle} from '../ToggleProvider';
 import {Dropdown} from '../Dropdown';
 import {ISimpleSelectProps} from './types';
 
 export function SimpleSelect(props: ISimpleSelectProps) {
   return (
-    <Combobox>
+    <ToggleProvider>
       <Select {...props} />
-    </Combobox>
+    </ToggleProvider>
   );
 }
 
 function Select(props: ISimpleSelectProps) {
   const {options, value, className, selectInputStyles, onSelect, optionStyles, optionsListStyles} = props;
 
-  const {handleClose, isOpen} = useCombobox();
+  const {handleClose, isOpen} = useToggle();
   const theme = useTheme();
   const simpleSelectRef = React.useRef<HTMLDivElement>(null);
   const [selectRect, setSelectRect] = React.useState(null);
@@ -136,7 +136,7 @@ const TextBox = styled.div`
 `;
 
 function SelectBox({children, styles}: any) {
-  const {handleToggle, isOpen} = useCombobox();
+  const {handleToggle, isOpen} = useToggle();
   const {colors} = useTheme();
   const baseCss = css({
     border: `1px ${isOpen ? colors.pageElementsColors.activeBorder : colors.pageElementsColors.border} solid`,
@@ -147,7 +147,7 @@ function SelectBox({children, styles}: any) {
   return (
     <TextBox onClick={handleToggle} css={[baseCss, styles]}>
       {children}
-      <ArrowIcon />
+      <ToggleArrowIcon />
     </TextBox>
   );
 }

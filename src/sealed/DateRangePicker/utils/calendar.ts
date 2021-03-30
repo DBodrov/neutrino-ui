@@ -62,7 +62,7 @@ export const getDayType = (displayDate: TDay): TDayType => {
 };
 
 export const getDayTooltip = (date: Date, locale: string | string[]) => {
-  const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+  const options: Intl.DateTimeFormatOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
   return date.toLocaleDateString(locale, options);
 };
 

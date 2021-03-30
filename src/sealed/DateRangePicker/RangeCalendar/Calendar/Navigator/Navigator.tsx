@@ -1,12 +1,10 @@
 import React from 'react';
 import {useTheme} from '../../../../../Themes';
 import {Span} from '../../../../../Typography';
-import {LeftIcon} from '../../../../../DayPicker/icons/LeftIcon';
+import {LeftIcon} from '../../../icons/LeftIcon';
 import {useDateRange} from '../../../DateRangeProvider';
 import {
   getMonthName,
-  createDateString,
-  THIS_DAY,
   THIS_DECADE,
   THIS_MONTH,
   THIS_YEAR,
@@ -26,16 +24,13 @@ export function Navigator(props: TNavigatorProps) {
     decadeStart = THIS_DECADE,
     calendarEndView,
     calendarStartView,
-    handleChangeDay,
     handleChangeMonth,
     handleChangeYear,
-    format,
     handleChangeCalendarView,
     handleChangeDecade,
-    dispatch,
   } = useDateRange();
 
-  const {day = THIS_DAY, month = THIS_MONTH, year = THIS_YEAR} = section === 'start' ? dayStart : dayEnd;
+  const {month = THIS_MONTH, year = THIS_YEAR} = section === 'start' ? dayStart : dayEnd;
   const decade = section === 'start' ? decadeStart : decadeEnd;
   const calendarView = section === 'start' ? calendarStartView : calendarEndView;
 
@@ -48,9 +43,6 @@ export function Navigator(props: TNavigatorProps) {
       prevMonth = 12;
     }
     handleChangeMonth(prevMonth, section);
-    //const newDate = createDateString(format, '-', {day, month: prevMonth, year});
-
-    //handleChangeDay(newDate, section);
   }, [handleChangeMonth, month, section]);
 
   const handleNextMonth = React.useCallback(() => {
@@ -60,8 +52,6 @@ export function Navigator(props: TNavigatorProps) {
       nextMonth = 1;
     }
     handleChangeMonth(nextMonth, section);
-    // const newDate = createDateString(format, '-', {day, month: nextMonth, year});
-    // handleChangeDay(newDate, section);
   }, [handleChangeMonth, month, section]);
 
   const handlePrevYear = React.useCallback(() => {
@@ -74,11 +64,7 @@ export function Navigator(props: TNavigatorProps) {
       if (prevYear < 1000) {
         prevYear = 1000;
       }
-      //const updateYear = section ?
-      // dispatch({})
       handleChangeYear(prevYear, section);
-      // const newDate = createDateString(format, '-', {day, month, year: prevYear});
-      // handleChangeDay(newDate, section);
     }
   }, [calendarView, decade, handleChangeDecade, handleChangeYear, section, year]);
 

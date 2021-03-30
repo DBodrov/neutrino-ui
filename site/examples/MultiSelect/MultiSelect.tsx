@@ -1,7 +1,7 @@
 import React from 'react';
 import {css} from '@emotion/react';
 import styled from '@emotion/styled';
-import {ArrowIcon, Combobox, useCombobox, useTheme, Span, Dropdown} from 'neutrino-ui';
+import {ToggleArrowIcon, useToggle, ToggleProvider, useTheme, Span, Dropdown} from 'neutrino-ui';
 
 type OptionItem = {
   id: string | number;
@@ -25,7 +25,7 @@ const TextBox = styled.div`
 `;
 
 function SelectBox({children, styles}: any) {
-  const {handleToggle, isOpen} = useCombobox();
+  const {handleToggle, isOpen} = useToggle();
   const {colors} = useTheme();
   const baseCss = css({
     border: `1px ${isOpen ? colors.pageElementsColors.activeBorder : colors.pageElementsColors.border} solid`,
@@ -37,7 +37,7 @@ function SelectBox({children, styles}: any) {
   return (
     <TextBox onClick={handleToggle} css={[baseCss, styles]}>
       {children}
-      <ArrowIcon />
+      <ToggleArrowIcon />
     </TextBox>
   );
 }
@@ -48,7 +48,7 @@ function Select({options, value, onSelect}: Props) {
   const theme = useTheme();
   const mSelectRef = React.useRef<HTMLDivElement>(null);
   const optionsRef = React.useRef<HTMLDivElement>(null);
-  const {isOpen, handleClose} = useCombobox();
+  const {isOpen, handleClose} = useToggle();
 
   const listBaseCss = css({
     margin: 0,
@@ -165,9 +165,9 @@ function Select({options, value, onSelect}: Props) {
 
 export function MultiSelect(props: Props) {
   return (
-    <Combobox>
+    <ToggleProvider>
       <Select {...props} />
-    </Combobox>
+    </ToggleProvider>
   );
 }
 
@@ -206,11 +206,12 @@ const TextBox = styled.div'
   padding: 12px 16px;
 ';
 
+
 function SelectBox({children, styles}: any) {
-  const {handleToggle, isOpen} = useCombobox();
+  const {handleToggle, isOpen} = useToggle();
   const {colors} = useTheme();
   const baseCss = css({
-    border: '1px $ {isOpen ? colors.pageElementsColors.activeBorder : colors.pageElementsColors.border} solid',
+    border: ' 1px $ {isOpen ? colors.pageElementsColors.activeBorder : colors.pageElementsColors.border} solid ',
     '&:hover': {cursor: 'pointer', borderColor: colors.pageElementsColors.activeBorder},
     color: colors.textColors.text,
     backgroundColor: colors.pageElementsColors.formElements,
@@ -219,7 +220,7 @@ function SelectBox({children, styles}: any) {
   return (
     <TextBox onClick={handleToggle} css={[baseCss, styles]}>
       {children}
-      <ArrowIcon />
+      <ToggleArrowIcon />
     </TextBox>
   );
 }
@@ -230,13 +231,13 @@ function Select({options, value, onSelect}: Props) {
   const theme = useTheme();
   const mSelectRef = React.useRef<HTMLDivElement>(null);
   const optionsRef = React.useRef<HTMLDivElement>(null);
-  const {isOpen, handleClose} = useCombobox();
+  const {isOpen, handleClose} = useToggle();
 
   const listBaseCss = css({
     margin: 0,
     padding: 0,
     listStyle: 'none',
-    border: '1px $ {theme.colors.pageElementsColors.border} solid',
+    border: ' 1px $ {theme.colors.pageElementsColors.border} solid ',
     boxSizing: 'border-box',
     backgroundColor: theme.colors.pageElementsColors.formElements,
     width: '100%',
@@ -313,7 +314,7 @@ function Select({options, value, onSelect}: Props) {
     <div css={{position: 'relative', width: 300}} ref={mSelectRef}>
       <SelectBox>
         <Span>Prefix: </Span>
-        <Span>{selectedChecks.length > 0 ? '($ {selectedChecks.length})' : 'All items'}</Span>
+        <Span>{selectedChecks.length > 0 ? ' ($ {selectedChecks.length}) ' : 'All items'}</Span>
       </SelectBox>
       <Dropdown isOpen={isOpen} ref={optionsRef} parentBound={isOpen ? selectRect : undefined}>
         <div css={listBaseCss}>
@@ -347,9 +348,9 @@ function Select({options, value, onSelect}: Props) {
 
 export function MultiSelect(props: Props) {
   return (
-    <Combobox>
+    <ToggleProvider>
       <Select {...props} />
-    </Combobox>
+    </ToggleProvider>
   );
 }
 
