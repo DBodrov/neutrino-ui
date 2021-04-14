@@ -18,7 +18,6 @@ export const Input = forwardRef((props: IInputProps, ref: React.RefObject<HTMLIn
     const theme = useTheme();
 
     const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-        event.preventDefault();
         const val = event.target.value;
         onChangeHandler(val, event);
     };
