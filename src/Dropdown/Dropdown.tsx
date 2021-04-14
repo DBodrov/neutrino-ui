@@ -24,7 +24,7 @@ const Dropdown = forwardRef((props: IDropdownProps, ref: React.RefObject<HTMLDiv
           height: rect.height,
         };
       }
-      if (parentBound && parentBound instanceof DOMRect) {
+      if (parentBound) {
         parentRect = {
           top: parentBound.top,
           bottom: parentBound.bottom,
