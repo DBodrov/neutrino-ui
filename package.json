@@ -17,6 +17,7 @@
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.check.json --noEmit",
+    "esbuild": "node scripts/buildDocs.js",
     "lint": "eslint src/**/*.{ts,tsx}",
     "lint:site": "eslint site/**/*.{ts,tsx}",
     "lint:site:fix": "eslint site/**/*.{ts,tsx} --fix",
