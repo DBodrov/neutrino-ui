@@ -36,23 +36,3 @@ export const StyledList = styled.ul`
     border-color: blue;
   }
 `;
-
-export const StyledOption = styled.li`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  min-height: 2rem;
-  padding: 0.5rem;
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--a3-color-border);
-  }
-
-  &:focus,
-  &:focus-visible {
-    outline: 1px red solid;
-  }
-`;

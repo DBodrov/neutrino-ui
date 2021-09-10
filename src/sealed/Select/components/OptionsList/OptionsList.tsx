@@ -5,8 +5,8 @@ import {TOptionItem} from '../../types';
 type Props = {
   options?: TOptionItem[];
   isOpen: boolean;
-  onSelect: (value: string | number) => void;
   selectedValue?: string | number;
+  onSelect: (value: string | number) => void;
 };
 export function OptionsList(props: Props) {
   const {options, isOpen, onSelect, selectedValue} = props;
@@ -15,14 +15,50 @@ export function OptionsList(props: Props) {
 
   const handleListClick = (e: React.PointerEvent<HTMLUListElement>) => {
     if (e.target instanceof HTMLLIElement) {
-      onSelect(e.target.value)
+      onSelect(e.target.value);
     }
-  }
+  };
+
+  const handleListKeyDown = (e: React.KeyboardEvent<HTMLUListElement | HTMLLIElement>) => {
+    // console.log(e.target, e.key);
+    switch (e.key) {
+      case 'ArrowDown': {
+        e.preventDefault();
+        if (e.target instanceof HTMLLIElement) {
+          const nextFocusedIndex =
+            options.findIndex(option => String(option.id) === String((e.target as HTMLLIElement).value)) + 1;
+          if (nextFocusedIndex > options.length - 1) {
+            optionRefs.current[0].focus();
+          } else {
+            optionRefs.current[nextFocusedIndex].focus();
+          }
+        }
+        break;
+      }
+
+      case 'ArrowUp': {
+        e.preventDefault();
+        if (e.target instanceof HTMLLIElement) {
+          const nextFocusedIndex =
+            options.findIndex(option => String(option.id) === String((e.target as HTMLLIElement).value)) - 1;
+          if (nextFocusedIndex < 0) {
+            optionRefs.current[options.length - 1].focus();
+          } else {
+            optionRefs.current[nextFocusedIndex].focus();
+          }
+        }
+        break;
+      }
+
+      default:
+        return;
+    }
+  };
 
   React.useEffect(() => {
     if (isOpen) {
       if (selectedValue === null) {
-        console.log(optionRefs.current[0])
+        // console.log(optionRefs.current[0]);
         optionRefs.current[0].focus();
       } else {
         const selectedIndex = options.findIndex(option => String(option.id) === String(selectedValue));
@@ -32,7 +68,7 @@ export function OptionsList(props: Props) {
   }, [isOpen, options, selectedValue]);
 
   return (
-    <StyledList isOpen={isOpen} onClick={handleListClick}>
+    <StyledList isOpen={isOpen} onClick={handleListClick} onKeyDown={handleListKeyDown}>
       {options.map((option, idx) => {
         return (
           <StyledOption

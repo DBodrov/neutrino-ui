@@ -3,15 +3,14 @@ import {useToggle} from './utils';
 import {OptionsList} from './components';
 import {ToggleArrowIcon} from './ToggleArrowIcon';
 import {ISimpleSelectProps} from './types';
-import {StyledInput, StyledList, StyledOption} from './styles';
+import {StyledInput} from './styles';
 
 export function Select(props: ISimpleSelectProps) {
   const {value, options} = props;
-  const {handleClose, handleToggle, isOpen, handleOpen} = useToggle();
+  const {handleClose, handleToggle, isOpen} = useToggle();
   const [selectedValue, setSelectedValue] = React.useState<string | number | null>(null);
+  const selectRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const listRef = React.useRef<HTMLUListElement>(null);
-  const optionItemsRef = React.useRef<HTMLLIElement[]>([]);
 
   const getDisplayValue = () => {
     if (!value) {
@@ -22,8 +21,22 @@ export function Select(props: ISimpleSelectProps) {
     }).value;
   };
 
+  React.useEffect(() => {
+    const handleClickOutside = (e: PointerEvent) => {
+      if (e.target instanceof HTMLElement && isOpen) {
+        if (selectRef.current.contains(e.target)) {
+          return;
+        }
+        handleClose();
+
+      }
+    }
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [handleClose, isOpen]);
+
   return (
-    <div css={{position: 'relative', '--a3-color-border': '#C5C5C5'}}>
+    <div css={{position: 'relative', '--a3-color-border': '#C5C5C5'}} ref={selectRef}>
       <StyledInput
         ref={inputRef}
         readOnly
