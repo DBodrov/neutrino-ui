@@ -3,6 +3,7 @@ import {css} from '@emotion/react';
 import {ThemeProvider} from '@emotion/react';
 import {Wrapper, Example, Label} from './Example';
 import {createTheme, SimpleSelect} from 'neutrino-ui';
+import {Select} from 'neutrino-ui/lib/sealed';
 import {MultiSelect, example} from './MultiSelect';
 
 const theme = createTheme({
@@ -152,6 +153,10 @@ export function SelectPage() {
     <Wrapper>
       <Label>Simple Select</Label>
       <Example code={exampleProps} />
+      <div css={{width: 300}}>
+        <Select options={optionsList} css={{width: 300}} value={selected} onSelect={handleItemClick} />
+      </div>
+      <div css={{height: 20}}></div>
       <SimpleSelect
         options={optionsList}
         css={{width: 300}}
