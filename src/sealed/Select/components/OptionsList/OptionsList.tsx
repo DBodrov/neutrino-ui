@@ -1,26 +1,26 @@
 import React from 'react';
+import {useSelect} from '../../Select';
 import {StyledList, StyledOption} from './styles';
-import {TOptionItem} from '../../types';
+import {TOptionItem, SelectChangeTypes} from '../../types';
 
 type Props = {
-  options?: TOptionItem[];
-  isOpen: boolean;
-  selectedValue?: string | number;
-  onSelect: (value: string | number) => void;
+  children?: () => React.ReactNode;
 };
 export function OptionsList(props: Props) {
-  const {options, isOpen, onSelect, selectedValue} = props;
+  const {children} = props;
+  const {isOpen, onSelect, dispatch, selectedValue, options} = useSelect();
 
   const optionRefs = React.useRef<HTMLLIElement[]>([]);
 
   const handleListClick = (e: React.PointerEvent<HTMLUListElement>) => {
     if (e.target instanceof HTMLLIElement) {
       onSelect(e.target.value);
+      dispatch({type: SelectChangeTypes.selectItem});
     }
   };
 
   const handleListKeyDown = (e: React.KeyboardEvent<HTMLUListElement | HTMLLIElement>) => {
-    // console.log(e.target, e.key);
+    console.log(e.target, e.key);
     switch (e.key) {
       case 'ArrowDown': {
         e.preventDefault();
@@ -50,6 +50,11 @@ export function OptionsList(props: Props) {
         break;
       }
 
+      case 'Escape':
+        e.preventDefault();
+        dispatch({type: SelectChangeTypes.keyDownEsc});
+        break;
+
       default:
         return;
     }
@@ -68,21 +73,25 @@ export function OptionsList(props: Props) {
   }, [isOpen, options, selectedValue]);
 
   return (
-    <StyledList isOpen={isOpen} onClick={handleListClick} onKeyDown={handleListKeyDown}>
-      {options.map((option, idx) => {
-        return (
-          <StyledOption
-            data-id={option.id}
-            ref={el => (optionRefs.current[idx] = el)}
-            tabIndex={0}
-            value={option.id}
-            key={option.id}
-            isSelected={String(option.id) === String(selectedValue)}
-          >
-            {option.value}
-          </StyledOption>
-        );
-      })}
-    </StyledList>
+    <div css={{backgroundColor: '#fff', padding: 8}}>
+      <StyledList isOpen={isOpen} onClick={handleListClick} onKeyDown={handleListKeyDown} role="listbox">
+        {options.map((option, idx) => {
+          return (
+            <StyledOption
+              data-id={option.id}
+              ref={el => (optionRefs.current[idx] = el)}
+              tabIndex={0}
+              value={option.id}
+              key={option.id}
+              isSelected={String(option.id) === String(selectedValue)}
+              role="option"
+              aria-selected={String(option.id) === String(selectedValue)}
+            >
+              {option.value}
+            </StyledOption>
+          );
+        })}
+      </StyledList>
+    </div>
   );
 }

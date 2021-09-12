@@ -3,7 +3,7 @@ import {css} from '@emotion/react';
 import {ThemeProvider} from '@emotion/react';
 import {Wrapper, Example, Label} from './Example';
 import {createTheme, SimpleSelect} from 'neutrino-ui';
-import {Select} from 'neutrino-ui/lib/sealed';
+import {Select, SelectInput, OptionsList} from 'neutrino-ui/lib/sealed';
 import {MultiSelect, example} from './MultiSelect';
 
 const theme = createTheme({
@@ -140,12 +140,16 @@ const optionsList = [
 
 export function SelectPage() {
   const [selected, setSelected] = React.useState(undefined);
+  const [itemId, setItemId] = React.useState(null);
   const [items, setItems] = React.useState<number[]>([]);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
     const val = e.currentTarget.value;
     setSelected(Number(val));
   };
+
+  const handleSelectItemId = (value: string | number) => setItemId(value);
 
   const handleMultiSelect = (value: number[]) => setItems(value);
 
@@ -154,7 +158,15 @@ export function SelectPage() {
       <Label>Simple Select</Label>
       <Example code={exampleProps} />
       <div css={{width: 300}}>
-        <Select options={optionsList} css={{width: 300}} value={selected} onSelect={handleItemClick} />
+        <Select
+          options={optionsList}
+          styles={css({width: 300, '--a3-color-border': '#C5C5C5', '--a3-color-active-border': 'green'})}
+          value={itemId}
+          onSelect={handleSelectItemId}
+        >
+          <SelectInput />
+          <OptionsList />
+        </Select>
       </div>
       <div css={{height: 20}}></div>
       <SimpleSelect

@@ -1,16 +1,28 @@
 import {SerializedStyles} from '@emotion/react';
 
+export enum SelectChangeTypes {
+  idle = 'IDLE',
+  clickOutside = 'CLICK_OUTSIDE',
+  keyDownEsc = 'KEYDOWN_ESC',
+  keyPressEnter = 'KEYPRESS_ENTER',
+  selectItem = 'SELECT_ITEM',
+}
+
+export type TSelectState = {
+  type?: SelectChangeTypes;
+  isOpen?: boolean;
+}
+
 export type TOptionItem = {
   id: string | number;
   value: string | number;
 };
 
-export interface ISimpleSelectProps extends Omit<React.HTMLProps<HTMLDivElement>, 'value' | 'onSelect'> {
-  hasError?: boolean;
+export type TSelectProps = {
+  children: React.ReactNode;
+  styles?: SerializedStyles;
   value?: string | number;
-  selectInputStyles?: SerializedStyles;
-  optionsListStyles?: SerializedStyles;
-  optionStyles?: SerializedStyles;
-  options?: OptionItem[];
-  onSelect: (event?: React.PointerEvent<HTMLLIElement>) => void;
+  options?: TOptionItem[];
+  stateReducer?: (state: TSelectState, changes: TSelectState) => TSelectState;
+  onSelect: (value: string | number) => void;
 }
