@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ThemeProvider } from '@emotion/react';
-import { Checkbox, createTheme } from 'neutrino-ui';
+import { Checkbox, createTheme, Radio } from 'neutrino-ui';
 import { Example, Wrapper } from './Example';
 
 const theme = createTheme({
@@ -85,8 +85,21 @@ const theme = createTheme({
 
 export function CheckboxPage() {
     const [check, setCheck] = useState(true);
+    const [choice, setChoice] = useState(null);
+
+
+    const handleChoice = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setChoice(e.target.name);
+    }
+
     return (
         <Wrapper>
+            <Radio name="choice" value="choice-1" onChange={handleChoice} checked={choice === 'choiceField1'} disabled>
+              Radio 1
+            </Radio>
+            <Radio name="choice" value="choice-2" onChange={handleChoice} checked={choice === 'choiceField2'}>
+              Radio 2
+            </Radio>
             <Example code={exampleProps.trim()} />
             <Checkbox onChangeHandler={(v) => setCheck(v)} checked={check}>
                 Simple Checkbox

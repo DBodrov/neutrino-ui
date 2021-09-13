@@ -15,6 +15,9 @@ export const Main = styled.main`
 `;
 
 export const globalStyles = css({
+  ':root': {
+    '--a3-color-primary': '#69A6F1',
+  },
   'html, body': {
     margin: 0,
     padding: 0,
