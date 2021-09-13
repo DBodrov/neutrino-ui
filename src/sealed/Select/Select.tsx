@@ -1,10 +1,5 @@
 import React from 'react';
-import {SerializedStyles} from '@emotion/react';
-import {useToggle} from './utils';
-import {OptionsList} from './components';
-import {ToggleArrowIcon} from './ToggleArrowIcon';
-import {TSelectProps, SelectChangeTypes, TSelectState, TOptionItem} from './types';
-import {StyledInput} from './styles';
+import {TSelectProps, SelectChangeTypes, TSelectState, TSelectContext} from './types';
 
 const selectStateReducer = (state: TSelectState, changes: TSelectState): TSelectState => {
   switch (changes.type) {
@@ -16,27 +11,25 @@ const selectStateReducer = (state: TSelectState, changes: TSelectState): TSelect
     case SelectChangeTypes.keyPressEnter:
     case SelectChangeTypes.selectItem:
       return {
-        ...state,
+        ...changes,
         isOpen: false,
+      };
+    case SelectChangeTypes.keyDownSpace:
+      return {
+        ...changes,
+        isOpen: !state.isOpen,
       };
   }
 };
 
-export type TSelectContext = {
-  isOpen: boolean;
-  displayValue?: string | number;
-  selectedValue?: string | number;
-  dispatch: React.Dispatch<TSelectState>;
-  options?: TOptionItem[];
-  onSelect?: (value: string | number) => void;
-};
 const SelectContext = React.createContext<TSelectContext>(null);
 SelectContext.displayName = 'SelectContext';
 
 export function Select(props: TSelectProps) {
   const {value, options, stateReducer = selectStateReducer, children, styles, onSelect} = props;
-  const [{isOpen}, dispatch] = React.useReducer(stateReducer, {isOpen: false, type: SelectChangeTypes.idle});
+  const [state, dispatch] = React.useReducer(stateReducer, {isOpen: false, type: SelectChangeTypes.idle});
   const selectRef = React.useRef<HTMLDivElement>(null);
+  const {isOpen} = state;
 
   const getDisplayValue = React.useCallback(() => {
     if (!value) {
@@ -61,7 +54,7 @@ export function Select(props: TSelectProps) {
   }, [isOpen]);
 
   const ctx = React.useMemo<TSelectContext>(
-    () => ({isOpen, displayValue: getDisplayValue(), dispatch, onSelect, selectedValue: value, options}),
+    () => ({displayValue: getDisplayValue(), dispatch, onSelect, selectedValue: value, options, isOpen}),
     [getDisplayValue, isOpen, onSelect, options, value],
   );
 
@@ -80,40 +73,4 @@ export function useSelect() {
     throw new Error('useSelect must be used within a Select');
   }
   return context;
-}
-// <div css={{position: 'relative', '--a3-color-border': '#C5C5C5'}} ref={selectRef}>
-//   <StyledInput
-//     ref={inputRef}
-//     readOnly
-//     value={getDisplayValue()}
-//     onClick={() => dispatch({type: SelectChangeTypes.idle, })}
-//     css={{borderColor: isOpen ? 'blue' : '--a3-color-border'}}
-//   />
-//   <ToggleArrowIcon isOpen={isOpen} css={{position: 'absolute', right: '0.5rem', top: '1rem'}} />
-//   <OptionsList
-//     isOpen={isOpen}
-//     options={options}
-//     onSelect={setSelectedValue}
-//     selectedValue={selectedValue}
-//   />
-// </div>
-
-type TSelectInputProps = {
-  styles?: SerializedStyles;
-};
-
-export function SelectInput(props: TSelectInputProps) {
-  const {styles} = props;
-  const {isOpen, displayValue, dispatch} = useSelect();
-  return (
-    <>
-      <StyledInput
-        readOnly
-        value={displayValue}
-        onClick={() => dispatch({type: SelectChangeTypes.idle, isOpen: !isOpen})}
-        css={[{borderColor: isOpen ? 'var(--a3-color-active-border)' : 'var(--a3-color-border)'}, styles]}
-      />
-      <ToggleArrowIcon isOpen={isOpen} css={{position: 'absolute', right: '0.5rem', top: '1rem'}} />
-    </>
-  );
 }

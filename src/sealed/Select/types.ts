@@ -6,6 +6,7 @@ export enum SelectChangeTypes {
   keyDownEsc = 'KEYDOWN_ESC',
   keyPressEnter = 'KEYPRESS_ENTER',
   selectItem = 'SELECT_ITEM',
+  keyDownSpace = 'KEYDOWN_SPACE'
 }
 
 export type TSelectState = {
@@ -26,3 +27,12 @@ export type TSelectProps = {
   stateReducer?: (state: TSelectState, changes: TSelectState) => TSelectState;
   onSelect: (value: string | number) => void;
 }
+
+export type TSelectContext = {
+  isOpen: boolean;
+  displayValue?: string | number;
+  selectedValue?: string | number;
+  dispatch: React.Dispatch<TSelectState>;
+  options?: TOptionItem[];
+  onSelect?: (value: string | number) => void;
+};

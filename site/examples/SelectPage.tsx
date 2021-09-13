@@ -3,7 +3,7 @@ import {css} from '@emotion/react';
 import {ThemeProvider} from '@emotion/react';
 import {Wrapper, Example, Label} from './Example';
 import {createTheme, SimpleSelect} from 'neutrino-ui';
-import {Select, SelectInput, OptionsList} from 'neutrino-ui/lib/sealed';
+import {Select, SelectInput, OptionsList, } from 'neutrino-ui/lib/sealed';
 import {MultiSelect, example} from './MultiSelect';
 
 const theme = createTheme({
@@ -142,7 +142,7 @@ export function SelectPage() {
   const [selected, setSelected] = React.useState(undefined);
   const [itemId, setItemId] = React.useState(null);
   const [items, setItems] = React.useState<number[]>([]);
-  const [isOpen, setIsOpen] = React.useState(false);
+
 
   const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
     const val = e.currentTarget.value;

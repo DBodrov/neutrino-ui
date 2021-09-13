@@ -3,8 +3,11 @@ import {useSelect} from '../../Select';
 import {StyledList, StyledOption} from './styles';
 import {TOptionItem, SelectChangeTypes} from '../../types';
 
+type TChildrenProps = {
+  options: TOptionItem[];
+};
 type Props = {
-  children?: () => React.ReactNode;
+  children?: (props: TChildrenProps) => React.ReactNode;
 };
 export function OptionsList(props: Props) {
   const {children} = props;
@@ -20,7 +23,6 @@ export function OptionsList(props: Props) {
   };
 
   const handleListKeyDown = (e: React.KeyboardEvent<HTMLUListElement | HTMLLIElement>) => {
-    // console.log(e.target, e.key);
     switch (e.key) {
       case 'ArrowDown': {
         e.preventDefault();
@@ -83,22 +85,28 @@ export function OptionsList(props: Props) {
 
   return (
     <StyledList isOpen={isOpen} onClick={handleListClick} onKeyDown={handleListKeyDown} role="listbox">
-      {options.map((option, idx) => {
-        return (
-          <StyledOption
-            data-id={option.id}
-            ref={el => (optionRefs.current[idx] = el)}
-            tabIndex={0}
-            value={option.id}
-            key={option.id}
-            isSelected={String(option.id) === String(selectedValue)}
-            role="option"
-            aria-selected={String(option.id) === String(selectedValue)}
-          >
-            {option.value}
-          </StyledOption>
-        );
-      })}
+      {children ? (
+        children({options})
+      ) : (
+        <>
+          {options.map((option, idx) => {
+            return (
+              <StyledOption
+                data-id={option.id}
+                ref={el => (optionRefs.current[idx] = el)}
+                tabIndex={0}
+                value={option.id}
+                key={option.id}
+                isSelected={String(option.id) === String(selectedValue)}
+                role="option"
+                aria-selected={String(option.id) === String(selectedValue)}
+              >
+                {option.value}
+              </StyledOption>
+            );
+          })}
+        </>
+      )}
     </StyledList>
   );
 }
