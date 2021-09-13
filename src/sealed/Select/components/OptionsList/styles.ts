@@ -11,7 +11,8 @@ export const StyledList = styled.ul<{isOpen: boolean}>`
   left: 0;
   list-style: none;
   margin: 0;
-  padding: 0.5rem 0;
+  padding: ${props => (props.isOpen ? '1rem 0' : 0)};
+  row-gap: 1px;
   background-color: #fff;
   width: 100%;
   max-height: 300px;
@@ -20,7 +21,7 @@ export const StyledList = styled.ul<{isOpen: boolean}>`
   box-shadow: 0 10px 30px 0 rgb(82 63 105 / 10%);
   border-radius: 0.25rem;
   overflow: auto;
-  transition: all 300ms ease;
+  transition: all 200ms ease;
   transition-property: height, opacity;
 `;
 

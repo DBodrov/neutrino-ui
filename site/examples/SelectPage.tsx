@@ -160,7 +160,7 @@ export function SelectPage() {
       <div css={{width: 300}}>
         <Select
           options={optionsList}
-          styles={css({width: 300, '--a3-color-border': '#C5C5C5', '--a3-color-active-border': 'green'})}
+          styles={css({width: 300, '--a3-color-border': '#C5C5C5', '--a3-color-active-border': 'blue'})}
           value={itemId}
           onSelect={handleSelectItemId}
         >
