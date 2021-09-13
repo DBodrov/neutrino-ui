@@ -13,3 +13,4 @@ export * from './Switch';
 export * from './ToggleProvider';
 export * from './InputPhone';
 export * from './Slider';
+export * from './Radio';
