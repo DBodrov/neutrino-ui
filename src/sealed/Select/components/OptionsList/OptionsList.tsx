@@ -1,17 +1,13 @@
 import React from 'react';
 import {useSelect} from '../../Select';
 import {StyledList, StyledOption} from './styles';
-import {TOptionItem, SelectChangeTypes} from '../../types';
+import {SelectChangeTypes} from '../../types';
+import {TOptionsListProps} from './types';
 
-type TChildrenProps = {
-  options: TOptionItem[];
-};
-type Props = {
-  children?: (props: TChildrenProps) => React.ReactNode;
-};
-export function OptionsList(props: Props) {
+export function OptionsList(props: TOptionsListProps) {
   const {children} = props;
   const {isOpen, onSelect, dispatch, selectedValue, options} = useSelect();
+  const hasCustomList = Boolean(children);
 
   const optionRefs = React.useRef<HTMLLIElement[]>([]);
 
@@ -73,7 +69,7 @@ export function OptionsList(props: Props) {
   };
 
   React.useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !hasCustomList) {
       if (selectedValue === null) {
         optionRefs.current[0].focus();
       } else {
@@ -81,7 +77,7 @@ export function OptionsList(props: Props) {
         optionRefs.current[selectedIndex].focus();
       }
     }
-  }, [isOpen, options, selectedValue]);
+  }, [hasCustomList, isOpen, options, selectedValue]);
 
   return (
     <StyledList isOpen={isOpen} onClick={handleListClick} onKeyDown={handleListKeyDown} role="listbox">

@@ -157,7 +157,8 @@ export function SelectPage() {
     <Wrapper>
       <Label>Simple Select</Label>
       <Example code={exampleProps} />
-      <div css={{width: 300}}>
+
+      <div css={{width: 1200, display: 'flex'}}>
         <Select
           options={optionsList}
           styles={css({width: 300, '--a3-color-border': '#C5C5C5', '--a3-color-active-border': 'blue'})}
@@ -167,6 +168,23 @@ export function SelectPage() {
           <SelectInput />
           <OptionsList />
         </Select>
+        <Select
+          options={optionsList}
+          styles={css({width: 300, '--a3-color-border': '#C5C5C5', '--a3-color-active-border': 'blue'})}
+          value={itemId}
+          onSelect={handleSelectItemId}
+        >
+          <SelectInput />
+          <OptionsList>
+            {({options}) => {
+              return options.map(item => {
+                return <li value={item.id} css={{color: 'blue'}} key={item.id}>{item.value}</li>
+              })
+            }}
+          </OptionsList>
+        </Select>
+      </div>
+      <div css={{width: 300}}>
       </div>
       <div css={{height: 20}}></div>
       <SimpleSelect
